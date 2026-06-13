@@ -1,14 +1,16 @@
 (() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* ---------- Sticky nav state ---------- */
+    /* ---------- Sticky nav border state ---------- */
     const header = document.querySelector('.site-header');
-    const onScroll = () => {
-        if (window.scrollY > 12) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    if (header) {
+        const onScroll = () => {
+            if (window.scrollY > 8) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    }
 
     /* ---------- Mobile menu ---------- */
     const toggle = document.querySelector('.menu-toggle');
@@ -34,7 +36,7 @@
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-    /* ---------- Reveal on scroll + stagger grids ---------- */
+    /* ---------- Reveal on scroll — gentle, IntersectionObserver-only ---------- */
     const revealTargets = [
         '.section-head',
         '.o-mne .col-text',
@@ -75,7 +77,7 @@
                     obs.unobserve(e.target);
                 }
             });
-        }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' })
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
         : null;
 
     if (io) {
@@ -83,27 +85,6 @@
         document.querySelectorAll('.stagger').forEach(el => io.observe(el));
     } else {
         document.querySelectorAll('.reveal, .stagger').forEach(el => el.classList.add('is-visible'));
-    }
-
-    /* ---------- Magnetic button micro-pull (decorative, hover only) ---------- */
-    const isCoarse = window.matchMedia('(pointer: coarse)').matches;
-    if (!isCoarse && !prefersReducedMotion) {
-        document.querySelectorAll('.btn-primary').forEach(btn => {
-            let raf = null;
-            btn.addEventListener('pointermove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
-                const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
-                if (raf) cancelAnimationFrame(raf);
-                raf = requestAnimationFrame(() => {
-                    btn.style.transform = `translate(${x}px, ${y}px)`;
-                });
-            });
-            btn.addEventListener('pointerleave', () => {
-                if (raf) cancelAnimationFrame(raf);
-                btn.style.transform = '';
-            });
-        });
     }
 
     /* ---------- Contact form → mailto fallback ---------- */
