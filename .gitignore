@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Skill installation artifacts (regenerable via `npx skills add`)
+.agents/
+.claude/skills/
+.claude/settings.local.json
+
+# Empty placeholder icon — replace with real 180x180 PNG before deploy
+apple-touch-icon.png
+
+# Build / OS
+.DS_Store
+Thumbs.db
+*.log
+.cache/
+dist/
+build/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Skill lockfile metadata
+skills-lock.json
