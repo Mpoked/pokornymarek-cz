@@ -810,7 +810,8 @@ section {
 }
 .optional { color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: normal; }
 .form-row input,
-.form-row textarea {
+.form-row textarea,
+.form-row select {
     width: 100%;
     padding: 14px 16px;
     border: var(--hair) solid var(--ink);
@@ -822,11 +823,25 @@ section {
     background: var(--paper);
     transition: background 100ms linear;
 }
+.form-row select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%230a0a0a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6L8 10L12 6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    cursor: pointer;
+}
 .form-row input:focus,
-.form-row textarea:focus {
+.form-row textarea:focus,
+.form-row select:focus {
     outline: none;
-    background: var(--paper-2);
+    background-color: var(--paper-2);
     box-shadow: inset 0 0 0 var(--hair) var(--hazard);
+}
+.form-row select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23050505' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6L8 10L12 6'/></svg>");
 }
 .form-row textarea { resize: vertical; min-height: 130px; line-height: 1.5; }
 .form-note {
