@@ -774,7 +774,8 @@ section { padding: 110px 0; position: relative; }
 }
 .optional { color: var(--muted); font-weight: 400; }
 .form-row input,
-.form-row textarea {
+.form-row textarea,
+.form-row select {
     width: 100%;
     padding: 13px 16px;
     border: 1px solid var(--line-strong);
@@ -786,11 +787,22 @@ section { padding: 110px 0; position: relative; }
     transition: border-color 240ms var(--ease-out), background 240ms var(--ease-out), box-shadow 240ms var(--ease-out);
     font-family: inherit;
 }
+.form-row select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%230a0a0a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6L8 10L12 6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    cursor: pointer;
+}
 .form-row input:focus,
-.form-row textarea:focus {
+.form-row textarea:focus,
+.form-row select:focus {
     outline: none;
     border-color: var(--ink);
-    background: var(--paper);
+    background-color: var(--paper);
     box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.06);
 }
 .form-row textarea {
