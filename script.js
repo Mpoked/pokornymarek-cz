@@ -30,6 +30,15 @@
         });
     }
 
+    /* ---------- Logo: smooth scroll to top ---------- */
+    document.querySelectorAll('a[href="#top"], a[href="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+            history.replaceState(null, '', window.location.pathname);
+        });
+    });
+
     /* ---------- Year ---------- */
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = String(new Date().getFullYear());
@@ -116,9 +125,16 @@
                 alert('Vyplňte prosím jméno, e-mail a zprávu.');
                 return;
             }
+            const balickyMap = {
+                jednoduchy: 'Jednoduchý web',
+                standard: 'Standard',
+                premium: 'Prémiový',
+                poradit: 'Ještě nevím / poradit',
+            };
+            const balicekLabel = balickyMap[data.balicek] || '—';
             const subject = encodeURIComponent('Poptávka z webu — ' + data.jmeno);
             const body = encodeURIComponent(
-                `Jméno: ${data.jmeno}\nE-mail: ${data.email}\nTelefon: ${data.telefon || '—'}\n\n${data.zprava}`
+                `Jméno: ${data.jmeno}\nE-mail: ${data.email}\nTelefon: ${data.telefon || '—'}\nBalíček: ${balicekLabel}\n\n${data.zprava}`
             );
             window.location.href = `mailto:kontakt@pokornymarek.cz?subject=${subject}&body=${body}`;
         });
