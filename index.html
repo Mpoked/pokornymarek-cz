@@ -36,7 +36,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
 
@@ -128,8 +128,6 @@
 
 <a class="skip-link" href="#main">Přeskočit na obsah</a>
 
-<div class="grain" aria-hidden="true"></div>
-
 <header class="site-header" id="top">
     <div class="nav-pill">
         <a href="#top" class="logo" aria-label="Marek Pokorný — domů">
@@ -158,33 +156,39 @@
 <main id="main">
 
     <section class="hero">
-        <div class="hero-bg" aria-hidden="true"></div>
-        <div class="container">
-            <span class="eyebrow">Webař ze Slovácka · Uherské Hradiště</span>
-            <h1>
-                Tvorba webových stránek
-                v <em>Uherském&nbsp;Hradišti</em>
-            </h1>
-            <p class="lead">
-                Jsem Marek Pokorný a dělám weby na míru — sám, osobně, bez agentury a bez prostředníků.
-                Pro živnostníky a malé firmy ze Slovácka, kteří chtějí web, který opravdu funguje,
-                vypadá moderně a stojí férové peníze.
-            </p>
-            <div class="cta-row">
-                <a href="#kontakt" class="btn btn-primary">
-                    <span>Nezávazná poptávka</span>
-                    <span class="btn-arrow" aria-hidden="true">
-                        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11L11 5M11 5H6M11 5V10"/></svg>
-                    </span>
-                </a>
-                <a href="#cenik" class="btn btn-ghost">Zobrazit ceník</a>
+        <div class="container hero-split">
+            <div class="hero-text">
+                <span class="eyebrow"><span class="dot"></span>Uherské Hradiště · Slovácko</span>
+                <h1>
+                    Weby, které <em>opravdu</em> přivedou klienty.
+                </h1>
+                <p class="lead">
+                    Jsem Marek Pokorný — dělám webové stránky pro živnostníky a malé firmy
+                    ze Slovácka. Sám, osobně, za férové peníze.
+                </p>
+                <div class="cta-row">
+                    <a href="#kontakt" class="btn btn-primary">
+                        <span>Nezávazná poptávka</span>
+                        <span class="btn-arrow" aria-hidden="true">
+                            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11L11 5M11 5H6M11 5V10"/></svg>
+                        </span>
+                    </a>
+                    <a href="#cenik" class="btn btn-ghost">Zobrazit ceník</a>
+                </div>
+                <ul class="hero-points" role="list">
+                    <li>Osobní přístup</li>
+                    <li>Férová cena</li>
+                    <li>SEO v ceně</li>
+                    <li>Hotovo do 3 týdnů</li>
+                </ul>
             </div>
-            <ul class="hero-points" role="list">
-                <li>Osobní přístup</li>
-                <li>Férová cena</li>
-                <li>SEO v ceně</li>
-                <li>Hotovo do 3 týdnů</li>
-            </ul>
+            <div class="hero-visual" aria-hidden="true">
+                <img src="https://picsum.photos/seed/uh-hradiste-craft/900/1100" alt="" loading="eager" width="900" height="1100">
+                <div class="visual-tag">
+                    <span class="visual-tag-label">Marek Pokorný</span>
+                    <span class="visual-tag-sub">Webař · Uherské Hradiště</span>
+                </div>
+            </div>
         </div>
     </section>
 
