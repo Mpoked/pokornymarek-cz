@@ -1,0 +1,709 @@
+/* =================================================================
+   Vinařství Novák — Editorial Luxury
+   Burgundy + Bone + Brass · Cormorant Garamond + Manrope
+   ================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+:root {
+    --bone:      #F5EFE3;
+    --bone-2:    #E9E1D0;
+    --paper:     #FBF8F1;
+    --ink:       #1C1416;
+    --ink-soft:  #4A3E40;
+    --muted:     #8A7E80;
+    --burgundy:  #5C1A1B;
+    --burgundy-2:#3A0E0F;
+    --brass:     #A8763A;
+    --brass-dark:#8A5F2A;
+    --line:      rgba(28, 20, 22, 0.12);
+
+    --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+    --max: 1280px;
+    --max-prose: 720px;
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    color: var(--ink-soft);
+    background: var(--bone);
+    line-height: 1.65;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+img, svg { max-width: 100%; display: block; }
+a { color: var(--ink); text-decoration: none; transition: color 240ms var(--ease-out); }
+a:hover { color: var(--burgundy); }
+button { font: inherit; cursor: pointer; border: none; background: none; }
+ul, ol { list-style: none; }
+strong { font-weight: 700; color: var(--ink); }
+em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--burgundy);
+}
+
+::selection { background: var(--burgundy); color: var(--bone); }
+
+.container {
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+}
+
+.skip-link { position: absolute; left: -9999px; top: 0; background: var(--burgundy); color: var(--bone); padding: 12px 18px; z-index: 1000; }
+.skip-link:focus { left: 12px; top: 12px; }
+
+/* TYPOGRAPHY — Cormorant Garamond display + Manrope body */
+h1, h2 {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.04;
+}
+h1 {
+    font-size: clamp(2.8rem, 7vw, 5.4rem);
+    font-weight: 500;
+    line-height: 1.02;
+    padding-bottom: 0.08em;
+}
+h2 {
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    margin-bottom: 28px;
+    padding-bottom: 0.06em;
+    max-width: 800px;
+}
+h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+h4 {
+    font-family: 'Manrope', sans-serif;
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 16px;
+}
+p { color: var(--ink-soft); line-height: 1.7; max-width: var(--max-prose); }
+
+.eyebrow {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--brass-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    margin-bottom: 22px;
+}
+
+.section-head { margin-bottom: 64px; max-width: 800px; }
+.section-intro { font-size: 1.1rem; color: var(--ink-soft); line-height: 1.65; }
+
+/* HEADER */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(245, 239, 227, 0.85);
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 280ms var(--ease-out);
+}
+.site-header.scrolled { border-bottom-color: var(--line); }
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    max-width: var(--max);
+    margin: 0 auto;
+}
+
+.brand { display: inline-flex; align-items: baseline; gap: 14px; color: var(--ink); }
+.brand-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    background: var(--burgundy);
+    color: var(--bone);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    border-radius: 50%;
+}
+.brand-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1;
+}
+.brand-text em { color: var(--burgundy); }
+
+.main-nav { display: flex; gap: 4px; }
+.main-nav a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    padding: 10px 16px;
+    transition: color 200ms var(--ease-out);
+}
+.main-nav a:hover { color: var(--burgundy); }
+
+.menu-toggle { display: none; width: 40px; height: 40px; position: relative; }
+.menu-toggle span {
+    position: absolute;
+    left: 50%;
+    width: 18px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: transform 280ms var(--ease-out);
+}
+.menu-toggle span:nth-child(1) { top: calc(50% - 5px); transform: translateX(-50%); }
+.menu-toggle span:nth-child(2) { top: calc(50% + 5px); transform: translateX(-50%); }
+.menu-toggle.open span:nth-child(1) { top: 50%; transform: translateX(-50%) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { top: 50%; transform: translateX(-50%) rotate(-45deg); }
+
+/* HERO — full-bleed with atmospheric photo */
+.hero {
+    position: relative;
+    min-height: 86vh;
+    min-height: 86dvh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    padding: 120px 0 80px;
+    color: var(--bone);
+    margin-top: -77px;
+    isolation: isolate;
+}
+.hero-image {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6) saturate(0.85) contrast(1.05);
+}
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(28, 20, 22, 0.35) 0%, rgba(28, 20, 22, 0.1) 30%, rgba(28, 20, 22, 0.85) 100%);
+}
+.hero-content { color: var(--bone); max-width: 920px; padding-top: 100px; }
+.hero-content .eyebrow {
+    color: var(--brass);
+    margin-bottom: 28px;
+}
+.hero-content h1 {
+    color: var(--bone);
+    font-weight: 400;
+    margin-bottom: 28px;
+}
+.hero-content h1 em { color: var(--brass); }
+.hero-content .lead {
+    color: rgba(245, 239, 227, 0.85);
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    max-width: 580px;
+    margin-bottom: 36px;
+    line-height: 1.6;
+}
+
+.link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--brass);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    padding: 12px 0;
+    border-bottom: 1px solid currentColor;
+    transition: color 260ms var(--ease-out), gap 320ms var(--ease-out);
+}
+.link-arrow:hover { color: var(--bone); gap: 18px; }
+.link-arrow span { font-size: 1.2rem; }
+
+/* SECTIONS */
+section { padding: 130px 0; position: relative; }
+
+.two-col {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 90px;
+    align-items: center;
+}
+
+/* PŘÍBĚH */
+.pribeh { background: var(--bone); }
+.pribeh-image {
+    position: relative;
+    overflow: hidden;
+}
+.pribeh-image img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    filter: saturate(0.85);
+}
+.pribeh-image figcaption {
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 14px;
+    background: rgba(245, 239, 227, 0.95);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--burgundy);
+}
+.pribeh-text p { margin-bottom: 18px; max-width: 540px; }
+
+blockquote {
+    margin-top: 32px;
+    padding: 28px 0 0;
+    border-top: 1px solid var(--line);
+}
+blockquote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--burgundy);
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+blockquote cite {
+    font-family: 'Manrope', sans-serif;
+    font-style: normal;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+/* WINES — asymmetric editorial grid */
+.vina { background: var(--paper); }
+.wines {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 32px;
+}
+.wine-card {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 28px;
+    align-items: center;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+}
+.wine-card--large {
+    grid-column: span 2;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 48px;
+    padding: 48px;
+    background: var(--bone);
+    border: none;
+    border-radius: 4px;
+}
+.wine-image img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.05);
+}
+.wine-card--large .wine-image img { aspect-ratio: 4/5; }
+.wine-num {
+    display: block;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--brass-dark);
+    letter-spacing: 0.2em;
+    margin-bottom: 14px;
+}
+.wine-notes {
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    max-width: 100%;
+}
+.wine-card--large .wine-notes { font-size: 1.05rem; }
+.wine-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--burgundy);
+    font-weight: 500;
+    font-style: italic;
+}
+
+.wine-specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+.wine-specs div { display: flex; flex-direction: column; gap: 4px; }
+.wine-specs dt {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+.wine-specs dd {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--burgundy);
+    font-style: italic;
+}
+
+/* TERROIR — full-bleed with overlay numbers */
+.terroir {
+    position: relative;
+    min-height: 80vh;
+    padding: 140px 0;
+    color: var(--bone);
+    isolation: isolate;
+    overflow: hidden;
+}
+.terroir-image {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+.terroir-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5) saturate(0.7);
+}
+.terroir-content { max-width: 980px; }
+.terroir h2 { color: var(--bone); font-weight: 400; }
+.terroir h2 em { color: var(--brass); }
+.terroir-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin: 48px 0 32px;
+    padding-top: 36px;
+    border-top: 1px solid rgba(245, 239, 227, 0.25);
+}
+.terroir-grid dt {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--brass);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-top: 18px;
+}
+.terroir-grid dt:first-child { margin-top: 0; }
+.terroir-grid dd {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--bone);
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+.terroir-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: rgba(245, 239, 227, 0.85);
+    line-height: 1.5;
+    max-width: 720px;
+}
+
+/* NÁVŠTĚVA */
+.navsteva { background: var(--bone); }
+.navsteva-list { margin-top: 28px; border-top: 1px solid var(--line); }
+.navsteva-list li {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.navsteva-list strong {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: var(--ink);
+}
+.navsteva-list span {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+}
+
+.rezervace {
+    background: var(--paper);
+    padding: 44px;
+    border: 1px solid var(--line);
+}
+.rezervace h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--burgundy);
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+}
+.form-row { margin-bottom: 18px; }
+.form-row label {
+    display: block;
+    margin-bottom: 8px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+.form-row input,
+.form-row select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid var(--line);
+    background: var(--bone);
+    font: inherit;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: border-color 240ms var(--ease-out), background 240ms var(--ease-out);
+}
+.form-row select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%235C1A1B' stroke-width='1.5' stroke-linecap='round'><path d='M4 6L8 10L12 6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+.form-row input:focus,
+.form-row select:focus {
+    outline: none;
+    border-color: var(--burgundy);
+    background-color: var(--paper);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--burgundy);
+    color: var(--bone);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 240ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.btn-primary:hover { background: var(--burgundy-2); }
+.btn-primary:active { transform: scale(0.98); }
+
+/* KONTAKT */
+.kontakt { background: var(--paper); border-top: 1px solid var(--line); }
+.kontakt-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+address {
+    font-style: normal;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    margin-top: 18px;
+    font-size: 1.05rem;
+}
+address a { color: var(--burgundy); }
+
+.hours {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 12px 24px;
+    align-items: baseline;
+}
+.hours dt {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+}
+.hours dd {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+/* FOOTER */
+.site-footer {
+    background: var(--burgundy-2);
+    color: rgba(245, 239, 227, 0.7);
+    padding: 80px 0 28px;
+}
+.site-footer .brand { color: var(--bone); margin-bottom: 16px; }
+.site-footer .brand-mark { background: var(--brass); color: var(--burgundy-2); }
+.site-footer .brand-text { color: var(--bone); }
+.site-footer .brand-text em { color: var(--brass); }
+.footer-tag {
+    color: rgba(245, 239, 227, 0.55);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 52px;
+    border-bottom: 1px solid rgba(245, 239, 227, 0.12);
+}
+.site-footer h4 { color: var(--brass); margin-bottom: 14px; }
+.site-footer ul li { padding: 4px 0; font-size: 0.9rem; }
+.site-footer ul li a { color: rgba(245, 239, 227, 0.7); }
+.site-footer ul li a:hover { color: var(--brass); }
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 28px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(245, 239, 227, 0.45);
+    letter-spacing: 0.06em;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* REVEAL — gentle fade-up, parallax-feel */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.stagger.is-visible > *:nth-child(1) { --reveal-delay: 0ms; }
+.stagger.is-visible > *:nth-child(2) { --reveal-delay: 70ms; }
+.stagger.is-visible > *:nth-child(3) { --reveal-delay: 140ms; }
+.stagger.is-visible > *:nth-child(4) { --reveal-delay: 210ms; }
+.stagger.is-visible > *:nth-child(5) { --reveal-delay: 280ms; }
+
+.hero-content > * {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: hero-in 1000ms var(--ease-out) forwards;
+}
+.hero-content .eyebrow { animation-delay: 200ms; }
+.hero-content h1 { animation-delay: 350ms; }
+.hero-content .lead { animation-delay: 550ms; }
+.hero-content .link-arrow { animation-delay: 750ms; }
+
+@keyframes hero-in {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+    .reveal, .hero-content > * { opacity: 1; transform: none; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .wines { grid-template-columns: 1fr; }
+    .wine-card--large { grid-column: span 1; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { gap: 60px; }
+}
+@media (max-width: 800px) {
+    .two-col,
+    .kontakt-grid { grid-template-columns: 1fr; gap: 50px; }
+    .main-nav { display: none; }
+    .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+    .main-nav.open {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        background: var(--bone);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        z-index: 200;
+    }
+    .main-nav.open a {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        color: var(--ink);
+        padding: 12px;
+    }
+    .terroir-grid { grid-template-columns: 1fr; gap: 0; }
+    section { padding: 90px 0; }
+    .hero { padding: 100px 0 60px; min-height: 70vh; }
+    .wine-card--large { padding: 32px; gap: 28px; grid-template-columns: 1fr; }
+    .wine-card { grid-template-columns: 1fr; padding-bottom: 24px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (max-width: 480px) {
+    .container { padding: 0 20px; }
+    .brand-text { font-size: 1.15rem; }
+}
