@@ -1,18 +1,9 @@
 (() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* ---------- Sticky nav state ---------- */
-    const header = document.querySelector('.site-header');
-    const onScroll = () => {
-        if (window.scrollY > 12) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* ---------- Mobile menu ---------- */
     const toggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('.main-nav');
+    const nav = document.querySelector('.top-nav');
     if (toggle && nav) {
         toggle.addEventListener('click', () => {
             const open = nav.classList.toggle('open');
@@ -20,22 +11,19 @@
             toggle.setAttribute('aria-expanded', String(open));
             document.body.style.overflow = open ? 'hidden' : '';
         });
-        nav.querySelectorAll('a').forEach(a => {
-            a.addEventListener('click', () => {
-                nav.classList.remove('open');
-                toggle.classList.remove('open');
-                toggle.setAttribute('aria-expanded', 'false');
-                document.body.style.overflow = '';
-            });
-        });
+        nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+            nav.classList.remove('open');
+            toggle.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }));
     }
 
-    /* ---------- Logo: smooth scroll to top ---------- */
+    /* ---------- Logo / #top scroll to top ---------- */
     document.querySelectorAll('a[href="#top"], a[href="#"]').forEach(a => {
         a.addEventListener('click', (e) => {
             e.preventDefault();
-            window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-            history.replaceState(null, '', window.location.pathname);
+            window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
         });
     });
 
@@ -43,40 +31,28 @@
     const yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-    /* ---------- Reveal on scroll + stagger grids ---------- */
-    const revealTargets = [
-        '.section-head',
-        '.o-mne .col-text',
-        '.o-mne .col-visual',
-        '.kontakt .col-text',
-        '.kontakt .form-bezel',
-        '.cenik-disclaimer',
+    /* ---------- Reveal on scroll ---------- */
+    const targets = [
+        '.strip-statement',
+        '.featured-slab',
+        '.work-tile',
+        '.cat-label',
+        '.capabilities',
+        '.display-2',
+        '.contact-grid',
+        '.footer-grid',
     ];
-    revealTargets.forEach(sel => {
-        document.querySelectorAll(sel).forEach(el => el.classList.add('reveal'));
-    });
+    targets.forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.add('reveal')));
 
-    const staggerGrids = [
-        '.services-grid',
-        '.audience-grid',
-        '.process-steps',
-        '.pricing-grid',
-        '.references-grid',
-        '.faq-list',
-    ];
-    staggerGrids.forEach(sel => {
-        const grid = document.querySelector(sel);
-        if (!grid) return;
-        grid.classList.add('stagger');
-        Array.from(grid.children).forEach(child => child.classList.add('reveal'));
-    });
+    const workGrid = document.querySelector('.work-grid');
+    if (workGrid) workGrid.classList.add('stagger');
 
-    if (prefersReducedMotion) {
+    if (reduce) {
         document.querySelectorAll('.reveal, .stagger').forEach(el => el.classList.add('is-visible'));
         return;
     }
 
-    const io = ('IntersectionObserver' in window)
+    const io = 'IntersectionObserver' in window
         ? new IntersectionObserver((entries, obs) => {
             entries.forEach(e => {
                 if (e.isIntersecting) {
@@ -87,56 +63,21 @@
         }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' })
         : null;
 
-    if (io) {
-        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-        document.querySelectorAll('.stagger').forEach(el => io.observe(el));
-    } else {
-        document.querySelectorAll('.reveal, .stagger').forEach(el => el.classList.add('is-visible'));
-    }
+    if (io) document.querySelectorAll('.reveal, .stagger').forEach(el => io.observe(el));
+    else document.querySelectorAll('.reveal, .stagger').forEach(el => el.classList.add('is-visible'));
 
-    /* ---------- Magnetic button micro-pull (decorative, hover only) ---------- */
-    const isCoarse = window.matchMedia('(pointer: coarse)').matches;
-    if (!isCoarse && !prefersReducedMotion) {
-        document.querySelectorAll('.btn-primary').forEach(btn => {
-            let raf = null;
-            btn.addEventListener('pointermove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
-                const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
-                if (raf) cancelAnimationFrame(raf);
-                raf = requestAnimationFrame(() => {
-                    btn.style.transform = `translate(${x}px, ${y}px)`;
-                });
+    /* ---------- Subtle parallax on cropped wordmark ---------- */
+    const wmEl = document.querySelector('.wordmark--clip span');
+    if (wmEl && !reduce) {
+        let raf = null;
+        const onScroll = () => {
+            if (raf) return;
+            raf = requestAnimationFrame(() => {
+                const y = Math.min(window.scrollY * 0.15, 80);
+                wmEl.style.transform = `translateY(${-y}px)`;
+                raf = null;
             });
-            btn.addEventListener('pointerleave', () => {
-                if (raf) cancelAnimationFrame(raf);
-                btn.style.transform = '';
-            });
-        });
-    }
-
-    /* ---------- Contact form → mailto fallback ---------- */
-    const form = document.querySelector('.contact-form');
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const data = Object.fromEntries(new FormData(form).entries());
-            if (!data.jmeno || !data.email || !data.zprava) {
-                alert('Vyplňte prosím jméno, e-mail a zprávu.');
-                return;
-            }
-            const balickyMap = {
-                jednoduchy: 'Jednoduchý web',
-                standard: 'Standard',
-                premium: 'Prémiový',
-                poradit: 'Ještě nevím / poradit',
-            };
-            const balicekLabel = balickyMap[data.balicek] || '—';
-            const subject = encodeURIComponent('Poptávka z webu — ' + data.jmeno);
-            const body = encodeURIComponent(
-                `Jméno: ${data.jmeno}\nE-mail: ${data.email}\nTelefon: ${data.telefon || '—'}\nBalíček: ${balicekLabel}\n\n${data.zprava}`
-            );
-            window.location.href = `mailto:kontakt@pokornymarek.cz?subject=${subject}&body=${body}`;
-        });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
     }
 })();

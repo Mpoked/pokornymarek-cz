@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* Manual class-based dark mode (toggle .dark on <html>) instead of the
+   media-query default, so the nav switch can override system preference. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Utilities reference these vars at runtime, so flipping .dark re-themes
+   the whole page without rebuilding the utility classes. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Light tokens (secondary mode). One ember accent shared across both modes. */
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f3f3f4;
+  --fg: #18181b;
+  --muted: #57575f;
+  --line: rgba(9, 9, 11, 0.09);
+  --line-strong: rgba(9, 9, 11, 0.16);
+  --accent: #e25a26;
+  --accent-strong: #c84c1c;
+  --accent-fg: #1f0c03; /* dark text on ember in both modes -> WCAG AA */
+  --accent-soft: rgba(226, 90, 38, 0.10);
+}
+
+/* Dark tokens (primary mode, matches the devtool reference family). */
+.dark {
+  --bg: #09090b;
+  --surface: #161618;
+  --surface-2: #1d1d21;
+  --fg: #fafafa;
+  --muted: #a1a1aa;
+  --line: rgba(255, 255, 255, 0.10);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --accent: #fb6e3b;
+  --accent-strong: #fc8456;
+  --accent-fg: #1a0d06;
+  --accent-soft: rgba(251, 110, 59, 0.13);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
