@@ -17,6 +17,8 @@ Thumbs.db
 .cache/
 dist/
 build/
+**/.next/
+**/next-env.d.ts
 
 # Editor
 .vscode/
