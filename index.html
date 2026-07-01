@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Marek Pokorný · Tvorba webových stránek · Uherské Hradiště</title>
-    <meta name="description" content="Stavím web pomalu. Vydrží dlouho. Tvorba webových stránek na míru v Uherském Hradišti a okolí. Osobní přístup, férové ceny.">
+    <title>Marek Pokorný &amp; Matěj Vrážel · Tvorba webových stránek · Uherské Hradiště</title>
+    <meta name="description" content="Stavím web pomalu. Vydrží dlouho. Tvorba webových stránek na míru v Uherském Hradišti a okolí. Marek Pokorný a Matěj Vrážel.">
 
     <link rel="canonical" href="https://pokornymarek.cz/">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="author" content="Marek Pokorný">
+    <meta name="author" content="Marek Pokorný, Matěj Vrážel">
     <meta name="geo.region" content="CZ-72">
     <meta name="geo.placename" content="Uherské Hradiště">
     <meta name="geo.position" content="49.0697;17.4597">
@@ -19,13 +19,13 @@
     <meta property="og:type" content="website">
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:url" content="https://pokornymarek.cz/">
-    <meta property="og:title" content="Marek Pokorný · Stavím web pomalu. Vydrží dlouho.">
-    <meta property="og:description" content="Webové stránky na míru v Uherském Hradišti.">
+    <meta property="og:title" content="Marek Pokorný &amp; Matěj Vrážel · Stavím web pomalu. Vydrží dlouho.">
+    <meta property="og:description" content="Webové stránky na míru v Uherském Hradišti. Marek Pokorný + Matěj Vrážel.">
     <meta property="og:image" content="https://pokornymarek.cz/og-image.jpg">
-    <meta property="og:site_name" content="Marek Pokorný">
+    <meta property="og:site_name" content="Pokorný &amp; Vrážel">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Marek Pokorný · Stavím web pomalu. Vydrží dlouho.">
+    <meta name="twitter:title" content="Marek Pokorný &amp; Matěj Vrážel · Stavím web pomalu. Vydrží dlouho.">
     <meta name="twitter:description" content="Tvorba webových stránek v Uherském Hradišti.">
 
     <meta name="theme-color" content="#C4BAB0">
@@ -45,13 +45,17 @@
         {
           "@type": "LocalBusiness",
           "@id": "https://pokornymarek.cz/#business",
-          "name": "Marek Pokorný — Tvorba webových stránek",
+          "name": "Pokorný & Vrážel — Tvorba webových stránek",
           "image": "https://pokornymarek.cz/og-image.jpg",
           "url": "https://pokornymarek.cz/",
           "telephone": "+420000000000",
           "email": "kontakt@pokornymarek.cz",
           "priceRange": "$$",
           "description": "Tvorba webových stránek na míru v Uherském Hradišti a okolí.",
+          "founder": [
+            { "@type": "Person", "name": "Marek Pokorný" },
+            { "@type": "Person", "name": "Matěj Vrážel" }
+          ],
           "address": { "@type": "PostalAddress", "addressLocality": "Uherské Hradiště", "addressRegion": "Zlínský kraj", "postalCode": "68601", "addressCountry": "CZ" },
           "geo": { "@type": "GeoCoordinates", "latitude": 49.0697, "longitude": 17.4597 },
           "areaServed": [
@@ -70,6 +74,15 @@
           "url": "https://pokornymarek.cz/",
           "worksFor": { "@id": "https://pokornymarek.cz/#business" },
           "address": { "@type": "PostalAddress", "addressLocality": "Uherské Hradiště", "addressCountry": "CZ" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://pokornymarek.cz/#matej",
+          "name": "Matěj Vrážel",
+          "jobTitle": "Webový vývojář a designér",
+          "url": "https://pokornymarek.cz/",
+          "worksFor": { "@id": "https://pokornymarek.cz/#business" },
+          "address": { "@type": "PostalAddress", "addressLocality": "Uherské Hradiště", "addressCountry": "CZ" }
         }
       ]
     }
@@ -81,7 +94,7 @@
 
 <header class="site-header" id="top">
     <div class="wordmark wordmark--clip" aria-hidden="true">
-        <span>MP</span>
+        <span>PV</span>
     </div>
     <nav class="top-nav" aria-label="Hlavní navigace">
         <a href="#prace">Práce</a>
@@ -115,7 +128,7 @@
             </div>
             <div class="featured-tags">
                 <span class="tag-name">Vinařství Novák</span>
-                <span class="tag-code">MP · VN · 0624</span>
+                <span class="tag-code">PV · VN · 0624</span>
             </div>
             <div class="featured-thumbs" aria-hidden="true">
                 <span>[+]</span>
@@ -247,31 +260,37 @@
             Máte nápad?<br>
             <em>Napište.</em>
         </h2>
-        <div class="contact-grid">
-            <div class="contact-person">
+        <div class="contact-grid contact-grid--duo">
+            <article class="contact-person">
                 <div class="contact-avatar">
                     <img src="https://picsum.photos/seed/marek-portret/400/500" alt="Marek Pokorný" width="120" height="150">
                 </div>
-                <div>
+                <div class="contact-person-meta">
                     <p class="contact-name">Marek Pokorný</p>
                     <p class="contact-role">Webový vývojář &amp; designér</p>
+                    <ul class="contact-lines">
+                        <li><span>E</span><a href="mailto:marek@pokornymarek.cz">marek@pokornymarek.cz</a></li>
+                        <li><span>T</span><a href="tel:+420000000000">+420 000 000 000</a></li>
+                    </ul>
                 </div>
-            </div>
-            <ul class="contact-list">
-                <li>
-                    <span class="contact-key">E</span>
-                    <a href="mailto:kontakt@pokornymarek.cz">kontakt@pokornymarek.cz</a>
-                </li>
-                <li>
-                    <span class="contact-key">T</span>
-                    <a href="tel:+420000000000">+420 000 000 000</a>
-                </li>
-                <li>
-                    <span class="contact-key">A</span>
-                    <span>Uherské Hradiště · Slovácko</span>
-                </li>
-            </ul>
+            </article>
+            <article class="contact-person">
+                <div class="contact-avatar">
+                    <img src="https://picsum.photos/seed/matej-portret/400/500" alt="Matěj Vrážel" width="120" height="150">
+                </div>
+                <div class="contact-person-meta">
+                    <p class="contact-name">Matěj Vrážel</p>
+                    <p class="contact-role">Webový vývojář &amp; designér</p>
+                    <ul class="contact-lines">
+                        <li><span>E</span><a href="mailto:matej@pokornymarek.cz">matej@pokornymarek.cz</a></li>
+                        <li><span>T</span><a href="tel:+420000000001">+420 000 000 001</a></li>
+                    </ul>
+                </div>
+            </article>
         </div>
+        <p class="contact-address-line">
+            <span>A</span> Uherské Hradiště · Slovácko
+        </p>
     </section>
 
 </main>
@@ -293,19 +312,19 @@
         <dl class="footer-address">
             <dt>A</dt>
             <dd>Mariánské náměstí<br>686 01 Uherské Hradiště</dd>
-            <dt>P</dt>
-            <dd>+420 000 000 000</dd>
-            <dt>E</dt>
-            <dd><a href="mailto:kontakt@pokornymarek.cz">kontakt@pokornymarek.cz</a></dd>
+            <dt>M</dt>
+            <dd><a href="mailto:marek@pokornymarek.cz">marek@pokornymarek.cz</a></dd>
+            <dt>V</dt>
+            <dd><a href="mailto:matej@pokornymarek.cz">matej@pokornymarek.cz</a></dd>
         </dl>
     </div>
 
     <div class="footer-wordmark" aria-hidden="true">
-        <span>POKORNÝ</span>
+        <span>PV</span>
     </div>
 
     <div class="footer-bottom">
-        <span>&copy; <span id="year">2026</span> · Marek Pokorný · IČO 00000000</span>
+        <span>&copy; <span id="year">2026</span> · Marek Pokorný &amp; Matěj Vrážel · IČO 00000000</span>
         <span>Postaveno v Uherském Hradišti</span>
     </div>
 </footer>

@@ -432,16 +432,27 @@ em { font-style: italic; font-weight: 500; }
     border-top: var(--hair) solid var(--black);
     padding-top: clamp(36px, 5vw, 56px);
 }
+/* Studio Dva — two people side-by-side */
+.contact-grid--duo {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 4vw, 72px);
+    align-items: stretch;
+}
 .contact-person {
     display: flex;
     gap: 22px;
-    align-items: center;
+    align-items: flex-start;
+}
+.contact-grid--duo .contact-person {
+    padding: clamp(20px, 2vw, 28px) 0;
+    border-top: var(--hair) solid transparent;
 }
 .contact-avatar {
     width: 110px;
     height: 140px;
     overflow: hidden;
     background: var(--greige-2);
+    flex-shrink: 0;
 }
 .contact-avatar img {
     width: 100%;
@@ -449,6 +460,7 @@ em { font-style: italic; font-weight: 500; }
     object-fit: cover;
     filter: saturate(0.85) contrast(1.04);
 }
+.contact-person-meta { display: flex; flex-direction: column; gap: 6px; }
 .contact-name {
     font-family: 'Archivo', sans-serif;
     font-size: 1.3rem;
@@ -462,6 +474,56 @@ em { font-style: italic; font-weight: 500; }
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--ink-soft);
+    margin-bottom: 14px;
+}
+.contact-lines {
+    display: grid;
+    gap: 6px;
+    padding-top: 14px;
+    border-top: var(--hair) solid var(--line);
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+.contact-lines li {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    align-items: baseline;
+    font-family: 'Archivo', sans-serif;
+    font-size: 1rem;
+    color: var(--black);
+}
+.contact-lines li span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+.contact-lines li a {
+    border-bottom: var(--hair) solid transparent;
+    transition: border-color 200ms var(--ease-out);
+}
+.contact-lines li a:hover { border-bottom-color: var(--black); opacity: 1; }
+
+.contact-address-line {
+    margin-top: clamp(28px, 3vw, 44px);
+    padding-top: clamp(20px, 2vw, 28px);
+    border-top: var(--hair) solid var(--black);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+}
+.contact-address-line span:first-child {
+    color: var(--black);
+    font-weight: 500;
 }
 .contact-list {
     display: grid;
@@ -542,13 +604,14 @@ em { font-style: italic; font-weight: 500; }
 .footer-wordmark span {
     display: block;
     font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(120px, 22vw, 360px);
+    font-size: clamp(180px, 42vw, 640px);
     color: var(--black);
-    letter-spacing: -0.05em;
+    letter-spacing: -0.06em;
     font-weight: 900;
     text-transform: uppercase;
     padding-left: clamp(8px, 1vw, 16px);
     white-space: nowrap;
+    line-height: 0.78;
 }
 
 .footer-bottom {
@@ -669,12 +732,15 @@ em { font-style: italic; font-weight: 500; }
     .cat-label.cat-left { display: block; grid-column: 1; }
 
     .display-2 { font-size: clamp(2.6rem, 11vw, 4rem); }
-    .contact-person { flex-direction: column; align-items: flex-start; gap: 18px; }
+    .contact-grid--duo { grid-template-columns: 1fr; gap: 24px; }
+    .contact-person { flex-direction: row; align-items: flex-start; gap: 16px; }
+    .contact-avatar { width: 88px; height: 112px; }
+    .contact-address-line { font-size: 0.72rem; }
 
     .footer-grid { grid-template-columns: 1fr; gap: 32px; }
     .footer-address { grid-column: 1; }
 
-    .footer-wordmark span { font-size: clamp(80px, 28vw, 160px); }
+    .footer-wordmark span { font-size: clamp(140px, 52vw, 320px); }
     .wordmark--clip span { font-size: clamp(140px, 36vw, 240px); }
 }
 
