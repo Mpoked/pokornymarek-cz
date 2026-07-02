@@ -1,41 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-
-const SECTION_IDS = ["sluzby", "cenik", "reference", "kontakt"] as const
-const STICKY_TOP = (index: number) => 80 + index * 20
-
-function getNaturalTop(el: HTMLElement): number {
-  let top = 0
-  let node: HTMLElement | null = el
-  while (node) {
-    top += node.offsetTop
-    node = node.offsetParent as HTMLElement | null
-  }
-  return top
-}
-
-function scrollToId(id: string) {
-  const el = document.getElementById(id)
-  if (!el) return
-
-  const idx = SECTION_IDS.indexOf(id as typeof SECTION_IDS[number])
-  const nextId = idx >= 0 && idx < SECTION_IDS.length - 1 ? SECTION_IDS[idx + 1] : null
-  const nextEl = nextId ? document.getElementById(nextId) : null
-
-  if (nextEl) {
-    // Scrollujeme těsně před bod, kde se DALŠÍ sekce začne přichycovat.
-    // To zaručí, že cílová sekce bude aktivní a nadřazená sekce neskryje obsah.
-    const nextNaturalTop = getNaturalTop(nextEl)
-    const nextStickyTop = STICKY_TOP(idx + 1)
-    const target = nextNaturalTop - nextStickyTop - 1
-    window.scrollTo({ top: Math.max(0, target), behavior: "smooth" })
-  } else {
-    // Poslední sekce — scrollujeme na její přirozenou pozici
-    const top = getNaturalTop(el)
-    window.scrollTo({ top: top - 100, behavior: "smooth" })
-  }
-}
+import { scrollToSection } from "@/lib/scroll"
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -48,7 +14,7 @@ export default function Navbar() {
 
   function handleNav(e: React.MouseEvent<HTMLAnchorElement>, id: string) {
     e.preventDefault()
-    scrollToId(id)
+    scrollToSection(id)
   }
 
   return (

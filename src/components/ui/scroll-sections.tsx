@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useToast } from "@/components/ui/toast"
+import { scrollToSection } from "@/lib/scroll"
 
 /* ── Card wrapper — sticky stacked cards ── */
 function Card({
@@ -130,6 +131,7 @@ function CenikSection({ index }: { index: number }) {
             </ul>
             <a
               href="#kontakt"
+              onClick={(e) => { e.preventDefault(); scrollToSection("kontakt") }}
               className={`mt-8 block rounded-lg border py-2.5 text-center text-sm font-semibold transition-all ${
                 p.featured
                   ? "border-black bg-black text-white hover:bg-black/80"
@@ -411,7 +413,7 @@ function KontaktSection({ index }: { index: number }) {
 /* ── Hlavní export ── */
 export default function ScrollSections() {
   return (
-    <div className="relative z-10 mx-auto flex max-w-5xl flex-col gap-0 px-6 pb-[50vh] pt-8">
+    <div className="relative z-10 mx-auto flex max-w-5xl flex-col gap-0 px-6 pb-24 pt-8">
       <div className="flex flex-col gap-6">
         <SluzbySection index={0} />
         <CenikSection index={1} />
