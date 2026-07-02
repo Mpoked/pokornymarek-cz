@@ -65,7 +65,7 @@ export default function Navbar() {
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
           className="text-sm font-bold tracking-widest uppercase text-white"
         >
-          MP
+          DVA
         </a>
         <nav className="hidden gap-8 text-xs font-mono uppercase tracking-widest text-white/50 md:flex">
           {(["sluzby", "cenik", "reference", "kontakt"] as const).map((id) => (

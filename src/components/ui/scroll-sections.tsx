@@ -52,7 +52,7 @@ function SluzbySection({ index }: { index: number }) {
         Weby, které opravdu fungují.
       </h2>
       <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Specializuji se na weby pro malé firmy, živnostníky, restaurace a řemeslníky
+        Specializujeme se na weby pro malé firmy, živnostníky, restaurace a řemeslníky
         z Uherského Hradiště a okolí.
       </p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -160,7 +160,7 @@ function ReferenceSection({ index }: { index: number }) {
         Vybrané projekty.
       </h2>
       <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Ukázky webů pro klienty z Uherského Hradiště a okolí.
+        Ukázky webů, které jsme vytvořili pro klienty z Uherského Hradiště a okolí.
       </p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {projects.map((p) => (
@@ -304,10 +304,10 @@ function KontaktSection({ index }: { index: number }) {
         body: data,
         headers: { Accept: "application/json" },
       })
-      if (res.ok) { show("Ozvu se do 2 pracovních dní.", "success"); form.reset() }
-      else show("Napište mi přímo na kontakt@pokornymarek.cz", "error")
+      if (res.ok) { show("Ozveme se do 2 pracovních dní.", "success"); form.reset() }
+      else show("Napište přímo na kontakt@studiodva.cz", "error")
     } catch {
-      show("Napište mi přímo na kontakt@pokornymarek.cz", "error")
+      show("Napište přímo na kontakt@studiodva.cz", "error")
     } finally {
       setSending(false)
     }
@@ -322,20 +322,20 @@ function KontaktSection({ index }: { index: number }) {
     <Card id="kontakt" index={index}>
       <SectionLabel>04 — Kontakt</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Napište mi — ozvu se obratem.
+        Napište — ozveme se obratem.
       </h2>
       <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Pošlete mi krátkou zprávu a já se vám ozvu nejpozději do druhého pracovního dne.
+        Pošlete nám krátkou zprávu a ozveme se vám nejpozději do druhého pracovního dne.
       </p>
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {/* Kontaktní info */}
         <ul className="flex flex-col gap-5">
           {[
-            { label: "E-mail", value: "kontakt@pokornymarek.cz", href: "mailto:kontakt@pokornymarek.cz" },
+            { label: "Marek Pokorný", value: "marek@studiodva.cz", href: "mailto:marek@studiodva.cz" },
+            { label: "Matěj Vrážel", value: "matej@studiodva.cz", href: "mailto:matej@studiodva.cz" },
             { label: "Telefon", value: "+420 000 000 000", href: "tel:+420000000000" },
             { label: "Lokalita", value: "Uherské Hradiště · Slovácko", href: null },
-            { label: "Dostupnost", value: "Po–Pá 8:00–18:00", href: null },
           ].map((item) => (
             <li key={item.label} className="border-b border-white/8 pb-5">
               <p className="text-xs font-mono uppercase tracking-widest text-white/30 mb-1">{item.label}</p>

@@ -17,13 +17,13 @@ export default function Home() {
       <section className="relative z-10 flex h-screen items-center justify-center px-6 text-center">
         <div>
           <p className="mb-4 text-xs font-mono uppercase tracking-[0.3em] text-white/40">
-            Webař ze Slovácka · Uherské Hradiště
+            Studio ze Slovácka · Uherské Hradiště
           </p>
           <h1 className="text-6xl font-bold leading-tight tracking-tight md:text-8xl lg:text-9xl">
-            Marek<br />Pokorný
+            Studio<br />Dva
           </h1>
           <p className="mt-6 text-white/50 text-lg max-w-md mx-auto leading-relaxed">
-            Tvorba webových stránek na míru — sám, osobně, bez agentury.
+            Dva lidi, celá agentura. Tvorba webů na míru — osobně, bez prostředníků.
           </p>
         </div>
       </section>
