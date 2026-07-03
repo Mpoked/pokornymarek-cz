@@ -117,23 +117,15 @@ export default function OchranaOsobnichUdaju() {
 
           <Section num="05 — Zpracovatelé" title="Komu údaje předáváme">
             <p>
-              Pro technické odeslání formuláře využíváme službu{" "}
-              <strong className="text-white">Formspree, Inc.</strong> (USA), která
-              vystupuje jako zpracovatel osobních údajů. Předání údajů do USA probíhá na
-              základě standardních smluvních doložek EU. Více v{" "}
-              <a
-                href="https://formspree.io/legal/privacy-policy/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white underline underline-offset-4 hover:text-white/70"
-              >
-                zásadách ochrany soukromí Formspree
-              </a>
-              .
+              Zprávy z formuláře se ukládají <strong className="text-white">přímo na
+              náš vlastní server</strong> provozovaný v České republice — do zpracování
+              nezapojujeme externí formulářové služby.
             </p>
             <p>
-              Dále mohou mít k údajům technický přístup poskytovatelé infrastruktury
-              (hosting, e-mailová schránka). Jiným subjektům údaje nepředáváme.
+              E-mailové upozornění na novou poptávku je doručováno prostřednictvím
+              poskytovatele naší e-mailové schránky (Google Ireland Ltd. / Gmail).
+              Dále může mít k údajům technický přístup poskytovatel síťové
+              infrastruktury (Cloudflare, Inc.). Jiným subjektům údaje nepředáváme.
             </p>
           </Section>
 

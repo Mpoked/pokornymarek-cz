@@ -302,12 +302,12 @@ function KontaktSection({ index }: { index: number }) {
     setErrors({})
     setSending(true)
     try {
-      const res = await fetch("https://formspree.io/f/xdkopngy", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" },
       })
-      if (res.ok) { show("Ozveme se do 2 pracovních dní.", "success"); form.reset() }
+      if (res.ok) { show("Ozveme se do 2 pracovních dní.", "success"); form.reset(); setBalicek("") }
       else show("Napište přímo na kontakt@studiodva.cz", "error")
     } catch {
       show("Napište přímo na kontakt@studiodva.cz", "error")
@@ -352,6 +352,15 @@ function KontaktSection({ index }: { index: number }) {
 
         {/* Formulář */}
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+          {/* Honeypot proti spamu — skryté pole, lidé ho nevyplní */}
+          <input
+            type="text"
+            name="web"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="hidden"
+          />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1.5 block text-xs font-mono uppercase tracking-widest text-white/40">Jméno</label>

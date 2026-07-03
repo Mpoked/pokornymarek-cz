@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+data
+projekty
+.agents
+.claude
+ref.digital
+*.md
+.env*
+!.env.example
+Dockerfile
+docker-compose.yml
