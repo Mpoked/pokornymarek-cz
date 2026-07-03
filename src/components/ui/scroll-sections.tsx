@@ -258,7 +258,7 @@ function BalicekDropdown({ value, onChange }: { value: string; onChange: (v: str
 }
 
 /* ── Inline field error ── */
-interface FieldErrors { jmeno?: string; email?: string; balicek?: string; zprava?: string }
+interface FieldErrors { jmeno?: string; email?: string; balicek?: string; zprava?: string; souhlas?: string }
 
 function FieldError({ msg }: { msg?: string }) {
   if (!msg) return null
@@ -289,6 +289,7 @@ function KontaktSection({ index }: { index: number }) {
     if (!email) e.email = "Vyplňte prosím e-mail."
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "Zadejte platný e-mail."
     if (!zprava) e.zprava = "Napište prosím krátkou zprávu."
+    if (data.get("souhlas") !== "ano") e.souhlas = "Pro odeslání je potřeba souhlas se zpracováním osobních údajů."
     return e
   }
 
@@ -394,6 +395,31 @@ function KontaktSection({ index }: { index: number }) {
               onChange={() => errors.zprava && setErrors(p => ({ ...p, zprava: undefined }))}
             />
             <FieldError msg={errors.zprava} />
+          </div>
+
+          <div>
+            <label className="flex cursor-pointer select-none items-start gap-3">
+              <input
+                type="checkbox"
+                name="souhlas"
+                value="ano"
+                onChange={() => errors.souhlas && setErrors(p => ({ ...p, souhlas: undefined }))}
+                className="mt-0.5 size-4 shrink-0 cursor-pointer accent-white"
+              />
+              <span className="text-xs leading-relaxed text-white/50">
+                Souhlasím se{" "}
+                <a
+                  href="/ochrana-osobnich-udaju"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 underline underline-offset-2 transition-colors hover:text-white"
+                >
+                  zpracováním osobních údajů
+                </a>{" "}
+                za účelem vyřízení poptávky.
+              </span>
+            </label>
+            <FieldError msg={errors.souhlas} />
           </div>
 
           <button

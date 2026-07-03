@@ -51,6 +51,7 @@ const footerLinks: FooterSection[] = [
 			{ title: 'Ceník', href: '#cenik' },
 			{ title: 'Reference', href: '#reference' },
 			{ title: 'Kontakt', href: '#kontakt' },
+			{ title: 'Ochrana osobních údajů', href: '/ochrana-osobnich-udaju', external: true },
 		],
 	},
 	{
