@@ -1,6 +1,7 @@
 import PaperBackground from "@/components/ui/paper-background"
 import Navbar from "@/components/ui/navbar"
 import ScrollSections from "@/components/ui/scroll-sections"
+import { Footer } from "@/components/ui/footer"
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
             Studio ze Slovácka · Uherské Hradiště
           </p>
           <h1 className="text-6xl font-bold leading-tight tracking-tight md:text-8xl lg:text-9xl">
-            Studio<br />Dva
+            2 <br/>Studio
           </h1>
           <p className="mt-6 text-white/50 text-lg max-w-md mx-auto leading-relaxed">
             Dva lidi, celá agentura. Tvorba webů na míru — osobně, bez prostředníků.
@@ -30,6 +31,11 @@ export default function Home() {
 
       {/* Scroll-triggered card sections */}
       <ScrollSections />
+
+      {/* Footer */}
+      <div className="relative z-10 px-6 pb-6">
+        <Footer />
+      </div>
     </main>
   )
 }
