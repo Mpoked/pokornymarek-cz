@@ -14,6 +14,8 @@ function naturalTop(el: HTMLElement): number {
   return top
 }
 
+const NAV_OFFSET = 80 // výška fixní navigace + malý odstup
+
 export function scrollToSection(id: string) {
   const idx = SECTION_IDS.indexOf(id as SectionId)
   const el = document.getElementById(id)
@@ -22,9 +24,18 @@ export function scrollToSection(id: string) {
   const container = el.parentElement
   if (!container) return
 
-  // Sticky karty mají v přichyceném stavu posunutý offsetTop, takže je
-  // nelze měřit přímo. Cíl proto počítáme od statického kontejneru
-  // + výšek předchozích karet (ty jsou stabilní vždy).
+  // Pod md karty plynou normálně (relative) — stačí scrollnout na
+  // skutečnou pozici prvku s odstupem na fixní navigaci.
+  const stickyActive = window.matchMedia("(min-width: 768px)").matches
+  if (!stickyActive) {
+    const top = el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" })
+    return
+  }
+
+  // Sticky karty (md+) mají v přichyceném stavu posunutý offsetTop, takže
+  // je nelze měřit přímo. Cíl počítáme od statického kontejneru + výšek
+  // předchozích karet (ty jsou stabilní vždy).
   let top = naturalTop(container)
   for (let i = 0; i < idx; i++) {
     const prev = document.getElementById(SECTION_IDS[i])

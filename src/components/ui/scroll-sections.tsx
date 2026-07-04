@@ -17,11 +17,13 @@ function Card({
   return (
     <div
       id={id}
-      className="sticky w-full"
+      /* Na mobilu karty plynou normálně pod sebou (relative), aby se
+         nezakrývaly — sticky vrstvení se zapne až od md výš. */
+      className="relative md:sticky w-full"
       style={{ top: `${80 + index * 20}px`, zIndex: 10 + index }}
     >
       <div
-        className="rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl p-10 md:p-14 transition-transform duration-300"
+        className="rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl p-6 sm:p-8 md:p-14 transition-transform duration-300"
         style={{ transformOrigin: "top center" }}
       >
         {children}

@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero — full viewport, just text over background */}
-      <section className="relative z-10 flex h-screen items-center justify-center px-6 text-center">
+      <section className="relative z-10 flex min-h-[100svh] items-center justify-center px-6 py-24 text-center">
         <div>
           <p className="mb-4 text-xs font-mono uppercase tracking-[0.3em] text-white/40">
             Studio ze Slovácka · Uherské Hradiště
