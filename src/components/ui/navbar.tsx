@@ -33,13 +33,43 @@ export default function Navbar() {
   }
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
-        scrolled || open
-          ? "bg-black/70 backdrop-blur-md border-b border-white/10"
-          : "bg-transparent"
-      }`}
-    >
+    <>
+      {/* Mobilní overlay menu — MUSÍ být mimo <header>: backdrop-blur na
+          headeru vytváří containing block a fixed overlay by se roztáhl
+          jen uvnitř horního pruhu místo přes celou obrazovku. */}
+      <div
+        className={`fixed inset-0 z-[190] flex flex-col bg-black/95 backdrop-blur-xl transition-opacity duration-300 md:hidden ${
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        <nav className="flex flex-1 flex-col items-center justify-center gap-8 pt-16">
+          {SECTION_IDS.map((id) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={(e) => { e.preventDefault(); goTo(id) }}
+              className="text-2xl font-bold tracking-tight text-white/80 transition-colors hover:text-white"
+            >
+              {LABELS[id]}
+            </a>
+          ))}
+          <a
+            href="#kontakt"
+            onClick={(e) => { e.preventDefault(); goTo("kontakt") }}
+            className="mt-4 border border-white/30 px-8 py-3 text-sm font-mono uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black"
+          >
+            Poptávka
+          </a>
+        </nav>
+      </div>
+
+      <header
+        className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
+          scrolled || open
+            ? "bg-black/70 backdrop-blur-md border-b border-white/10"
+            : "bg-transparent"
+        }`}
+      >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a
           href="#"
@@ -96,33 +126,7 @@ export default function Navbar() {
           />
         </button>
       </div>
-
-      {/* Mobilní overlay menu */}
-      <div
-        className={`fixed inset-0 top-0 z-[205] flex flex-col bg-black/95 backdrop-blur-xl transition-all duration-300 md:hidden ${
-          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
-        }`}
-      >
-        <nav className="flex flex-1 flex-col items-center justify-center gap-8">
-          {SECTION_IDS.map((id) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              onClick={(e) => { e.preventDefault(); goTo(id) }}
-              className="text-2xl font-bold tracking-tight text-white/80 transition-colors hover:text-white"
-            >
-              {LABELS[id]}
-            </a>
-          ))}
-          <a
-            href="#kontakt"
-            onClick={(e) => { e.preventDefault(); goTo("kontakt") }}
-            className="mt-4 border border-white/30 px-8 py-3 text-sm font-mono uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black"
-          >
-            Poptávka
-          </a>
-        </nav>
-      </div>
-    </header>
+      </header>
+    </>
   )
 }

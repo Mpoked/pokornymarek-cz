@@ -33,7 +33,7 @@ export default function Home() {
       <ScrollSections />
 
       {/* Footer */}
-      <div className="relative z-10 px-6 pb-6">
+      <div className="relative z-10 px-6 pb-8 pt-10 md:pt-0">
         <Footer />
       </div>
     </main>
