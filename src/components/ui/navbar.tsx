@@ -56,7 +56,7 @@ export default function Navbar() {
           <a
             href="#kontakt"
             onClick={(e) => { e.preventDefault(); goTo("kontakt") }}
-            className="mt-4 border border-white/30 px-8 py-3 text-sm font-mono uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black"
+            className="mt-4 max-w-[80vw] border border-white/30 px-8 py-3 text-center text-sm font-mono uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black"
           >
             Poptávka
           </a>

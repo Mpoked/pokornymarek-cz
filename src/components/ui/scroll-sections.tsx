@@ -120,7 +120,7 @@ function CenikSection({ index }: { index: number }) {
               {p.note}
             </p>
             <h3 className="font-bold text-lg mb-1">{p.name}</h3>
-            <p className={`text-3xl font-bold tracking-tight mb-6 ${p.featured ? "text-black" : "text-white"}`}>
+            <p className={`text-2xl sm:text-3xl font-bold tracking-tight mb-6 ${p.featured ? "text-black" : "text-white"}`}>
               od {p.price}
             </p>
             <ul className="flex flex-col gap-2 flex-1">
@@ -345,7 +345,7 @@ function KontaktSection({ index }: { index: number }) {
             <li key={item.label} className="border-b border-white/8 pb-5">
               <p className="text-xs font-mono uppercase tracking-widest text-white/30 mb-1">{item.label}</p>
               {item.href
-                ? <a href={item.href} className="text-white font-medium hover:text-white/70 transition-colors">{item.value}</a>
+                ? <a href={item.href} className="break-all text-white font-medium hover:text-white/70 transition-colors">{item.value}</a>
                 : <p className="text-white font-medium">{item.value}</p>
               }
             </li>

@@ -24,7 +24,7 @@ export function Toast({ message, type, onClose }: ToastProps) {
 
   return (
     <div
-      className={`fixed bottom-8 left-1/2 z-[200] -translate-x-1/2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      className={`fixed bottom-8 left-1/2 z-[200] w-max max-w-[calc(100vw-32px)] -translate-x-1/2 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       }`}
     >
@@ -34,7 +34,7 @@ export function Toast({ message, type, onClose }: ToastProps) {
             ? "border-white/15 bg-black/80 text-white"
             : "border-red-500/20 bg-black/80 text-white"
         }`}
-        style={{ minWidth: 320 }}
+        style={{ minWidth: "min(320px, calc(100vw - 32px))" }}
       >
         {/* Icon */}
         <div

@@ -131,4 +131,11 @@
   html {
     @apply font-sans;
   }
+  /* Pojistka proti horizontálnímu přetečení na mobilu.
+     Záměrně `clip`, ne `hidden` — hidden vytváří scroll container
+     a rozbil by position: sticky karty sekcí. */
+  html,
+  body {
+    overflow-x: clip;
+  }
 }
