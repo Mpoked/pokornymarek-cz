@@ -21,10 +21,10 @@ export default function Home() {
             studio ze Slovácko
           </p>
           <h1 className="text-5xl sm:text-6xl font-bold leading-tight tracking-tight md:text-8xl lg:text-9xl">
-            Studio <br/>DVA
+            Marek Pokorný
           </h1>
           <p className="mt-6 text-white/50 text-base sm:text-lg max-w-md mx-auto leading-relaxed">
-            Dva lidi, celá agentura. Osobně, bez prostředníků.
+            Osobně, bez prostředníků.
           </p>
         </div>
       </section>

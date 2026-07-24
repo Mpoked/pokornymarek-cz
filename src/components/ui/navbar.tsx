@@ -76,7 +76,7 @@ export default function Navbar() {
           onClick={(e) => { e.preventDefault(); setOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }) }}
           className="text-sm font-bold tracking-widest uppercase text-white"
         >
-          Marek Pokorný
+          MP
         </a>
 
         {/* Desktop navigace */}
