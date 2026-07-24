@@ -50,7 +50,7 @@ export async function sendSubmissionNotification(submission: {
   const email = sanitizeHeader(submission.email)
 
   await transporter.sendMail({
-    from: `"Studio Dva — web" <${SMTP_USER}>`,
+    from: `"Marek Pokorný — web" <${SMTP_USER}>`,
     to: CONTACT_TO,
     replyTo: email,
     subject: `Nová poptávka z webu — ${jmeno}`,

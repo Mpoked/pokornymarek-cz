@@ -1,6 +1,6 @@
 # pokornymarek.cz
 
-Portfolio web pro **Studio Dva** — Marek Pokorný & Matěj Vrážel, webové studio z Uherského Hradiště.
+Osobní portfolio web **Marka Pokorného** — tvorba webových stránek z Uherského Hradiště.
 
 Postaveno na **Next.js 16 · Tailwind CSS · TypeScript · SQLite**.
 
@@ -59,7 +59,7 @@ Databáze žije ve složce `./data` (volume) — přežije restart i rebuild kon
 ## Co dodělat
 
 ### Obsah
-- [ ] Doplnit reálné telefonní číslo (aktuálně `+420 000 000 000`)
+- [x] Doplnit reálné telefonní číslo (`+420 774 664 403`)
 - [ ] Doplnit skutečné reference / projekty (aktuálně jsou placeholdery s `localhost:3001`)
 - [ ] Přidat fotku nebo logo do navbaru (místo textu „DVA")
 - [ ] Favicon a `og:image` pro sdílení na sociálních sítích

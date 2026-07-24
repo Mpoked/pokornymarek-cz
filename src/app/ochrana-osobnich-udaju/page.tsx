@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Ochrana osobních údajů · Studio Dva",
+  title: "Ochrana osobních údajů · Marek Pokorný",
   description:
     "Zásady zpracování osobních údajů — jaké údaje zpracováváme, proč, jak dlouho a jaká máte práva.",
 }
@@ -39,7 +39,7 @@ export default function OchranaOsobnichUdaju() {
         </Link>
 
         <p className="mb-4 text-xs font-mono uppercase tracking-[0.3em] text-white/40">
-          Studio Dva · Uherské Hradiště
+          Marek Pokorný · Uherské Hradiště
         </p>
         <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
           Ochrana osobních údajů
@@ -53,17 +53,16 @@ export default function OchranaOsobnichUdaju() {
         <div className="flex flex-col gap-10">
           <Section num="01 — Správce údajů" title="Kdo jsme">
             <p>
-              Správcem vašich osobních údajů jsou <strong className="text-white">Marek
-              Pokorný</strong> a <strong className="text-white">Matěj Vrážel</strong>,
-              působící společně pod značkou Studio Dva, Uherské Hradiště.
+              Správcem vašich osobních údajů je <strong className="text-white">Marek
+              Pokorný</strong>, fyzická osoba se sídlem v Uherském Hradišti.
             </p>
             <p>
               Kontakt pro záležitosti ochrany osobních údajů:{" "}
               <a
-                href="mailto:marek@studiodva.cz"
+                href="mailto:info@pokornymarek.cz"
                 className="text-white underline underline-offset-4 hover:text-white/70"
               >
-                marek@studiodva.cz
+                info@pokornymarek.cz
               </a>
             </p>
           </Section>
@@ -141,12 +140,12 @@ export default function OchranaOsobnichUdaju() {
               <li>odvolat souhlas se zpracováním (aniž by tím byla dotčena zákonnost zpracování před odvoláním).</li>
             </ul>
             <p>
-              Pro uplatnění kteréhokoli práva nám napište na{" "}
+              Pro uplatnění kteréhokoli práva mi napište na{" "}
               <a
-                href="mailto:marek@studiodva.cz"
+                href="mailto:info@pokornymarek.cz"
                 className="text-white underline underline-offset-4 hover:text-white/70"
               >
-                marek@studiodva.cz
+                info@pokornymarek.cz
               </a>
               . Odpovíme nejpozději do 30 dnů.
             </p>

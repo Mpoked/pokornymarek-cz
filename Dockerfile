@@ -1,4 +1,4 @@
-# ── Studio Dva — produkční image (neprůstřelná varianta) ──────────
+# ── Marek Pokorný — produkční image (neprůstřelná varianta) ──────────
 # Build i běh v jednom node:22 image → better-sqlite3 se zkompiluje
 # přesně pro toto prostředí, žádné problémy s nativními moduly.
 #

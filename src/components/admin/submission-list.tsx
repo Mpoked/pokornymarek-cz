@@ -64,7 +64,7 @@ export function SubmissionList({ submissions }: { submissions: Submission[] }) {
       <div className="mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="mb-2 text-xs font-mono uppercase tracking-[0.25em] text-white/30">
-            Studio Dva · Administrace
+            Marek Pokorný · Administrace
           </p>
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Poptávky</h1>
           <p className="mt-2 text-sm text-white/40">

@@ -28,10 +28,10 @@ const footerLinks: FooterSection[] = [
 		],
 	},
 	{
-		label: 'Tým',
+		label: 'Kontakt',
 		links: [
-			{ title: 'Marek Pokorný', href: 'mailto:marek@studiodva.cz', icon: MailIcon, external: true },
-			{ title: 'Matěj Vrážel', href: 'mailto:matej@studiodva.cz', icon: MailIcon, external: true },
+			{ title: 'info@pokornymarek.cz', href: 'mailto:info@pokornymarek.cz', icon: MailIcon, external: true },
+			{ title: '+420 774 664 403', href: 'tel:+420774664403', external: true },
 		],
 	},
 ];
@@ -45,10 +45,10 @@ export function Footer() {
 				{/* Značka */}
 				<AnimatedContainer className="max-w-xs space-y-4">
 					<span className="block text-sm font-bold tracking-widest uppercase text-white">
-						Studio DVA
+						Marek Pokorný
 					</span>
 					<p className="text-sm leading-relaxed text-white/50">
-						Dva lidi, celá agentura. Osobně, bez prostředníků.
+						Weby na míru. Osobně, bez prostředníků.
 					</p>
 				</AnimatedContainer>
 
@@ -94,7 +94,7 @@ export function Footer() {
 				delay={0.3}
 				className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between"
 			>
-				<p>{`© ${new Date().getFullYear()} Studio DVA. Marek Pokorný & Matěj Vrážel.`}</p>
+				<p>{`© ${new Date().getFullYear()} Marek Pokorný.`}</p>
 				<a
 					href="/ochrana-osobnich-udaju"
 					className="hover:text-white transition-colors duration-300"

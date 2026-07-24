@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Studio Dva · Weby ze Slovácka",
-  description: "Dva lidi, celá agentura. Tvorba webových stránek v Uherském Hradišti a okolí. Marek Pokorný & Matěj Vrážel.",
+  title: "Marek Pokorný · Weby ze Slovácka",
+  description: "Tvorba webových stránek v Uherském Hradišti a okolí. Osobně, bez prostředníků. Marek Pokorný.",
 };
 
 export default function RootLayout({

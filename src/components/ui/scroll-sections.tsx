@@ -284,10 +284,10 @@ function KontaktSection({ index }: { index: number }) {
         body: data,
         headers: { Accept: "application/json" },
       })
-      if (res.ok) { show("Ozveme se do 2 pracovních dní.", "success"); form.reset(); setBalicek("") }
-      else show("Napište přímo na kontakt@studiodva.cz", "error")
+      if (res.ok) { show("Ozvu se do 2 pracovních dní.", "success"); form.reset(); setBalicek("") }
+      else show("Napište přímo na info@pokornymarek.cz", "error")
     } catch {
-      show("Napište přímo na kontakt@studiodva.cz", "error")
+      show("Napište přímo na info@pokornymarek.cz", "error")
     } finally {
       setSending(false)
     }
@@ -302,19 +302,18 @@ function KontaktSection({ index }: { index: number }) {
     <Card id="kontakt" index={index}>
       <SectionLabel>04 — Kontakt</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Napište — ozveme se obratem.
+        Napište — ozvu se obratem.
       </h2>
       <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Pošlete nám krátkou zprávu a ozveme se vám nejpozději do druhého pracovního dne.
+        Pošlete mi krátkou zprávu a ozvu se vám nejpozději do druhého pracovního dne.
       </p>
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {/* Kontaktní info */}
         <ul className="flex flex-col gap-5">
           {[
-            { label: "Marek Pokorný", value: "marek@studiodva.cz", href: "mailto:marek@studiodva.cz" },
-            { label: "Matěj Vrážel", value: "matej@studiodva.cz", href: "mailto:matej@studiodva.cz" },
-            { label: "Telefon", value: "+420 000 000 000", href: "tel:+420000000000" },
+            { label: "Marek Pokorný", value: "info@pokornymarek.cz", href: "mailto:info@pokornymarek.cz" },
+            { label: "Telefon", value: "+420 774 664 403", href: "tel:+420774664403" },
           ].map((item) => (
             <li key={item.label} className="border-b border-white/8 pb-5">
               <p className="text-xs font-mono uppercase tracking-widest text-white/30 mb-1">{item.label}</p>

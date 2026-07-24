@@ -40,7 +40,7 @@ export default function AdminLogin() {
         className="w-full max-w-sm rounded-2xl border border-white/10 bg-white/5 p-8"
       >
         <p className="mb-2 text-xs font-mono uppercase tracking-[0.25em] text-white/30">
-          Studio Dva
+          Marek Pokorný
         </p>
         <h1 className="mb-6 text-2xl font-bold tracking-tight">Administrace</h1>
 
