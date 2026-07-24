@@ -23,12 +23,17 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# Databáze se ukládá sem (přemapováno na volume v docker-compose)
-RUN mkdir -p /app/data
+# Databáze se ukládá sem (přemapováno na volume v docker-compose).
+# Adresář vlastní uživatel `node`, aby do něj šlo zapisovat i po přepnutí
+# na ne-root běh níže. Pojmenovaný volume v compose převezme toto vlastnictví.
+RUN mkdir -p /app/data && chown -R node:node /app/data
 
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 EXPOSE 3000
+
+# Ne-root běh — omezuje dopad případného úniku z aplikace do kontejneru.
+USER node
 
 CMD ["npm", "start"]

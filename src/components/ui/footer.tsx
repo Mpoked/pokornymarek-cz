@@ -5,32 +5,6 @@ import { motion, useReducedMotion } from 'motion/react';
 import { MailIcon } from 'lucide-react';
 import { scrollToSection } from '@/lib/scroll';
 
-function InstagramIcon({ className }: { className?: string }) {
-	return (
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className}>
-			<rect x="3" y="3" width="18" height="18" rx="5" />
-			<circle cx="12" cy="12" r="4" />
-			<circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
-		</svg>
-	);
-}
-
-function FacebookIcon({ className }: { className?: string }) {
-	return (
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className}>
-			<path d="M14 9h3V6h-3c-1.66 0-3 1.34-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.55.45-1 1-1z" />
-		</svg>
-	);
-}
-
-function LinkedinIcon({ className }: { className?: string }) {
-	return (
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className}>
-			<path d="M6.5 8.5v9M6.5 5.5v.01M11.5 17.5v-5.5c0-1.66 1.34-3 3-3s3 1.34 3 3v5.5M11.5 17.5v-6" />
-		</svg>
-	);
-}
-
 interface FooterLink {
 	title: string;
 	href: string;
@@ -51,7 +25,6 @@ const footerLinks: FooterSection[] = [
 			{ title: 'Ceník', href: '#cenik' },
 			{ title: 'Reference', href: '#reference' },
 			{ title: 'Kontakt', href: '#kontakt' },
-			{ title: 'Ochrana osobních údajů', href: '/ochrana-osobnich-udaju', external: true },
 		],
 	},
 	{
@@ -61,70 +34,74 @@ const footerLinks: FooterSection[] = [
 			{ title: 'Matěj Vrážel', href: 'mailto:matej@studiodva.cz', icon: MailIcon, external: true },
 		],
 	},
-	{
-		label: 'Sledujte nás',
-		links: [
-			{ title: 'Instagram', href: '#', icon: InstagramIcon, external: true },
-			{ title: 'Facebook', href: '#', icon: FacebookIcon, external: true },
-			{ title: 'LinkedIn', href: '#', icon: LinkedinIcon, external: true },
-		],
-	},
 ];
 
 export function Footer() {
 	return (
-		<footer className="mt-10 md:mt-0 md:rounded-t-6xl relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center rounded-t-4xl border-t border-white/10 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] px-6 py-12 lg:py-16">
-			<div className="bg-white/20 absolute top-0 left-1/2 h-px w-1/3 max-w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full blur" />
+		<footer className="relative mx-auto w-full max-w-6xl rounded-t-4xl border-t border-white/10 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] px-6 py-14 md:rounded-t-6xl lg:px-10 lg:py-16">
+			<div className="absolute top-0 left-1/2 h-px w-1/3 max-w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur" />
 
-			<div className="grid w-full gap-10 xl:grid-cols-3 xl:gap-8">
-				<AnimatedContainer className="space-y-4">
+			<div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between md:gap-8">
+				{/* Značka */}
+				<AnimatedContainer className="max-w-xs space-y-4">
 					<span className="block text-sm font-bold tracking-widest uppercase text-white">
-						DVA
+						Studio DVA
 					</span>
-					<p className="text-white/40 text-sm leading-relaxed">
-						{`© ${new Date().getFullYear()} Studio Dva. Marek Pokorný & Matěj Vrážel.`}
+					<p className="text-sm leading-relaxed text-white/50">
+						Dva lidi, celá agentura. Osobně, bez prostředníků.
 					</p>
 				</AnimatedContainer>
 
-				<div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-3 xl:col-span-2 xl:mt-0">
+				{/* Navigační sloupce */}
+				<div className="grid grid-cols-2 gap-10 sm:gap-16 md:gap-20">
 					{footerLinks.map((section, index) => (
 						<AnimatedContainer key={section.label} delay={0.1 + index * 0.1}>
-							<div className="mb-10 md:mb-0">
-								<h3 className="text-xs uppercase tracking-widest text-white/50 font-mono">{section.label}</h3>
-								<ul className="text-white/60 mt-4 space-y-2 text-sm">
-									{section.links.map((link) => (
-										<li key={link.title}>
-											{link.external ? (
-												<a
-													href={link.href}
-													className={`hover:text-white inline-flex items-center transition-all duration-300 ${
-														link.href.startsWith('mailto:') ? 'break-all' : ''
-													}`}
-												>
-													{link.icon && <link.icon className="me-1.5 size-4" />}
-													{link.title}
-												</a>
-											) : (
-												<a
-													href={link.href}
-													onClick={(e) => {
-														e.preventDefault();
-														scrollToSection(link.href.replace('#', ''));
-													}}
-													className="hover:text-white inline-flex items-center transition-all duration-300"
-												>
-													{link.icon && <link.icon className="me-1.5 size-4" />}
-													{link.title}
-												</a>
-											)}
-										</li>
-									))}
-								</ul>
-							</div>
+							<h3 className="text-xs uppercase tracking-widest text-white/50 font-mono">{section.label}</h3>
+							<ul className="text-white/60 mt-4 space-y-3 text-sm">
+								{section.links.map((link) => (
+									<li key={link.title}>
+										{link.external ? (
+											<a
+												href={link.href}
+												className="hover:text-white inline-flex items-center transition-colors duration-300"
+											>
+												{link.icon && <link.icon className="me-1.5 size-4 shrink-0" />}
+												{link.title}
+											</a>
+										) : (
+											<a
+												href={link.href}
+												onClick={(e) => {
+													e.preventDefault();
+													scrollToSection(link.href.replace('#', ''));
+												}}
+												className="hover:text-white inline-flex items-center transition-colors duration-300"
+											>
+												{link.icon && <link.icon className="me-1.5 size-4 shrink-0" />}
+												{link.title}
+											</a>
+										)}
+									</li>
+								))}
+							</ul>
 						</AnimatedContainer>
 					))}
 				</div>
 			</div>
+
+			{/* Spodní pruh */}
+			<AnimatedContainer
+				delay={0.3}
+				className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between"
+			>
+				<p>{`© ${new Date().getFullYear()} Studio DVA. Marek Pokorný & Matěj Vrážel.`}</p>
+				<a
+					href="/ochrana-osobnich-udaju"
+					className="hover:text-white transition-colors duration-300"
+				>
+					Ochrana osobních údajů
+				</a>
+			</AnimatedContainer>
 		</footer>
 	);
 }

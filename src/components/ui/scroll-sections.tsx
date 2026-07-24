@@ -43,10 +43,10 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 /* ── Sekce 1: Služby ── */
 function SluzbySection({ index }: { index: number }) {
   const services = [
-    { num: "01", title: "Webové prezentace", desc: "Moderní firemní web, který reprezentuje vaši značku a vyhledá se v Googlu." },
-    { num: "02", title: "Jednoduché e-shopy", desc: "Prodejní stránka rychlá, přehledná a snadno spravovatelná." },
-    { num: "03", title: "Landing pages", desc: "Jednostránkové weby zaměřené na jednu službu nebo kampaň." },
-    { num: "04", title: "Redesign starých webů", desc: "Předělám váš web do moderní podoby, zrychlím ho a připravím pro vyhledávače." },
+    { num: "01", title: "Landing pages", desc: "Jednostránkové weby zaměřené na jednu službu nebo kampaň." },
+    { num: "02", title: "Webové prezentace", desc: "Moderní firemní web, který reprezentuje vaši značku a vyhledá se v Googlu." },
+    { num: "03", title: "Redesign starých webů", desc: "Předělám váš web do moderní podoby, zrychlím ho a připravím pro vyhledávače." },
+    { num: "04", title: "Jednoduché e-shopy", desc: "Prodejní stránka rychlá, přehledná a snadno spravovatelná." },
   ]
   return (
     <Card id="sluzby" index={index}>
@@ -151,43 +151,18 @@ function CenikSection({ index }: { index: number }) {
 
 /* ── Sekce 3: Reference ── */
 function ReferenceSection({ index }: { index: number }) {
-  const projects = [
-    { num: "01", title: "Řemeslník z Hradiště", tag: "Web prezentace", href: "http://localhost:3001" },
-    { num: "02", title: "Restaurace na Slovácku", tag: "Web + menu", href: "http://localhost:3001" },
-    { num: "03", title: "Lokální e-shop", tag: "E-shop", href: "http://localhost:3001" },
-    { num: "04", title: "Landing page", tag: "Kampaň", href: "http://localhost:3001" },
-  ]
+  // Reference dočasně skryté (odkazy zatím mířily na localhost). Až budou
+  // živé URL, vrátit sem pole projektů a odkazované karty — viz git historie.
   return (
     <Card id="reference" index={index}>
       <SectionLabel>03 — Reference</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
         Vybrané projekty.
       </h2>
-      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Ukázky webů, které jsme vytvořili pro klienty z Uherského Hradiště a okolí.
+      <p className="max-w-xl text-base text-white/50 leading-relaxed">
+        Právě dokončujeme první veřejné ukázky. Portfolio rádi pošleme na
+        vyžádání — stačí nám napsat přes formulář níže.
       </p>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {projects.map((p) => (
-          <a
-            key={p.num}
-            href={p.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center justify-between rounded-xl border border-white/8 bg-white/5 px-5 py-4 transition-all hover:border-white/25 hover:bg-white/10"
-          >
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-mono text-white/30">{p.num}</span>
-              <div>
-                <p className="font-semibold text-white text-sm">{p.title}</p>
-                <p className="text-xs text-white/40 mt-0.5">{p.tag}</p>
-              </div>
-            </div>
-            <svg className="h-4 w-4 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-white/60" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 16 16">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 11L11 5M11 5H6M11 5V10" />
-            </svg>
-          </a>
-        ))}
-      </div>
     </Card>
   )
 }
@@ -340,7 +315,6 @@ function KontaktSection({ index }: { index: number }) {
             { label: "Marek Pokorný", value: "marek@studiodva.cz", href: "mailto:marek@studiodva.cz" },
             { label: "Matěj Vrážel", value: "matej@studiodva.cz", href: "mailto:matej@studiodva.cz" },
             { label: "Telefon", value: "+420 000 000 000", href: "tel:+420000000000" },
-            { label: "Lokalita", value: "Uherské Hradiště · Slovácko", href: null },
           ].map((item) => (
             <li key={item.label} className="border-b border-white/8 pb-5">
               <p className="text-xs font-mono uppercase tracking-widest text-white/30 mb-1">{item.label}</p>

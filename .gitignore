@@ -42,3 +42,10 @@ next-env.d.ts
 
 # databaze poptavek (SQLite) - data zustavaji jen na serveru
 /data
+
+# lokální tooling (Claude, codegraph) a demo projekty — nepatří do repa webu
+/.claude/
+/.agents/
+/.codegraph/
+/projekty/
+/skills-lock.json

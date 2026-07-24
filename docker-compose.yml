@@ -3,10 +3,19 @@ services:
     build: .
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      # Jen loopback — na web se chodí přes Cloudflare Tunnel (cloudflared
+      # na tomtéž hostu cílí na localhost:3000). Port tak není dostupný
+      # zvenčí a nejde obejít Cloudflare (WAF/Access).
+      - "127.0.0.1:3000:3000"
     env_file:
       - .env.local
     environment:
       - DB_PATH=/app/data/studio.db
     volumes:
-      - ./data:/app/data
+      # Pojmenovaný volume — Docker převezme vlastnictví z image (uživatel
+      # `node`), takže ne-root kontejner může do DB zapisovat bez zásahů
+      # na hostu. Data přežijí restart i rebuild.
+      - studio-data:/app/data
+
+volumes:
+  studio-data:

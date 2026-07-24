@@ -1,7 +1,24 @@
 import { cookies } from "next/headers"
 import { ADMIN_COOKIE, sessionToken, verifyPassword } from "@/lib/admin-auth"
+import { clientIp, isBlocked, registerFailure, resetAttempts } from "@/lib/rate-limit"
+
+// Brute-force ochrana: max 5 NEÚSPĚŠNÝCH pokusů / 10 min / IP.
+// Správné přihlášení se do limitu nepočítá a počítadlo vynuluje, takže
+// běžné používání (i občasný překlep) tě nezamkne — brzdí jen hádání hesla.
+const LOGIN_LIMIT = 5
+const LOGIN_WINDOW_MS = 10 * 60 * 1000
 
 export async function POST(request: Request) {
+  const key = `login:${clientIp(request)}`
+
+  const blocked = isBlocked(key, LOGIN_LIMIT)
+  if (!blocked.ok) {
+    return Response.json(
+      { ok: false, error: "Příliš mnoho pokusů. Zkuste to za chvíli." },
+      { status: 429, headers: { "Retry-After": String(blocked.retryAfter) } }
+    )
+  }
+
   let password = ""
   try {
     const body = await request.json()
@@ -11,11 +28,15 @@ export async function POST(request: Request) {
   }
 
   if (!verifyPassword(password)) {
+    registerFailure(key, LOGIN_WINDOW_MS)
     return Response.json(
       { ok: false, error: "Nesprávné heslo." },
       { status: 401 }
     )
   }
+
+  // Úspěch → smazat počítadlo neúspěchů.
+  resetAttempts(key)
 
   const store = await cookies()
   store.set(ADMIN_COOKIE, sessionToken(), {

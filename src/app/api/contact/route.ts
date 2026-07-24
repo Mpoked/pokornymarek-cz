@@ -1,11 +1,21 @@
 import { insertSubmission } from "@/lib/db"
 import { sendSubmissionNotification } from "@/lib/mail"
+import { clientIp, rateLimit } from "@/lib/rate-limit"
 
 const VALID_BALICKY = new Set(["", "jednoduchy", "standard", "premium", "nevim"])
 const CONSENT_TEXT =
   "Souhlasím se zpracováním osobních údajů za účelem vyřízení poptávky."
 
 export async function POST(request: Request) {
+  // Anti-spam: 5 odeslání / 10 min / IP (doplňuje honeypot níže).
+  const limit = rateLimit(`contact:${clientIp(request)}`, 5, 10 * 60 * 1000)
+  if (!limit.ok) {
+    return Response.json(
+      { ok: false, error: "Příliš mnoho odeslání. Zkuste to prosím za chvíli." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }
+    )
+  }
+
   let data: FormData
   try {
     data = await request.formData()

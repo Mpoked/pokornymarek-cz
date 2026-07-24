@@ -14,6 +14,16 @@ const BALICKY_LABELS: Record<string, string> = {
   nevim: "Ještě neví — chce poradit",
 }
 
+/**
+ * Odstraní řídicí znaky (vč. CR/LF) — levná pojistka proti header
+ * injection v hodnotách, které jdou do e-mailových hlaviček
+ * (subject, replyTo). Nodemailer hlavičky enkóduje, tohle je druhá vrstva.
+ */
+function sanitizeHeader(value: string): string {
+  // eslint-disable-next-line no-control-regex
+  return value.replace(/[\x00-\x1F\x7F]/g, " ").trim()
+}
+
 export async function sendSubmissionNotification(submission: {
   jmeno: string
   email: string
@@ -36,12 +46,14 @@ export async function sendSubmissionNotification(submission: {
   })
 
   const balicek = BALICKY_LABELS[submission.balicek] ?? "Nevybráno"
+  const jmeno = sanitizeHeader(submission.jmeno)
+  const email = sanitizeHeader(submission.email)
 
   await transporter.sendMail({
     from: `"Studio Dva — web" <${SMTP_USER}>`,
     to: CONTACT_TO,
-    replyTo: submission.email,
-    subject: `Nová poptávka z webu — ${submission.jmeno}`,
+    replyTo: email,
+    subject: `Nová poptávka z webu — ${jmeno}`,
     text: [
       `Jméno: ${submission.jmeno}`,
       `E-mail: ${submission.email}`,

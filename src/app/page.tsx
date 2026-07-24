@@ -18,13 +18,13 @@ export default function Home() {
       <section className="relative z-10 flex min-h-[100svh] items-center justify-center px-6 py-24 text-center">
         <div>
           <p className="mb-4 text-xs font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] text-white/40">
-            Studio ze Slovácka · Uherské Hradiště
+            studio ze Slovácko
           </p>
           <h1 className="text-5xl sm:text-6xl font-bold leading-tight tracking-tight md:text-8xl lg:text-9xl">
-            2 <br/>Studio
+            Studio <br/>DVA
           </h1>
           <p className="mt-6 text-white/50 text-base sm:text-lg max-w-md mx-auto leading-relaxed">
-            Dva lidi, celá agentura. Tvorba webů na míru — osobně, bez prostředníků.
+            Dva lidi, celá agentura. Osobně, bez prostředníků.
           </p>
         </div>
       </section>
