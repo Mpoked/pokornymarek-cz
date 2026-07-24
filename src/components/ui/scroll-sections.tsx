@@ -151,18 +151,45 @@ function CenikSection({ index }: { index: number }) {
 
 /* ── Sekce 3: Reference ── */
 function ReferenceSection({ index }: { index: number }) {
-  // Reference dočasně skryté (odkazy zatím mířily na localhost). Až budou
-  // živé URL, vrátit sem pole projektů a odkazované karty — viz git historie.
+  // Ukázkové projekty podle oborů — každá karta vede na živé demo v /ukazky.
+  const projects = [
+    { num: "01", title: "Truhlářství Kovář", tag: "Řemeslo · web prezentace", href: "/ukazky/truhlarstvi.html" },
+    { num: "02", title: "Vinný sklep U Šardických", tag: "Gastro · web + rezervace", href: "/ukazky/vinny-sklep.html" },
+    { num: "03", title: "Pekárna Zrníčko", tag: "Lokální e-shop", href: "/ukazky/pekarna.html" },
+    { num: "04", title: "Run Slovácko 2025", tag: "Kampaň · landing page", href: "/ukazky/run-slovacko.html" },
+  ]
   return (
     <Card id="reference" index={index}>
       <SectionLabel>03 — Reference</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Vybrané projekty.
+        Co umím postavit.
       </h2>
-      <p className="max-w-xl text-base text-white/50 leading-relaxed">
-        Právě dokončujeme první veřejné ukázky. Portfolio rádi pošleme na
-        vyžádání — stačí nám napsat přes formulář níže.
+      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
+        Ukázkové weby podle oborů — návrhy, na kterých ukazuju svůj styl a přístup.
+        Klikněte a prohlédněte si živé demo.
       </p>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {projects.map((p) => (
+          <a
+            key={p.num}
+            href={p.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center justify-between rounded-xl border border-white/8 bg-white/5 px-5 py-4 transition-all hover:border-white/25 hover:bg-white/10"
+          >
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-mono text-white/30">{p.num}</span>
+              <div>
+                <p className="font-semibold text-white text-sm">{p.title}</p>
+                <p className="text-xs text-white/40 mt-0.5">{p.tag}</p>
+              </div>
+            </div>
+            <svg className="h-4 w-4 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-white/60" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 16 16">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 11L11 5M11 5H6M11 5V10" />
+            </svg>
+          </a>
+        ))}
+      </div>
     </Card>
   )
 }

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Run Slovácko 2025 — běžecký závod | Ukázka</title>
+<style>
+  :root{
+    --bg:#0a0e0a; --panel:#111811; --lime:#b6ff2e; --lime-deep:#8fd400;
+    --ink:#eafbe4; --muted:#8fa085; --line:rgba(182,255,46,.18);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  h1,h2,h3{line-height:1.05;letter-spacing:-.02em;text-transform:uppercase;font-weight:900}
+  a{color:inherit}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  .demo-bar{background:#000;color:var(--lime);text-align:center;font-size:13px;padding:8px 16px}
+  .demo-bar a{color:var(--lime);text-decoration:none;font-weight:700}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(10,14,10,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{font-weight:900;font-size:20px;letter-spacing:-.02em;text-transform:uppercase}
+  .brand b{color:var(--lime)}
+  .nav ul{display:flex;gap:26px;list-style:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+  .nav ul a{text-decoration:none;color:var(--muted)}
+  .nav ul a:hover{color:var(--lime)}
+  .nav .cta{background:var(--lime);color:#0a0e0a;padding:10px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:800;text-transform:uppercase}
+  @media(max-width:820px){.nav ul{display:none}}
+
+  .hero{position:relative;padding:70px 0 60px;overflow:hidden;background:radial-gradient(120% 80% at 80% 0%,#1c2a10,#0a0e0a 60%)}
+  .hero::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,transparent 0 60px,rgba(182,255,46,.03) 60px 62px)}
+  .hero .wrap{position:relative;z-index:1}
+  .tag{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);color:var(--lime);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:7px 16px;border-radius:40px;margin-bottom:26px}
+  .tag .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime)}
+  .hero h1{font-size:clamp(48px,11vw,140px);line-height:.9;letter-spacing:-.04em}
+  .hero h1 span{color:var(--lime)}
+  .hero .sub{margin-top:22px;font-size:19px;color:var(--muted);max-width:46ch}
+  .meta-row{margin-top:34px;display:flex;gap:36px;flex-wrap:wrap}
+  .meta-row .m .k{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+  .meta-row .m .v{font-size:22px;font-weight:900;color:var(--ink);margin-top:2px}
+
+  /* countdown */
+  .count{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+  .cbox{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 22px;text-align:center;min-width:88px}
+  .cbox .num{font-size:40px;font-weight:900;color:var(--lime);font-variant-numeric:tabular-nums;line-height:1}
+  .cbox .lab{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-top:8px}
+  .hero-actions{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:16px 34px;border-radius:5px;text-decoration:none;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.04em;transition:transform .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-lime{background:var(--lime);color:#0a0e0a;box-shadow:0 0 30px rgba(182,255,46,.3)}
+  .btn-line{border:1px solid var(--line);color:var(--ink)}
+
+  section{padding:78px 0;border-top:1px solid var(--line)}
+  .kicker{color:var(--lime);font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
+  .lead h2{font-size:clamp(30px,5vw,54px)}
+  .lead p{color:var(--muted);font-size:17px;margin-top:12px;max-width:56ch;text-transform:none}
+
+  .races{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:780px){.races{grid-template-columns:1fr}}
+  .race{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;position:relative;overflow:hidden}
+  .race .dist{font-size:46px;font-weight:900;color:var(--lime);line-height:1}
+  .race h3{font-size:20px;margin:12px 0 8px}
+  .race p{color:var(--muted);font-size:14px;text-transform:none}
+  .race .price{margin-top:16px;font-size:15px;font-weight:800}
+
+  .prog{margin-top:40px;border-top:1px solid var(--line)}
+  .prow{display:flex;gap:24px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline}
+  .prow .time{font-size:22px;font-weight:900;color:var(--lime);min-width:88px;font-variant-numeric:tabular-nums}
+  .prow .what{font-size:17px;font-weight:700}
+  .prow .what small{display:block;color:var(--muted);font-weight:400;font-size:14px;margin-top:2px}
+
+  .reg{background:var(--panel)}
+  .reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  @media(max-width:820px){.reg-grid{grid-template-columns:1fr;gap:32px}}
+  form{display:flex;flex-direction:column;gap:14px}
+  .frow{display:flex;gap:14px}
+  .frow>*{flex:1}
+  label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:-8px;display:block}
+  input,select{width:100%;font:inherit;padding:14px 15px;border:1px solid var(--line);border-radius:6px;background:#0a0e0a;color:var(--ink)}
+  input:focus,select:focus{outline:none;border-color:var(--lime)}
+  form button{background:var(--lime);color:#0a0e0a;border:none;padding:16px;border-radius:6px;font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer}
+  .sponsors{margin-top:44px;display:flex;gap:16px;flex-wrap:wrap}
+  .sp{flex:1;min-width:120px;height:70px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:800;letter-spacing:.08em;font-size:14px;background:var(--panel)}
+
+  footer{background:#000;color:var(--muted);padding:50px 0;font-size:14px;border-top:1px solid var(--line)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  footer strong{color:var(--lime)}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120px);background:var(--lime);color:#0a0e0a;padding:14px 24px;border-radius:6px;font-weight:800;font-size:14px;box-shadow:0 14px 34px rgba(0,0,0,.5);transition:transform .35s;z-index:99}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="demo-bar">Ukázková stránka — vytvořil <a href="https://pokornymarek.cz" target="_blank" rel="noopener">Marek Pokorný</a></div>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">RUN <b>SLOVÁCKO</b> 2025</div>
+    <ul>
+      <li><a href="#trasy">Trasy</a></li>
+      <li><a href="#program">Program</a></li>
+      <li><a href="#registrace">Registrace</a></li>
+    </ul>
+    <a href="#registrace" class="cta">Registrovat</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="tag"><span class="dot"></span> 13. září 2025 · Uherské Hradiště</span>
+    <h1>Běž <span>Slováckem</span>.</h1>
+    <p class="sub">Městský běh vinicemi a nábřežím Moravy. Tři trasy pro každého — od rodinné pětky po půlmaraton.</p>
+    <div class="meta-row">
+      <div class="m"><div class="k">Start</div><div class="v">9:00 · Masarykovo nám.</div></div>
+      <div class="m"><div class="k">Trasy</div><div class="v">5 · 10 · 21 km</div></div>
+      <div class="m"><div class="k">Limit</div><div class="v">1 500 běžců</div></div>
+    </div>
+    <div class="count" id="count">
+      <div class="cbox"><div class="num" id="d">00</div><div class="lab">dní</div></div>
+      <div class="cbox"><div class="num" id="h">00</div><div class="lab">hodin</div></div>
+      <div class="cbox"><div class="num" id="m">00</div><div class="lab">minut</div></div>
+      <div class="cbox"><div class="num" id="s">00</div><div class="lab">sekund</div></div>
+    </div>
+    <div class="hero-actions">
+      <a href="#registrace" class="btn btn-lime">Registrovat se</a>
+      <a href="#trasy" class="btn btn-line">Prohlédnout trasy</a>
+    </div>
+  </div>
+</section>
+
+<section id="trasy">
+  <div class="wrap">
+    <p class="kicker">Trasy závodu</p>
+    <div class="lead"><h2>Vyber si svou vzdálenost.</h2>
+      <p>Všechny trasy vedou historickým centrem a podél řeky. Občerstvovací stanice každých 5 km.</p></div>
+    <div class="races">
+      <div class="race"><div class="dist">5<small style="font-size:20px"> km</small></div><h3>Rodinný běh</h3><p>Rovinatá trať pro začátečníky i rodiny s dětmi.</p><div class="price">Startovné 300 Kč</div></div>
+      <div class="race"><div class="dist">10<small style="font-size:20px"> km</small></div><h3>Městská desítka</h3><p>Okruh centrem a vinohrady. Měřeno čipem.</p><div class="price">Startovné 450 Kč</div></div>
+      <div class="race"><div class="dist">21<small style="font-size:20px"> km</small></div><h3>Půlmaraton</h3><p>Dvě kola podél Moravy s výhledem na Slovácko.</p><div class="price">Startovné 650 Kč</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="program">
+  <div class="wrap">
+    <p class="kicker">Program dne</p>
+    <div class="lead"><h2>Jak poběží sobota.</h2></div>
+    <div class="prog">
+      <div class="prow"><div class="time">7:30</div><div class="what">Otevření prezentace<small>Výdej startovních čísel a čipů</small></div></div>
+      <div class="prow"><div class="time">8:45</div><div class="what">Společná rozcvička<small>Na Masarykově náměstí s trenérem</small></div></div>
+      <div class="prow"><div class="time">9:00</div><div class="what">Start půlmaratonu a desítky<small>Hromadný start hlavních tratí</small></div></div>
+      <div class="prow"><div class="time">9:20</div><div class="what">Start rodinného běhu<small>5 km, samostatná vlna</small></div></div>
+      <div class="prow"><div class="time">11:30</div><div class="what">Vyhlášení výsledků<small>Medaile, ceny a tombola</small></div></div>
+      <div class="prow"><div class="time">12:00</div><div class="what">Afterparty s cimbálem<small>Guláš, víno a živá muzika</small></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="reg" id="registrace">
+  <div class="wrap reg-grid">
+    <div>
+      <p class="kicker">Online registrace</p>
+      <h2 style="font-size:clamp(30px,5vw,50px)">Zajisti si číslo.</h2>
+      <p style="color:var(--muted);font-size:17px;margin:14px 0 24px;text-transform:none">Kapacita je omezená na 1 500 běžců. Startovné zahrnuje čip, tričko, medaili a občerstvení v cíli.</p>
+      <div class="sponsors">
+        <div class="sp">SLOVÁCKO+</div>
+        <div class="sp">MĚSTO UH</div>
+        <div class="sp">VINAŘSTVÍ</div>
+      </div>
+    </div>
+    <form onsubmit="demoSubmit(event)">
+      <div class="frow">
+        <div><label>Jméno</label><input type="text" placeholder="Jan" required></div>
+        <div><label>Příjmení</label><input type="text" placeholder="Novák" required></div>
+      </div>
+      <label>E-mail</label>
+      <input type="email" placeholder="jan@email.cz" required>
+      <div class="frow">
+        <div><label>Trasa</label><select><option>5 km — Rodinný běh</option><option>10 km — Desítka</option><option>21 km — Půlmaraton</option></select></div>
+        <div><label>Ročník narození</label><input type="text" placeholder="1990"></div>
+      </div>
+      <button type="submit">Dokončit registraci</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong>RUN SLOVÁCKO 2025</strong> — 13. 9. 2025 · Uherské Hradiště</div>
+    <div>Ukázkový web · design &amp; realizace <a href="https://pokornymarek.cz" style="color:var(--lime);text-decoration:none" target="_blank" rel="noopener">pokornymarek.cz</a></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Registrace přijata! (Ukázka — nic se neodesílá.)</div>
+<script>
+  var target=new Date("2025-09-13T09:00:00").getTime();
+  // Demo běží i po datu závodu — když je po termínu, počítáme k příštímu ročníku.
+  if(target < Date.now()) target=new Date("2026-09-12T09:00:00").getTime();
+  function tick(){
+    var diff=Math.max(0,target-Date.now());
+    var d=Math.floor(diff/86400000),h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60;
+    document.getElementById('d').textContent=String(d).padStart(2,'0');
+    document.getElementById('h').textContent=String(h).padStart(2,'0');
+    document.getElementById('m').textContent=String(m).padStart(2,'0');
+    document.getElementById('s').textContent=String(s).padStart(2,'0');
+  }
+  tick();setInterval(tick,1000);
+  function demoSubmit(e){e.preventDefault();var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3500);e.target.reset();}
+</script>
+</body>
+</html>
