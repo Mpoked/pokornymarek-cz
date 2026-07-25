@@ -4,180 +4,365 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>Vinný sklep U Šardických — degustace na Slovácku | Ukázka</title>
+<title>Vinný sklep U Šardických — degustace ve sklepě, Slovácko</title>
 <style>
   :root{
-    --wine:#5c1a2b; --wine-deep:#3d0f1d; --gold:#c9a24b; --gold-soft:#e3c680;
-    --cream:#f6efe4; --bg:#1a1013; --card:#241519; --ink:#f6efe4; --muted:#c8b3a8; --line:rgba(201,162,75,.22);
+    --canvas:#140A0E; --surface:#1B0F14; --deep:#0E0609;
+    --ink:#EFE6DC; --muted:#9C8B84; --line:rgba(239,230,220,.10);
+    --wine:#5C1A2B; --gold:#C9A24B; --gold-dim:#8E7135;
+    --sans:-apple-system,'SF Pro Display','Helvetica Neue','Segoe UI',system-ui,sans-serif;
+    --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+    --mono:ui-monospace,'SF Mono','Cascadia Code',Consolas,monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
-  h1,h2,h3{font-family:'Georgia','Times New Roman',serif;line-height:1.15;font-weight:700}
-  a{color:inherit}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-  .demo-bar{background:#000;color:var(--gold-soft);text-align:center;font-size:13px;padding:8px 16px}
-  .demo-bar a{color:var(--gold);text-decoration:none;font-weight:600}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--canvas);color:var(--ink);
+    line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.022em;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--wine);color:var(--ink)}
 
-  header{position:sticky;top:0;z-index:50;background:rgba(26,16,19,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
-  .brand{font-family:Georgia,serif;font-size:21px;letter-spacing:.02em}
-  .brand b{color:var(--gold)}
-  .nav ul{display:flex;gap:28px;list-style:none;font-size:14px}
-  .nav ul a{text-decoration:none;color:var(--muted);transition:color .2s}
-  .nav ul a:hover{color:var(--gold-soft)}
-  .nav .cta{border:1px solid var(--gold);color:var(--gold-soft);padding:9px 18px;border-radius:2px;text-decoration:none;font-size:13px;letter-spacing:.05em;text-transform:uppercase}
-  @media(max-width:780px){.nav ul{display:none}}
+  /* svíčkové světlo — pomalu dýchá */
+  .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(48% 38% at 72% 6%,rgba(201,162,75,.10),transparent 72%),
+      radial-gradient(52% 44% at 12% 82%,rgba(92,26,43,.30),transparent 70%);
+    animation:drift 26s ease-in-out infinite alternate}
+  @keyframes drift{to{transform:translate3d(0,-2.5%,0) scale(1.06)}}
+  /* zrno — dodá sklepní hloubku */
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.16;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @media(prefers-reduced-motion:reduce){.ambient{animation:none}}
 
-  .hero{position:relative;min-height:82vh;display:flex;align-items:center;background:radial-gradient(120% 90% at 70% 10%,#6b2033,#3d0f1d 55%,#1a1013);overflow:hidden}
-  .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 20% 80%,rgba(201,162,75,.12),transparent 40%);}
-  .hero .wrap{position:relative;z-index:1;padding:60px 24px}
-  .eyebrow{letter-spacing:.32em;text-transform:uppercase;font-size:12px;color:var(--gold);margin-bottom:24px;font-weight:600}
-  .hero h1{font-size:clamp(40px,7vw,82px);max-width:16ch}
-  .hero h1 em{color:var(--gold-soft);font-style:italic}
-  .hero p{margin-top:24px;max-width:46ch;font-size:19px;color:var(--muted)}
-  .hero-actions{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap}
-  .btn{display:inline-block;padding:15px 30px;text-decoration:none;font-weight:600;font-size:15px;letter-spacing:.03em;transition:transform .15s,background .2s}
-  .btn:hover{transform:translateY(-2px)}
-  .btn-gold{background:var(--gold);color:var(--wine-deep)}
-  .btn-line{border:1px solid var(--gold);color:var(--gold-soft)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;position:relative;z-index:2}
+  @media(max-width:600px){.wrap{padding:0 20px}}
 
-  section{padding:90px 0}
-  .kicker{letter-spacing:.26em;text-transform:uppercase;font-size:12px;color:var(--gold);font-weight:600;margin-bottom:16px}
-  .lead h2{font-size:clamp(30px,4.5vw,46px);max-width:20ch}
-  .lead p{color:var(--muted);font-size:17px;max-width:56ch;margin-top:14px}
+  .demo-bar{background:var(--deep);color:var(--muted);font-family:var(--mono);font-size:11px;
+    letter-spacing:.08em;text-transform:uppercase;padding:9px 20px;text-align:center;position:relative;z-index:5}
+  .demo-bar a{color:var(--gold);border-bottom:1px solid rgba(201,162,75,.35)}
 
-  .vina{margin-top:50px;display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-  @media(max-width:760px){.vina{grid-template-columns:1fr}}
-  .vino{display:flex;justify-content:space-between;gap:20px;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:24px 26px}
-  .vino .glass{width:20px;flex:none;border-radius:0 0 40% 40%/0 0 60% 60%;background:linear-gradient(var(--pour,#6b2033),transparent);align-self:stretch;opacity:.9}
-  .vino h3{font-size:20px}
-  .vino .meta{font-size:13px;color:var(--gold-soft);letter-spacing:.04em;margin:4px 0 8px;text-transform:uppercase}
-  .vino p{font-size:14px;color:var(--muted)}
-  .vino .price{font-family:Georgia,serif;font-size:22px;color:var(--gold);white-space:nowrap}
+  header{position:sticky;top:0;z-index:40;background:rgba(20,10,14,.72);
+    backdrop-filter:saturate(160%) blur(16px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .brand{font-family:var(--serif);font-size:19px;letter-spacing:.01em}
+  .brand i{font-style:italic;color:var(--gold)}
+  .nav nav{display:flex;gap:34px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  .nav nav a:hover{color:var(--gold)}
+  @media(max-width:860px){.nav nav{display:none}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    background:var(--gold);color:#140A0E;padding:13px 24px;border-radius:5px;
+    font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:var(--sans);
+    transition:background .2s,transform .1s}
+  .btn:hover{background:#D9B461}
+  .btn:active{transform:scale(.98)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid rgba(239,230,220,.22)}
+  .btn-ghost:hover{background:rgba(239,230,220,.05);border-color:rgba(239,230,220,.4)}
+  .btn-sm{padding:10px 18px;font-size:13px}
 
-  .band{background:linear-gradient(180deg,#20141a,#1a1013)}
-  .rez{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-  @media(max-width:820px){.rez{grid-template-columns:1fr;gap:36px}}
-  form{display:flex;flex-direction:column;gap:15px;background:var(--card);border:1px solid var(--line);padding:32px;border-radius:6px}
-  label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold-soft);margin-bottom:-9px}
-  input,select,textarea{font:inherit;padding:13px 15px;border:1px solid var(--line);border-radius:3px;background:#160c10;color:var(--ink)}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
-  form button{background:var(--gold);color:var(--wine-deep);border:none;padding:15px;border-radius:3px;font-weight:700;font-size:15px;letter-spacing:.04em;cursor:pointer;text-transform:uppercase}
-  .info-list{list-style:none;display:flex;flex-direction:column;gap:22px}
-  .info-list li{border-bottom:1px solid var(--line);padding-bottom:18px}
-  .info-list .l{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--gold)}
-  .info-list .v{font-size:19px;margin-top:5px}
-  .map{margin-top:26px;height:180px;border:1px solid var(--line);border-radius:6px;background:
-    linear-gradient(rgba(201,162,75,.08),rgba(201,162,75,.08)),
-    repeating-linear-gradient(45deg,#20141a 0 18px,#241519 18px 36px);
-    display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;letter-spacing:.05em}
+  .tag{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(201,162,75,.3);
+    color:var(--gold);font-family:var(--mono);font-size:10px;letter-spacing:.15em;
+    text-transform:uppercase;padding:7px 16px;border-radius:9999px}
+  .tag .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
 
-  footer{background:#000;color:var(--muted);padding:50px 0;font-size:14px}
-  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
-  footer strong{color:var(--gold-soft);font-family:Georgia,serif}
-  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120px);background:var(--gold);color:var(--wine-deep);padding:14px 24px;border-radius:6px;font-weight:600;font-size:14px;box-shadow:0 14px 34px rgba(0,0,0,.5);transition:transform .35s;z-index:99}
+  section{padding:128px 0;position:relative;z-index:2}
+  @media(max-width:760px){section{padding:80px 0}}
+  .sec-head{max-width:660px;margin-bottom:72px}
+  .sec-head .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--gold-dim);margin-bottom:22px}
+  .sec-head h2{font-size:clamp(31px,4.4vw,50px)}
+  .sec-head p{color:var(--muted);font-size:17px;margin-top:20px;max-width:52ch}
+
+  /* HERO */
+  .hero{min-height:88vh;display:flex;align-items:center;padding:96px 0}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:center;width:100%}
+  @media(max-width:940px){.hero-grid{grid-template-columns:1fr;gap:52px}}
+  .hero h1{font-size:clamp(46px,7.6vw,92px);margin:30px 0 0;max-width:11ch}
+  .hero h1 em{font-style:italic;color:var(--gold)}
+  .hero .lead{color:var(--muted);font-size:19px;margin-top:28px;max-width:40ch}
+  .hero-cta{margin-top:40px;display:flex;gap:12px;flex-wrap:wrap}
+  .hero-meta{margin-top:64px;padding-top:30px;border-top:1px solid var(--line);
+    display:flex;gap:48px;flex-wrap:wrap}
+  .hero-meta .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold-dim)}
+  .hero-meta .v{font-family:var(--serif);font-size:24px;margin-top:6px}
+  .arch{position:relative;display:flex;align-items:center;justify-content:center}
+  .arch svg{width:100%;max-width:380px;height:auto}
+
+  /* VÍNA — editorial list */
+  .list{border-top:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:38px 1fr 168px 92px;gap:26px;
+    padding:30px 0;border-bottom:1px solid var(--line);align-items:baseline;
+    transition:background .25s;position:relative}
+  .row:hover{background:rgba(239,230,220,.025)}
+  @media(max-width:800px){
+    .row{grid-template-columns:34px 1fr auto;gap:14px}
+    .row .notes{grid-column:2/4;font-size:14px}
+    .row .price{grid-column:3;grid-row:1}
+  }
+  .row .idx{font-family:var(--mono);font-size:11px;color:var(--gold-dim)}
+  .row h3{font-size:23px}
+  .row .cat{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--muted);margin-top:8px}
+  .row .notes{color:var(--muted);font-size:15px}
+  .row .price{font-family:var(--serif);font-size:22px;color:var(--gold);text-align:right;white-space:nowrap}
+  .row .price small{display:block;font-family:var(--mono);font-size:10px;
+    color:var(--muted);letter-spacing:.1em;margin-top:5px}
+
+  /* MOOD PÁS */
+  .mood{background:var(--deep);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .mood-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+  @media(max-width:880px){.mood-grid{grid-template-columns:1fr;gap:44px}}
+  .quote{font-family:var(--serif);font-size:clamp(26px,3.4vw,38px);line-height:1.28;font-style:italic}
+  .quote-by{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold-dim);margin-top:26px}
+  .mood-facts{list-style:none}
+  .mood-facts li{display:flex;justify-content:space-between;gap:20px;
+    padding:20px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .mood-facts li:first-child{border-top:1px solid var(--line)}
+  .mood-facts .k{color:var(--muted)}
+  .mood-facts .v{text-align:right}
+
+  /* REZERVACE */
+  .rez{display:grid;grid-template-columns:.95fr 1.05fr;gap:72px;align-items:start}
+  @media(max-width:900px){.rez{grid-template-columns:1fr;gap:48px}}
+  form{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:38px;display:flex;flex-direction:column;gap:20px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:520px){.frow{grid-template-columns:1fr}}
+  .field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .field input,.field select,.field textarea{width:100%;font:inherit;font-size:15px;
+    padding:13px 15px;border:1px solid var(--line);border-radius:6px;
+    background:var(--deep);color:var(--ink);transition:border-color .2s}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:rgba(201,162,75,.5)}
+  .field textarea{resize:vertical;min-height:92px}
+  .facts{list-style:none;margin-top:34px}
+  .facts li{padding:22px 0;border-bottom:1px solid var(--line)}
+  .facts li:first-child{padding-top:0}
+  .facts .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold-dim)}
+  .facts .v{font-size:18px;margin-top:7px}
+  .facts .v small{display:block;color:var(--muted);font-size:14px;margin-top:4px}
+
+  footer{background:var(--deep);border-top:1px solid var(--line);padding:60px 0;
+    font-size:14px;color:var(--muted);position:relative;z-index:2}
+  footer .frow2{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:baseline}
+  footer .brand-f{font-family:var(--serif);font-size:18px;color:var(--ink)}
+  footer a{color:var(--gold);border-bottom:1px solid rgba(201,162,75,.3)}
+
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(140px);
+    background:var(--gold);color:#140A0E;padding:15px 26px;border-radius:8px;
+    font-size:14px;font-weight:600;transition:transform .5s cubic-bezier(.16,1,.3,1);z-index:90}
   .toast.show{transform:translateX(-50%) translateY(0)}
+
+  .rise{opacity:0;transform:translateY(12px);
+    transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);
+    transition-delay:calc(var(--i,0) * 80ms)}
+  .rise.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
-<div class="demo-bar">Ukázková stránka — vytvořil <a href="https://pokornymarek.cz" target="_blank" rel="noopener">Marek Pokorný</a></div>
+<div class="ambient"></div>
+<div class="grain"></div>
+
+<div class="demo-bar">Ukázková stránka · navrhl a postavil <a href="https://pokornymarek.cz" target="_blank" rel="noopener">pokornymarek.cz</a></div>
 
 <header>
   <div class="wrap nav">
-    <div class="brand">Vinný sklep <b>U Šardických</b></div>
-    <ul>
-      <li><a href="#vina">Naše vína</a></li>
-      <li><a href="#rezervace">Degustace</a></li>
-      <li><a href="#kontakt">Kontakt</a></li>
-    </ul>
-    <a href="#rezervace" class="cta">Rezervovat</a>
+    <div class="brand">Vinný sklep <i>U Šardických</i></div>
+    <nav>
+      <a href="#vina">Vína</a>
+      <a href="#sklep">Sklep</a>
+      <a href="#rezervace">Rezervace</a>
+    </nav>
+    <a href="#rezervace" class="btn btn-sm">Rezervovat večer</a>
   </div>
 </header>
 
 <section class="hero">
-  <div class="wrap">
-    <p class="eyebrow">Rodinné vinařství · Slovácko</p>
-    <h1>Posezení ve sklepě, kde <em>víno vypráví</em>.</h1>
-    <p>Řízené degustace, cimbál a vína z našich vlastních vinic pod Šardicemi. Rezervujte si večer, na který se nezapomíná.</p>
-    <div class="hero-actions">
-      <a href="#rezervace" class="btn btn-gold">Rezervovat degustaci</a>
-      <a href="#vina" class="btn btn-line">Prohlédnout vína</a>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="tag rise"><span class="dot"></span> Rodinné vinařství · čtvrtá generace</span>
+      <h1 class="rise" style="--i:1">Ve sklepě je <em>ticho</em> a šero.</h1>
+      <p class="lead rise" style="--i:2">Sto let stará chodba pod Šardicemi, dvanáct stupňů celý rok a vína z vinic, které vidíte ze dveří. Sedni si, nalejem.</p>
+      <div class="hero-cta rise" style="--i:3">
+        <a href="#rezervace" class="btn">Rezervovat degustaci</a>
+        <a href="#vina" class="btn btn-ghost">Prohlédnout vína</a>
+      </div>
+      <div class="hero-meta rise" style="--i:4">
+        <div><div class="k">Ve sklepě</div><div class="v">12 °C</div></div>
+        <div><div class="k">Kapacita</div><div class="v">28 míst</div></div>
+        <div><div class="k">Vinice</div><div class="v">4,2 ha</div></div>
+      </div>
+    </div>
+    <div class="arch rise" style="--i:2">
+      <svg viewBox="0 0 300 400" fill="none" stroke="#C9A24B" stroke-width="1.3" stroke-linecap="round" aria-hidden="true">
+        <!-- klenutá sklepní chodba, ubíhající do tmy -->
+        <path d="M40 396V150c0-61 49-110 110-110s110 49 110 110v246" opacity=".9"/>
+        <path d="M68 396V160c0-45 37-82 82-82s82 37 82 82v236" opacity=".55"/>
+        <path d="M94 396V172c0-31 25-56 56-56s56 25 56 56v224" opacity=".35"/>
+        <path d="M118 396V186c0-18 14-32 32-32s32 14 32 32v210" opacity=".22"/>
+        <path d="M138 396V200c0-7 5-12 12-12s12 5 12 12v196" opacity=".14"/>
+        <!-- svíce -->
+        <path d="M150 330v-26" stroke-width="2"/>
+        <path d="M150 300c-5-7-1-13 0-16 1 3 5 9 0 16z" fill="#C9A24B" stroke="none"/>
+        <circle cx="150" cy="296" r="26" opacity=".14"/>
+        <circle cx="150" cy="296" r="42" opacity=".07"/>
+        <!-- sudy podél stěny -->
+        <ellipse cx="62" cy="352" rx="19" ry="26" opacity=".5"/>
+        <path d="M43 352h38" opacity=".35"/>
+        <ellipse cx="238" cy="352" rx="19" ry="26" opacity=".5"/>
+        <path d="M219 352h38" opacity=".35"/>
+        <!-- réva u vstupu -->
+        <path d="M22 396c8-30 2-56 14-78s6-38 2-52" opacity=".4"/>
+        <path d="M36 318c-9-4-14-12-13-22 9 2 15 11 13 22z" opacity=".4"/>
+        <path d="M278 396c-8-30-2-56-14-78s-6-38-2-52" opacity=".4"/>
+        <path d="M264 318c9-4 14-12 13-22-9 2-15 11-13 22z" opacity=".4"/>
+      </svg>
     </div>
   </div>
 </section>
 
 <section id="vina">
   <div class="wrap">
-    <p class="kicker">Naše vína</p>
-    <div class="lead"><h2>Z ročníku, který uzrál právě tady.</h2>
-      <p>Vybraná vína z aktuální nabídky. Všechna ochutnáte při degustaci ve sklepě, láhve si můžete odvézt domů.</p></div>
-    <div class="vina">
-      <div class="vino" style="--pour:#e3c680">
-        <div class="glass"></div>
-        <div><h3>Ryzlink rýnský</h3><div class="meta">Pozdní sběr · suché</div><p>Svěží kyselinka, tóny broskve a lipového květu.</p></div>
-        <div class="price">185&nbsp;Kč</div>
+    <div class="sec-head rise">
+      <div class="lbl">01 — Vinný lístek</div>
+      <h2>Osm vzorků, jeden ročník, jedna trať.</h2>
+      <p>Co je na lístku, to jsme vypěstovali a vylisovali sami. Při degustaci ochutnáte všechno, láhve si můžete odvézt.</p>
+    </div>
+    <div class="list">
+      <div class="row rise" style="--i:0">
+        <div class="idx">01</div>
+        <div><h3>Ryzlink rýnský</h3><div class="cat">Pozdní sběr · suché · 2023</div></div>
+        <div class="notes">Broskev, lipový květ, dlouhá kyselinka.</div>
+        <div class="price">185 Kč<small>0,75 l</small></div>
       </div>
-      <div class="vino" style="--pour:#d9a94a">
-        <div class="glass"></div>
-        <div><h3>Rulandské šedé</h3><div class="meta">Výběr z hroznů · polosuché</div><p>Plné, máslové, s jemným tónem sušených meruněk.</p></div>
-        <div class="price">210&nbsp;Kč</div>
+      <div class="row rise" style="--i:1">
+        <div class="idx">02</div>
+        <div><h3>Rulandské šedé</h3><div class="cat">Výběr z hroznů · polosuché · 2022</div></div>
+        <div class="notes">Máslo, sušená meruňka, plné tělo.</div>
+        <div class="price">210 Kč<small>0,75 l</small></div>
       </div>
-      <div class="vino" style="--pour:#8a2338">
-        <div class="glass"></div>
-        <div><h3>Frankovka</h3><div class="meta">Barrique · suché</div><p>Višně, koření a sametový tanin z dubového sudu.</p></div>
-        <div class="price">240&nbsp;Kč</div>
+      <div class="row rise" style="--i:2">
+        <div class="idx">03</div>
+        <div><h3>Frankovka</h3><div class="cat">Barrique · suché · 2021</div></div>
+        <div class="notes">Višeň, pepř, sametový tanin z dubu.</div>
+        <div class="price">240 Kč<small>0,75 l</small></div>
       </div>
-      <div class="vino" style="--pour:#b8425a">
-        <div class="glass"></div>
-        <div><h3>Svatovavřinecké rosé</h3><div class="meta">Mladé · polosuché</div><p>Jahody a granátové jablko, ideální na letní večer.</p></div>
-        <div class="price">170&nbsp;Kč</div>
+      <div class="row rise" style="--i:3">
+        <div class="idx">04</div>
+        <div><h3>Svatovavřinecké rosé</h3><div class="cat">Mladé · polosuché · 2024</div></div>
+        <div class="notes">Jahoda, granátové jablko, svěží dojezd.</div>
+        <div class="price">170 Kč<small>0,75 l</small></div>
+      </div>
+      <div class="row rise" style="--i:4">
+        <div class="idx">05</div>
+        <div><h3>Veltlínské zelené</h3><div class="cat">Kabinet · suché · 2023</div></div>
+        <div class="notes">Bílý pepř, zelené jablko, mineralita.</div>
+        <div class="price">165 Kč<small>0,75 l</small></div>
+      </div>
+      <div class="row rise" style="--i:5">
+        <div class="idx">06</div>
+        <div><h3>Slámové víno</h3><div class="cat">Ročník 2019 · sladké</div></div>
+        <div class="notes">Fík, med, karamel. Jen 180 lahví.</div>
+        <div class="price">520 Kč<small>0,2 l</small></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="band" id="rezervace">
-  <div class="wrap">
-    <p class="kicker">Rezervace degustace</p>
-    <div class="lead" style="margin-bottom:44px"><h2>Zarezervujte si sklep pro vaši partu.</h2>
-      <p>Degustace od 6 osob, 5–8 vzorků vína, domácí klobása a chléb. Napište termín a my potvrdíme dostupnost.</p></div>
-    <div class="rez">
-      <form onsubmit="demoSubmit(event)">
-        <label>Jméno</label>
-        <input type="text" placeholder="Jan Novák" required>
-        <label>Telefon</label>
-        <input type="text" placeholder="+420…" required>
-        <label>Termín</label>
-        <input type="date">
-        <label>Počet osob</label>
-        <select><option>6–8 osob</option><option>9–12 osob</option><option>13–20 osob</option><option>více než 20</option></select>
-        <label>Poznámka</label>
-        <textarea rows="3" placeholder="Oslava, firemní akce, cimbál…"></textarea>
-        <button type="submit">Odeslat rezervaci</button>
-      </form>
-      <div id="kontakt">
-        <ul class="info-list">
-          <li><div class="l">Otevřeno</div><div class="v">Pá–So 16:00–23:00 · nebo dle rezervace</div></li>
-          <li><div class="l">Telefon</div><div class="v">+420 000 000 000</div></li>
-          <li><div class="l">Kde nás najdete</div><div class="v">Šardice 123, Slovácko</div></li>
-        </ul>
-        <div class="map">🍇 Mapa — Šardice, uličkou vinných sklepů</div>
-      </div>
+<section class="mood" id="sklep">
+  <div class="wrap mood-grid">
+    <div class="rise">
+      <p class="quote">„Dědek říkával, že víno se nedělá ve sklepě, ale na vinici. Ve sklepě se mu jen nesmí překážet."</p>
+      <div class="quote-by">Josef Šardický · vinař, čtvrtá generace</div>
     </div>
+    <div class="rise" style="--i:1">
+      <ul class="mood-facts">
+        <li><span class="k">Degustace</span><span class="v">5 až 8 vzorků · 90 minut</span></li>
+        <li><span class="k">K vínu</span><span class="v">Domácí klobása, chléb, škvarky</span></li>
+        <li><span class="k">Skupina</span><span class="v">Od 6 do 28 osob</span></li>
+        <li><span class="k">Cena</span><span class="v">450 Kč za osobu</span></li>
+        <li><span class="k">Cimbál</span><span class="v">Na objednávku, +3 000 Kč</span></li>
+        <li><span class="k">Nocleh</span><span class="v">Penzion 200 m od sklepa</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="rezervace">
+  <div class="wrap rez">
+    <div class="rise">
+      <div class="sec-head" style="margin-bottom:0">
+        <div class="lbl">02 — Rezervace</div>
+        <h2>Vyberte si večer.</h2>
+        <p>Napište termín a my do druhého dne potvrdíme, že je sklep volný.</p>
+      </div>
+      <ul class="facts">
+        <li><div class="k">Otevřeno</div><div class="v">Pátek a sobota, 16:00—23:00<small>Ve všední dny jen na objednávku</small></div></li>
+        <li><div class="k">Telefon</div><div class="v">+420 518 620 145</div></li>
+        <li><div class="k">Kde</div><div class="v">Sklepní ulička 47, Šardice<small>Parkování u kapličky, 100 m pěšky</small></div></li>
+      </ul>
+    </div>
+    <form onsubmit="demoSubmit(event)" class="rise" style="--i:1">
+      <div class="frow">
+        <div class="field"><label for="r1">Jméno</label><input id="r1" type="text" placeholder="Tomáš Bartoš" required></div>
+        <div class="field"><label for="r2">Telefon</label><input id="r2" type="tel" placeholder="+420" required></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label for="r3">Termín</label><input id="r3" type="date"></div>
+        <div class="field"><label for="r4">Počet osob</label>
+          <select id="r4">
+            <option>6 až 8</option><option>9 až 12</option>
+            <option>13 až 20</option><option>21 až 28</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label for="r5">Poznámka</label>
+        <textarea id="r5" placeholder="Oslava, firemní večer, zájem o cimbál…"></textarea>
+      </div>
+      <button type="submit" class="btn">Odeslat rezervaci</button>
+    </form>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">
-    <div><strong>Vinný sklep U Šardických</strong> — rodinné vinařství, Slovácko</div>
-    <div>Ukázkový web · design &amp; realizace <a href="https://pokornymarek.cz" style="color:var(--gold);text-decoration:none" target="_blank" rel="noopener">pokornymarek.cz</a></div>
+  <div class="wrap frow2">
+    <div>
+      <div class="brand-f">Vinný sklep U Šardických</div>
+      <div style="margin-top:6px">Sklepní ulička 47, Šardice · Slovácko</div>
+    </div>
+    <div>Ukázková stránka — návrh a realizace <a href="https://pokornymarek.cz" target="_blank" rel="noopener">pokornymarek.cz</a></div>
   </div>
 </footer>
 
-<div class="toast" id="toast">Děkujeme za rezervaci! (Ukázka — nic se neodesílá.)</div>
+<div class="toast" id="toast">Rezervace odeslána — ukázka, nic se ve skutečnosti neposílá.</div>
 <script>
-  function demoSubmit(e){e.preventDefault();var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3500);e.target.reset();}
+  var risers=document.querySelectorAll('.rise');
+  function revealAll(){risers.forEach(function(el){el.classList.add('in')})}
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+    },{rootMargin:'0px 0px -8% 0px',threshold:.1});
+    risers.forEach(function(el){io.observe(el)});
+    // Pojistka: při načtení na pozadí (ctrl+klik) callbacky nechodí — obsah
+    // by zůstal neviditelný. Když se do chvíle nic neodkrylo, odkryjeme vše.
+    setTimeout(function(){if(!document.querySelector('.rise.in'))revealAll()},1500);
+  } else {
+    revealAll();
+  }
+
+  var tTimer;
+  function demoSubmit(e){
+    e.preventDefault();
+    var t=document.getElementById('toast');
+    t.classList.add('show');clearTimeout(tTimer);
+    tTimer=setTimeout(function(){t.classList.remove('show')},3600);
+    e.target.reset();
+  }
 </script>
 </body>
 </html>

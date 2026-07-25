@@ -4,209 +4,488 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>Run Slovácko 2025 — běžecký závod | Ukázka</title>
+<title>Run Slovácko 2025 — městský běh, Uherské Hradiště</title>
 <style>
   :root{
-    --bg:#0a0e0a; --panel:#111811; --lime:#b6ff2e; --lime-deep:#8fd400;
-    --ink:#eafbe4; --muted:#8fa085; --line:rgba(182,255,46,.18);
+    --canvas:#FBFBFA; --surface:#FFFFFF; --bone:#F7F6F3;
+    --ink:#111111; --muted:#787774; --line:#EAEAEA; --line-strong:#DEDDD8;
+    --pale:#EDF3EC; --pale-tx:#346538;
+    --sans:-apple-system,'SF Pro Display','Helvetica Neue','Segoe UI',system-ui,sans-serif;
+    --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+    --mono:ui-monospace,'SF Mono','Cascadia Code',Consolas,monospace;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
-  h1,h2,h3{line-height:1.05;letter-spacing:-.02em;text-transform:uppercase;font-weight:900}
-  a{color:inherit}
-  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
-  .demo-bar{background:#000;color:var(--lime);text-align:center;font-size:13px;padding:8px 16px}
-  .demo-bar a{color:var(--lime);text-decoration:none;font-weight:700}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);background:var(--canvas);color:var(--ink);
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.028em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  button{font-family:var(--sans)}
+  ::selection{background:var(--pale)}
 
-  header{position:sticky;top:0;z-index:50;background:rgba(10,14,10,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
-  .brand{font-weight:900;font-size:20px;letter-spacing:-.02em;text-transform:uppercase}
-  .brand b{color:var(--lime)}
-  .nav ul{display:flex;gap:26px;list-style:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-  .nav ul a{text-decoration:none;color:var(--muted)}
-  .nav ul a:hover{color:var(--lime)}
-  .nav .cta{background:var(--lime);color:#0a0e0a;padding:10px 20px;border-radius:4px;text-decoration:none;font-size:13px;font-weight:800;text-transform:uppercase}
-  @media(max-width:820px){.nav ul{display:none}}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(58% 42% at 14% 4%,rgba(52,101,56,.05),transparent 72%)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+  @media(max-width:600px){.wrap{padding:0 20px}}
 
-  .hero{position:relative;padding:70px 0 60px;overflow:hidden;background:radial-gradient(120% 80% at 80% 0%,#1c2a10,#0a0e0a 60%)}
-  .hero::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,transparent 0 60px,rgba(182,255,46,.03) 60px 62px)}
-  .hero .wrap{position:relative;z-index:1}
-  .tag{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);color:var(--lime);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:7px 16px;border-radius:40px;margin-bottom:26px}
-  .tag .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime)}
-  .hero h1{font-size:clamp(48px,11vw,140px);line-height:.9;letter-spacing:-.04em}
-  .hero h1 span{color:var(--lime)}
-  .hero .sub{margin-top:22px;font-size:19px;color:var(--muted);max-width:46ch}
-  .meta-row{margin-top:34px;display:flex;gap:36px;flex-wrap:wrap}
-  .meta-row .m .k{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
-  .meta-row .m .v{font-size:22px;font-weight:900;color:var(--ink);margin-top:2px}
+  .demo-bar{background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;
+    letter-spacing:.08em;text-transform:uppercase;padding:9px 20px;text-align:center;position:relative;z-index:3}
+  .demo-bar a{border-bottom:1px solid rgba(255,255,255,.4)}
 
-  /* countdown */
-  .count{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
-  .cbox{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 22px;text-align:center;min-width:88px}
-  .cbox .num{font-size:40px;font-weight:900;color:var(--lime);font-variant-numeric:tabular-nums;line-height:1}
-  .cbox .lab{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-top:8px}
-  .hero-actions{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
-  .btn{display:inline-block;padding:16px 34px;border-radius:5px;text-decoration:none;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.04em;transition:transform .15s}
-  .btn:hover{transform:translateY(-2px)}
-  .btn-lime{background:var(--lime);color:#0a0e0a;box-shadow:0 0 30px rgba(182,255,46,.3)}
-  .btn-line{border:1px solid var(--line);color:var(--ink)}
+  header{position:sticky;top:0;z-index:40;background:rgba(251,251,250,.85);
+    backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:74px;gap:20px}
+  .brand{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap}
+  .brand b{font-weight:700}
+  .nav nav{display:flex;gap:32px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .nav nav a:hover{color:var(--ink)}
+  @media(max-width:900px){.nav nav{display:none}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    background:var(--ink);color:#fff;padding:12px 22px;border-radius:5px;
+    font-size:14px;font-weight:500;border:none;cursor:pointer;
+    transition:background .2s,transform .1s}
+  .btn:hover{background:#333}
+  .btn:active{transform:scale(.98)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}
+  .btn-ghost:hover{background:var(--bone)}
+  .btn-sm{padding:10px 17px;font-size:13px}
+  .btn-lg{padding:16px 30px;font-size:15px}
 
-  section{padding:78px 0;border-top:1px solid var(--line)}
-  .kicker{color:var(--lime);font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
-  .lead h2{font-size:clamp(30px,5vw,54px)}
-  .lead p{color:var(--muted);font-size:17px;margin-top:12px;max-width:56ch;text-transform:none}
+  .tag{display:inline-flex;align-items:center;gap:9px;background:var(--pale);color:var(--pale-tx);
+    font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+    padding:6px 14px;border-radius:9999px}
+  .tag .dot{width:5px;height:5px;border-radius:50%;background:var(--pale-tx)}
 
-  .races{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  @media(max-width:780px){.races{grid-template-columns:1fr}}
-  .race{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;position:relative;overflow:hidden}
-  .race .dist{font-size:46px;font-weight:900;color:var(--lime);line-height:1}
-  .race h3{font-size:20px;margin:12px 0 8px}
-  .race p{color:var(--muted);font-size:14px;text-transform:none}
-  .race .price{margin-top:16px;font-size:15px;font-weight:800}
+  section{padding:116px 0;position:relative;z-index:1}
+  @media(max-width:760px){section{padding:74px 0}}
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;
+    gap:32px;margin-bottom:56px;flex-wrap:wrap}
+  .sec-head .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  .sec-head h2{font-size:clamp(30px,4.2vw,46px);max-width:16ch}
+  .sec-head p{color:var(--muted);font-size:16px;max-width:34ch}
 
-  .prog{margin-top:40px;border-top:1px solid var(--line)}
-  .prow{display:flex;gap:24px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline}
-  .prow .time{font-size:22px;font-weight:900;color:var(--lime);min-width:88px;font-variant-numeric:tabular-nums}
-  .prow .what{font-size:17px;font-weight:700}
-  .prow .what small{display:block;color:var(--muted);font-weight:400;font-size:14px;margin-top:2px}
+  /* HERO */
+  .hero{padding:96px 0 104px}
+  .hero h1{font-size:clamp(56px,13vw,168px);letter-spacing:-.045em;margin:28px 0 0;line-height:.86}
+  .hero h1 span{display:block}
+  .hero h1 em{font-style:italic;color:var(--muted)}
+  .hero-sub{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:end;
+    margin-top:44px;padding-top:32px;border-top:1px solid var(--line-strong)}
+  @media(max-width:820px){.hero-sub{grid-template-columns:1fr;gap:32px}}
+  .hero-sub p{color:var(--muted);font-size:19px;max-width:44ch}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
 
-  .reg{background:var(--panel)}
-  .reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-  @media(max-width:820px){.reg-grid{grid-template-columns:1fr;gap:32px}}
-  form{display:flex;flex-direction:column;gap:14px}
-  .frow{display:flex;gap:14px}
-  .frow>*{flex:1}
-  label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:-8px;display:block}
-  input,select{width:100%;font:inherit;padding:14px 15px;border:1px solid var(--line);border-radius:6px;background:#0a0e0a;color:var(--ink)}
-  input:focus,select:focus{outline:none;border-color:var(--lime)}
-  form button{background:var(--lime);color:#0a0e0a;border:none;padding:16px;border-radius:6px;font-weight:900;font-size:15px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer}
-  .sponsors{margin-top:44px;display:flex;gap:16px;flex-wrap:wrap}
-  .sp{flex:1;min-width:120px;height:70px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:800;letter-spacing:.08em;font-size:14px;background:var(--panel)}
+  /* ODPOČET */
+  .count{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);
+    border-radius:12px;background:var(--surface);overflow:hidden;margin-top:52px}
+  @media(max-width:600px){.count{grid-template-columns:repeat(2,1fr)}}
+  .cbox{padding:28px 24px;border-right:1px solid var(--line)}
+  .cbox:last-child{border-right:none}
+  @media(max-width:600px){
+    .cbox:nth-child(2){border-right:none}
+    .cbox:nth-child(1),.cbox:nth-child(2){border-bottom:1px solid var(--line)}
+  }
+  .cbox .n{font-family:var(--mono);font-size:clamp(32px,5vw,46px);
+    font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+  .cbox .l{font-family:var(--mono);font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);margin-top:12px}
 
-  footer{background:#000;color:var(--muted);padding:50px 0;font-size:14px;border-top:1px solid var(--line)}
-  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
-  footer strong{color:var(--lime)}
-  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120px);background:var(--lime);color:#0a0e0a;padding:14px 24px;border-radius:6px;font-weight:800;font-size:14px;box-shadow:0 14px 34px rgba(0,0,0,.5);transition:transform .35s;z-index:99}
+  /* TRASY */
+  .routes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:880px){.routes{grid-template-columns:1fr}}
+  .route{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:30px;display:flex;flex-direction:column;gap:20px;
+    transition:box-shadow .25s,transform .25s}
+  .route:hover{box-shadow:0 2px 8px rgba(0,0,0,.04);transform:translateY(-2px)}
+  .route .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .route .d{font-family:var(--serif);font-size:52px;letter-spacing:-.03em;line-height:1}
+  .route .d small{font-size:19px;color:var(--muted);margin-left:3px}
+  .route h3{font-size:21px}
+  .route .desc{color:var(--muted);font-size:15px}
+  .route .prof{border-top:1px solid var(--line);padding-top:18px}
+  .route .prof svg{width:100%;height:52px;display:block}
+  .route .specs{display:flex;justify-content:space-between;
+    font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+  .route .fee{font-family:var(--mono);font-size:12px;color:var(--ink);letter-spacing:.06em}
+
+  /* MAPA */
+  .map-sec{background:var(--bone);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .map-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:64px;align-items:center}
+  @media(max-width:900px){.map-grid{grid-template-columns:1fr;gap:40px}}
+  .map-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:32px}
+  .map-card svg{width:100%;height:auto;display:block}
+  .legend{list-style:none;display:flex;flex-direction:column;gap:0}
+  .legend li{display:flex;gap:16px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)}
+  .legend li:first-child{border-top:1px solid var(--line)}
+  .legend .km{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:52px;letter-spacing:.06em}
+  .legend .pl{font-size:16px}
+  .legend .pl small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+  /* PROGRAM */
+  .prog{border-top:1px solid var(--line-strong)}
+  .prow{display:grid;grid-template-columns:104px 1fr;gap:32px;padding:26px 0;
+    border-bottom:1px solid var(--line);align-items:baseline}
+  @media(max-width:600px){.prow{grid-template-columns:74px 1fr;gap:18px}}
+  .prow .t{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .prow .w{font-size:18px}
+  .prow .w small{display:block;color:var(--muted);font-size:14px;margin-top:3px}
+
+  /* REGISTRACE — bez formuláře */
+  .reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  @media(max-width:900px){.reg-grid{grid-template-columns:1fr;gap:44px}}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:36px}
+  .cap{margin-bottom:30px}
+  .cap .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+  .cap .n{font-family:var(--serif);font-size:30px}
+  .cap .n small{font-size:15px;color:var(--muted);font-family:var(--sans)}
+  .cap .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .bar{height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--pale-tx);border-radius:3px;
+    transition:width 1.4s cubic-bezier(.16,1,.3,1)}
+  .cap .rest{font-size:13px;color:var(--muted);margin-top:10px}
+  .fees{list-style:none;border-top:1px solid var(--line)}
+  .fees li{display:grid;grid-template-columns:1fr auto auto;gap:16px;
+    padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline;font-size:15px}
+  .fees .when{color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+  .fees .amt{font-family:var(--mono);font-size:14px;min-width:74px;text-align:right}
+  .fees li.now{color:var(--pale-tx)}
+  .fees li.now .amt{font-weight:700}
+  .incl{list-style:none;margin-top:8px}
+  .incl li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px;align-items:flex-start}
+  .incl li:last-child{border-bottom:none}
+  .incl svg{flex:none;margin-top:4px}
+  .reg-actions{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .deadline{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted)}
+
+  /* PARTNEŘI */
+  .partners{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;background:var(--surface)}
+  @media(max-width:700px){.partners{grid-template-columns:repeat(2,1fr)}}
+  .partners div{padding:32px 20px;text-align:center;border-right:1px solid var(--line);
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .partners div:last-child{border-right:none}
+  @media(max-width:700px){
+    .partners div:nth-child(2n){border-right:none}
+    .partners div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  }
+
+  footer{border-top:1px solid var(--line);padding:56px 0;font-size:14px;
+    color:var(--muted);position:relative;z-index:1}
+  footer .row2{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:baseline}
+  footer .brand-f{font-family:var(--mono);font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink)}
+  footer a{border-bottom:1px solid var(--line-strong)}
+
+  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(140px);
+    background:var(--ink);color:#fff;padding:14px 24px;border-radius:8px;font-size:14px;
+    transition:transform .5s cubic-bezier(.16,1,.3,1);z-index:95}
   .toast.show{transform:translateX(-50%) translateY(0)}
+
+  .rise{opacity:0;transform:translateY(12px);
+    transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);
+    transition-delay:calc(var(--i,0) * 75ms)}
+  .rise.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
-<div class="demo-bar">Ukázková stránka — vytvořil <a href="https://pokornymarek.cz" target="_blank" rel="noopener">Marek Pokorný</a></div>
+<div class="demo-bar">Ukázková stránka · navrhl a postavil <a href="https://pokornymarek.cz" target="_blank" rel="noopener">pokornymarek.cz</a></div>
 
 <header>
   <div class="wrap nav">
-    <div class="brand">RUN <b>SLOVÁCKO</b> 2025</div>
-    <ul>
-      <li><a href="#trasy">Trasy</a></li>
-      <li><a href="#program">Program</a></li>
-      <li><a href="#registrace">Registrace</a></li>
-    </ul>
-    <a href="#registrace" class="cta">Registrovat</a>
+    <div class="brand">Run <b>Slovácko</b> 2025</div>
+    <nav>
+      <a href="#trasy">Trasy</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#program">Program</a>
+      <a href="#registrace">Registrace</a>
+    </nav>
+    <a href="#registrace" class="btn btn-sm">Registrace</a>
   </div>
 </header>
 
 <section class="hero">
   <div class="wrap">
-    <span class="tag"><span class="dot"></span> 13. září 2025 · Uherské Hradiště</span>
-    <h1>Běž <span>Slováckem</span>.</h1>
-    <p class="sub">Městský běh vinicemi a nábřežím Moravy. Tři trasy pro každého — od rodinné pětky po půlmaraton.</p>
-    <div class="meta-row">
-      <div class="m"><div class="k">Start</div><div class="v">9:00 · Masarykovo nám.</div></div>
-      <div class="m"><div class="k">Trasy</div><div class="v">5 · 10 · 21 km</div></div>
-      <div class="m"><div class="k">Limit</div><div class="v">1 500 běžců</div></div>
+    <span class="tag rise"><span class="dot"></span> Sobota 13. září 2025 · start 9:00</span>
+    <h1 class="rise" style="--i:1"><span>Run</span><span><em>Slovácko</em></span></h1>
+    <div class="hero-sub rise" style="--i:2">
+      <p>Městský běh nábřežím Moravy a vinohrady nad Uherským Hradištěm. Osmý ročník, tři tratě, jedno odpoledne.</p>
+      <div class="hero-cta">
+        <a href="#registrace" class="btn btn-lg">Chci běžet</a>
+        <a href="#trasy" class="btn btn-ghost btn-lg">Trasy</a>
+      </div>
     </div>
-    <div class="count" id="count">
-      <div class="cbox"><div class="num" id="d">00</div><div class="lab">dní</div></div>
-      <div class="cbox"><div class="num" id="h">00</div><div class="lab">hodin</div></div>
-      <div class="cbox"><div class="num" id="m">00</div><div class="lab">minut</div></div>
-      <div class="cbox"><div class="num" id="s">00</div><div class="lab">sekund</div></div>
-    </div>
-    <div class="hero-actions">
-      <a href="#registrace" class="btn btn-lime">Registrovat se</a>
-      <a href="#trasy" class="btn btn-line">Prohlédnout trasy</a>
+    <div class="count rise" style="--i:3">
+      <div class="cbox"><div class="n" id="d">00</div><div class="l">dní</div></div>
+      <div class="cbox"><div class="n" id="h">00</div><div class="l">hodin</div></div>
+      <div class="cbox"><div class="n" id="m">00</div><div class="l">minut</div></div>
+      <div class="cbox"><div class="n" id="s">00</div><div class="l">sekund</div></div>
     </div>
   </div>
 </section>
 
-<section id="trasy">
+<section id="trasy" style="border-top:1px solid var(--line)">
   <div class="wrap">
-    <p class="kicker">Trasy závodu</p>
-    <div class="lead"><h2>Vyber si svou vzdálenost.</h2>
-      <p>Všechny trasy vedou historickým centrem a podél řeky. Občerstvovací stanice každých 5 km.</p></div>
-    <div class="races">
-      <div class="race"><div class="dist">5<small style="font-size:20px"> km</small></div><h3>Rodinný běh</h3><p>Rovinatá trať pro začátečníky i rodiny s dětmi.</p><div class="price">Startovné 300 Kč</div></div>
-      <div class="race"><div class="dist">10<small style="font-size:20px"> km</small></div><h3>Městská desítka</h3><p>Okruh centrem a vinohrady. Měřeno čipem.</p><div class="price">Startovné 450 Kč</div></div>
-      <div class="race"><div class="dist">21<small style="font-size:20px"> km</small></div><h3>Půlmaraton</h3><p>Dvě kola podél Moravy s výhledem na Slovácko.</p><div class="price">Startovné 650 Kč</div></div>
+    <div class="sec-head rise">
+      <div>
+        <div class="lbl">01 — Tratě</div>
+        <h2>Tři vzdálenosti, jeden cíl.</h2>
+      </div>
+      <p>Všechny tratě měřené a certifikované, měřeno čipem. Občerstvení každých pět kilometrů.</p>
+    </div>
+    <div class="routes">
+      <div class="route rise" style="--i:0">
+        <div class="top">
+          <div class="d">5<small>km</small></div>
+          <span class="tag">Pro každého</span>
+        </div>
+        <div>
+          <h3>Rodinný běh</h3>
+          <p class="desc">Rovina po nábřeží a zpět. Kočárky a děti vítány, měříme jen orientačně.</p>
+        </div>
+        <div class="prof">
+          <svg viewBox="0 0 260 52" fill="none" stroke="#346538" stroke-width="1.6" stroke-linejoin="round">
+            <path d="M4 40h34l22-4 26 3 30-5 28 4 30-3 28 2 26-3h4" />
+            <path d="M4 48h256" stroke="#EAEAEA" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="specs"><span>Převýšení 12 m</span><span class="fee">300 Kč</span></div>
+      </div>
+      <div class="route rise" style="--i:1">
+        <div class="top">
+          <div class="d">10<small>km</small></div>
+          <span class="tag">Nejoblíbenější</span>
+        </div>
+        <div>
+          <h3>Městská desítka</h3>
+          <p class="desc">Historickým centrem, přes lávku a okrajem vinohradů. Jedno delší stoupání v sedmém kilometru.</p>
+        </div>
+        <div class="prof">
+          <svg viewBox="0 0 260 52" fill="none" stroke="#346538" stroke-width="1.6" stroke-linejoin="round">
+            <path d="M4 42h30l24-6 26 4 24-12 26 6 28-16 24 12 28-6h20"/>
+            <path d="M4 48h256" stroke="#EAEAEA" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="specs"><span>Převýšení 96 m</span><span class="fee">450 Kč</span></div>
+      </div>
+      <div class="route rise" style="--i:2">
+        <div class="top">
+          <div class="d">21<small>km</small></div>
+          <span class="tag">Půlmaraton</span>
+        </div>
+        <div>
+          <h3>Slovácký půlmaraton</h3>
+          <p class="desc">Dvě kola desítky s prodloužením přes Mařatice. Časový limit tři hodiny.</p>
+        </div>
+        <div class="prof">
+          <svg viewBox="0 0 260 52" fill="none" stroke="#346538" stroke-width="1.6" stroke-linejoin="round">
+            <path d="M4 42h20l22-10 20 8 22-18 20 14 22-20 20 16 22-12 20 10 22-14 20 12h26"/>
+            <path d="M4 48h256" stroke="#EAEAEA" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="specs"><span>Převýšení 214 m</span><span class="fee">650 Kč</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="map-sec" id="mapa">
+  <div class="wrap map-grid">
+    <div class="map-card rise">
+      <svg viewBox="0 0 520 320" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-label="Schéma trasy">
+        <!-- řeka -->
+        <path d="M20 214c58-16 96 12 152 4s96-40 154-30 118 26 174 10" stroke="#DEDDD8" stroke-width="12" opacity=".7"/>
+        <!-- městské bloky -->
+        <g stroke="#EAEAEA" stroke-width="1.2">
+          <rect x="112" y="96" width="56" height="38" rx="2"/>
+          <rect x="180" y="82" width="44" height="52" rx="2"/>
+          <rect x="236" y="100" width="62" height="34" rx="2"/>
+          <rect x="126" y="146" width="48" height="30" rx="2"/>
+          <rect x="188" y="146" width="66" height="30" rx="2"/>
+        </g>
+        <!-- vinohrady -->
+        <g stroke="#DEDDD8" stroke-width="1.2">
+          <path d="M360 74v40M378 68v46M396 62v52M414 58v56M432 54v60"/>
+        </g>
+        <!-- trasa -->
+        <path d="M150 254c0-40 22-58 60-62s54-18 62-42 30-40 66-40 60 16 78 40 42 40 60 34"
+              stroke="#111" stroke-width="2.4" stroke-dasharray="0"/>
+        <path d="M150 254c46 10 86 2 118-14" stroke="#111" stroke-width="2.4" stroke-dasharray="5 7" opacity=".45"/>
+        <!-- start / cíl -->
+        <circle cx="150" cy="254" r="9" fill="#346538" stroke="none"/>
+        <circle cx="150" cy="254" r="16" stroke="#346538" stroke-width="1.2" opacity=".4"/>
+        <!-- občerstvovačky -->
+        <g fill="#fff" stroke="#111" stroke-width="1.6">
+          <circle cx="212" cy="190" r="5"/><circle cx="298" cy="126" r="5"/>
+          <circle cx="392" cy="94" r="5"/><circle cx="466" cy="128" r="5"/>
+        </g>
+        <text x="150" y="288" font-family="ui-monospace,monospace" font-size="11" fill="#787774" text-anchor="middle" letter-spacing="1.4">START / CÍL</text>
+      </svg>
+    </div>
+    <div class="rise" style="--i:1">
+      <div class="lbl" style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px">02 — Kudy se běží</div>
+      <h2 style="font-size:clamp(28px,3.6vw,40px);margin-bottom:28px">Nábřežím ven, vinohrady zpět.</h2>
+      <ul class="legend">
+        <li><span class="km">0 km</span><span class="pl">Masarykovo náměstí<small>Start i cíl, depozit u radnice</small></span></li>
+        <li><span class="km">2,5 km</span><span class="pl">Lávka přes Moravu<small>První občerstvení</small></span></li>
+        <li><span class="km">5,8 km</span><span class="pl">Mařatické vinohrady<small>Nejdelší stoupání trati</small></span></li>
+        <li><span class="km">8,1 km</span><span class="pl">Rochus<small>Výhled na celé Slovácko</small></span></li>
+        <li><span class="km">10 km</span><span class="pl">Návrat do centra<small>Půlmaraton pokračuje druhé kolo</small></span></li>
+      </ul>
     </div>
   </div>
 </section>
 
 <section id="program">
   <div class="wrap">
-    <p class="kicker">Program dne</p>
-    <div class="lead"><h2>Jak poběží sobota.</h2></div>
+    <div class="sec-head rise">
+      <div>
+        <div class="lbl">03 — Program</div>
+        <h2>Jak vypadá sobota.</h2>
+      </div>
+      <p>Depozit, sprchy i masáže jsou v budově radnice, sto metrů od startu.</p>
+    </div>
     <div class="prog">
-      <div class="prow"><div class="time">7:30</div><div class="what">Otevření prezentace<small>Výdej startovních čísel a čipů</small></div></div>
-      <div class="prow"><div class="time">8:45</div><div class="what">Společná rozcvička<small>Na Masarykově náměstí s trenérem</small></div></div>
-      <div class="prow"><div class="time">9:00</div><div class="what">Start půlmaratonu a desítky<small>Hromadný start hlavních tratí</small></div></div>
-      <div class="prow"><div class="time">9:20</div><div class="what">Start rodinného běhu<small>5 km, samostatná vlna</small></div></div>
-      <div class="prow"><div class="time">11:30</div><div class="what">Vyhlášení výsledků<small>Medaile, ceny a tombola</small></div></div>
-      <div class="prow"><div class="time">12:00</div><div class="what">Afterparty s cimbálem<small>Guláš, víno a živá muzika</small></div></div>
+      <div class="prow rise" style="--i:0"><div class="t">07:30</div><div class="w">Otevření prezentace<small>Výdej čísel a čipů, radnice</small></div></div>
+      <div class="prow rise" style="--i:1"><div class="t">08:45</div><div class="w">Společná rozcvička<small>Na náměstí, vede Klára Hrdá</small></div></div>
+      <div class="prow rise" style="--i:2"><div class="t">09:00</div><div class="w">Start půlmaratonu a desítky<small>Hromadný start, koridory podle času</small></div></div>
+      <div class="prow rise" style="--i:3"><div class="t">09:20</div><div class="w">Start rodinného běhu<small>Samostatná vlna, bez koridorů</small></div></div>
+      <div class="prow rise" style="--i:4"><div class="t">11:30</div><div class="w">Vyhlášení výsledků<small>Kategorie muži, ženy, junioři, veteráni</small></div></div>
+      <div class="prow rise" style="--i:5"><div class="t">12:00</div><div class="w">Dozvuky na náměstí<small>Guláš, burčák a cimbálová muzika</small></div></div>
     </div>
   </div>
 </section>
 
-<section class="reg" id="registrace">
-  <div class="wrap reg-grid">
-    <div>
-      <p class="kicker">Online registrace</p>
-      <h2 style="font-size:clamp(30px,5vw,50px)">Zajisti si číslo.</h2>
-      <p style="color:var(--muted);font-size:17px;margin:14px 0 24px;text-transform:none">Kapacita je omezená na 1 500 běžců. Startovné zahrnuje čip, tričko, medaili a občerstvení v cíli.</p>
-      <div class="sponsors">
-        <div class="sp">SLOVÁCKO+</div>
-        <div class="sp">MĚSTO UH</div>
-        <div class="sp">VINAŘSTVÍ</div>
+<section id="registrace" style="background:var(--bone);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div>
+        <div class="lbl">04 — Registrace</div>
+        <h2>Startovné a kapacita.</h2>
+      </div>
+      <p>Registrace probíhá v online systému závodu. Startovné se nevrací, přepis na jiného běžce je zdarma.</p>
+    </div>
+    <div class="reg-grid">
+      <div class="panel rise">
+        <div class="cap">
+          <div class="top">
+            <div class="n">1 184<small> / 1 500</small></div>
+            <div class="lbl">Obsazeno</div>
+          </div>
+          <div class="bar"><i id="bar"></i></div>
+          <p class="rest">Zbývá 316 míst. Loni se doprodalo tři týdny před startem.</p>
+        </div>
+        <ul class="fees">
+          <li class="now"><span>Do 31. srpna</span><span class="when">nyní</span><span class="amt">450 Kč</span></li>
+          <li><span>Od 1. do 10. září</span><span class="when">pozdní</span><span class="amt">550 Kč</span></li>
+          <li><span>Na místě v den závodu</span><span class="when">dle kapacity</span><span class="amt">650 Kč</span></li>
+        </ul>
+        <div class="reg-actions">
+          <button class="btn btn-lg" onclick="demoNote()">Přejít k registraci</button>
+          <span class="deadline">Uzávěrka 10. 9. ve 23:59</span>
+        </div>
+      </div>
+      <div class="rise" style="--i:1">
+        <h3 style="font-size:24px;margin-bottom:8px">Ve startovném máte</h3>
+        <ul class="incl">
+          <li>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#346538" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3.5 3.5L13 5"/></svg>
+            <span>Čipové měření času a výsledky do hodiny po doběhu</span>
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#346538" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3.5 3.5L13 5"/></svg>
+            <span>Funkční tričko ročníku, velikost volíte při registraci</span>
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#346538" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3.5 3.5L13 5"/></svg>
+            <span>Keramickou medaili od místní hrnčířky</span>
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#346538" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3.5 3.5L13 5"/></svg>
+            <span>Občerstvení na trati i v cíli, guláš a nápoj</span>
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#346538" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3.5 3.5L13 5"/></svg>
+            <span>Hlídané odložení věcí, sprchy a masáž po doběhu</span>
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="#346538" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3.5 3.5L13 5"/></svg>
+            <span>Fotografie z trati zdarma ke stažení</span>
+          </li>
+        </ul>
       </div>
     </div>
-    <form onsubmit="demoSubmit(event)">
-      <div class="frow">
-        <div><label>Jméno</label><input type="text" placeholder="Jan" required></div>
-        <div><label>Příjmení</label><input type="text" placeholder="Novák" required></div>
-      </div>
-      <label>E-mail</label>
-      <input type="email" placeholder="jan@email.cz" required>
-      <div class="frow">
-        <div><label>Trasa</label><select><option>5 km — Rodinný běh</option><option>10 km — Desítka</option><option>21 km — Půlmaraton</option></select></div>
-        <div><label>Ročník narození</label><input type="text" placeholder="1990"></div>
-      </div>
-      <button type="submit">Dokončit registraci</button>
-    </form>
+  </div>
+</section>
+
+<section style="padding-top:80px;padding-bottom:80px">
+  <div class="wrap">
+    <div class="lbl rise" style="font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:26px">Závod podporují</div>
+    <div class="partners rise" style="--i:1">
+      <div>Město Uh. Hradiště</div>
+      <div>Vinařství Šardice</div>
+      <div>Slovácké muzeum</div>
+      <div>Běžecká liga Morava</div>
+    </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap">
-    <div><strong>RUN SLOVÁCKO 2025</strong> — 13. 9. 2025 · Uherské Hradiště</div>
-    <div>Ukázkový web · design &amp; realizace <a href="https://pokornymarek.cz" style="color:var(--lime);text-decoration:none" target="_blank" rel="noopener">pokornymarek.cz</a></div>
+  <div class="wrap row2">
+    <div>
+      <div class="brand-f">Run Slovácko 2025</div>
+      <div style="margin-top:8px">13. září 2025 · Masarykovo náměstí, Uherské Hradiště · info@runslovacko.cz</div>
+    </div>
+    <div>Ukázková stránka — návrh a realizace <a href="https://pokornymarek.cz" target="_blank" rel="noopener">pokornymarek.cz</a></div>
   </div>
 </footer>
 
-<div class="toast" id="toast">Registrace přijata! (Ukázka — nic se neodesílá.)</div>
+<div class="toast" id="toast">Registrace je jen ukázková — web nikam neodesílá data.</div>
 <script>
   var target=new Date("2025-09-13T09:00:00").getTime();
-  // Demo běží i po datu závodu — když je po termínu, počítáme k příštímu ročníku.
-  if(target < Date.now()) target=new Date("2026-09-12T09:00:00").getTime();
+  // Ukázka žije i po datu závodu — po termínu odpočítáváme k dalšímu ročníku.
+  if(target<Date.now())target=new Date("2026-09-12T09:00:00").getTime();
   function tick(){
     var diff=Math.max(0,target-Date.now());
-    var d=Math.floor(diff/86400000),h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60;
+    var d=Math.floor(diff/864e5),h=Math.floor(diff/36e5)%24,
+        m=Math.floor(diff/6e4)%60,s=Math.floor(diff/1e3)%60;
     document.getElementById('d').textContent=String(d).padStart(2,'0');
     document.getElementById('h').textContent=String(h).padStart(2,'0');
     document.getElementById('m').textContent=String(m).padStart(2,'0');
     document.getElementById('s').textContent=String(s).padStart(2,'0');
   }
   tick();setInterval(tick,1000);
-  function demoSubmit(e){e.preventDefault();var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3500);e.target.reset();}
+
+  var tT;
+  function demoNote(){
+    var t=document.getElementById('toast');t.classList.add('show');
+    clearTimeout(tT);tT=setTimeout(function(){t.classList.remove('show')},3600);
+  }
+
+  var risers=document.querySelectorAll('.rise');
+  function fillBar(){var b=document.getElementById('bar');if(b)b.style.width='78.9%'}
+  function revealAll(){risers.forEach(function(el){el.classList.add('in')});fillBar()}
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          if(e.target.querySelector('#bar'))setTimeout(fillBar,220);
+          io.unobserve(e.target);
+        }
+      })
+    },{rootMargin:'0px 0px -8% 0px',threshold:.1});
+    risers.forEach(function(el){io.observe(el)});
+    // Pojistka: při načtení na pozadí (ctrl+klik) callbacky nechodí — obsah
+    // by zůstal neviditelný. Když se do chvíle nic neodkrylo, odkryjeme vše.
+    setTimeout(function(){if(!document.querySelector('.rise.in'))revealAll()},1500);
+  } else {
+    revealAll();
+  }
 </script>
 </body>
 </html>
