@@ -4,397 +4,699 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<title>Truhlářství Kovář — nábytek na míru, Uherské Hradiště</title>
+<title>Truhlářství Kovář — kuchyně a vestavby na milimetr</title>
 <style>
+  /* ── Geist, self-hostovaný (CSP povoluje jen 'self') ── */
+  @font-face{font-family:Geist;font-style:normal;font-weight:100 900;font-display:swap;
+    src:url('/fonts/geist-latin-ext.woff2') format('woff2');
+    unicode-range:U+100-2BA,U+2BD-2C5,U+2C7-2CC,U+2CE-2D7,U+2DD-2FF,U+304,U+308,U+329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:Geist;font-style:normal;font-weight:100 900;font-display:swap;
+    src:url('/fonts/geist-latin.woff2') format('woff2');
+    unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Geist Mono';font-style:normal;font-weight:100 900;font-display:swap;
+    src:url('/fonts/geist-mono-latin-ext.woff2') format('woff2');
+    unicode-range:U+100-2BA,U+2BD-2C5,U+2C7-2CC,U+2CE-2D7,U+2DD-2FF,U+304,U+308,U+329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:'Geist Mono';font-style:normal;font-weight:100 900;font-display:swap;
+    src:url('/fonts/geist-mono-latin.woff2') format('woff2');
+    unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
   :root{
-    --canvas:#FBFBFA; --surface:#FFFFFF; --bone:#F7F6F3;
-    --ink:#111111; --muted:#787774; --line:#EAEAEA;
-    --accent-bg:#FBF3DB; --accent-tx:#956400;
-    --sans:-apple-system,'SF Pro Display','Helvetica Neue','Segoe UI',system-ui,sans-serif;
-    --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
-    --mono:ui-monospace,'SF Mono','Cascadia Code',Consolas,monospace;
+    --black:#141414; --deep:#0E0E0E; --bone:#F0EDE4; --dust:#D8D5CC;
+    --chalk:#FAF9F5; --ink:#17181A; --muted:#7A776E;
+    --line:rgba(23,24,26,.12); --line-d:rgba(240,237,228,.14);
+    --mark:#E8DC55;
+    --sans:Geist,-apple-system,'Segoe UI',system-ui,sans-serif;
+    --mono:'Geist Mono',ui-monospace,'SF Mono',Consolas,monospace;
+    --pad:clamp(20px,4vw,48px);
+    --gap:clamp(72px,11vw,160px);
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-  body{font-family:var(--sans);background:var(--canvas);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.025em;line-height:1.08}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--bone);color:var(--ink);
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3{font-weight:500;letter-spacing:-.03em;line-height:1}
   a{color:inherit;text-decoration:none}
-  ::selection{background:var(--accent-bg)}
+  button{font-family:inherit}
+  ::selection{background:var(--mark);color:var(--black)}
 
-  /* ambient warm light — velmi nenápadné */
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-    background:radial-gradient(60% 45% at 78% 8%,rgba(149,100,0,.05),transparent 70%)}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
-  @media(max-width:600px){.wrap{padding:0 20px}}
+  .wrap{max-width:1400px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  .band{padding:var(--gap) 0}
+  .dark{background:var(--black);color:var(--bone)}
+  .dust{background:var(--dust)}
+  .mark-bg{background:var(--mark);color:var(--black)}
 
-  .demo-bar{background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;
-    letter-spacing:.08em;text-transform:uppercase;padding:9px 20px;text-align:center;position:relative;z-index:3}
-  .demo-bar a{border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:1px}
+  /* blueprint mřížka na tmavém */
+  .grid-bg{position:relative}
+  .grid-bg::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(var(--line-d) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--line-d) 1px,transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(120% 90% at 70% 0%,#000 35%,transparent 78%)}
+  .grid-bg>*{position:relative}
 
-  header{position:sticky;top:0;z-index:40;background:rgba(251,251,250,.82);
-    backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
-  .brand{font-family:var(--serif);font-size:19px;letter-spacing:-.02em}
-  .brand i{font-style:normal;color:var(--muted)}
-  .nav nav{display:flex;gap:34px;font-family:var(--mono);font-size:11px;
-    letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  .nav nav a:hover{color:var(--ink)}
-  .btn{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:#fff;
-    padding:12px 22px;border-radius:5px;font-size:14px;font-weight:500;
-    transition:background .2s,transform .1s;border:none;cursor:pointer;font-family:var(--sans)}
-  .btn:hover{background:#333}
-  .btn:active{transform:scale(.98)}
-  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  .btn-ghost:hover{background:var(--bone)}
-  .btn-sm{padding:10px 18px;font-size:13px}
-  @media(max-width:840px){.nav nav{display:none}}
+  .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .dark .lbl{color:rgba(240,237,228,.45)}
+  .mark-bg .lbl{color:rgba(20,20,20,.55)}
 
-  .tag{display:inline-block;background:var(--accent-bg);color:var(--accent-tx);
-    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-    padding:5px 12px;border-radius:9999px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    background:var(--mark);color:var(--black);border:1px solid var(--mark);
+    padding:13px 22px;border-radius:4px;font-size:14px;font-weight:500;
+    min-height:44px;cursor:pointer;transition:background .2s,transform .08s}
+  .btn:hover{background:#EFE470}
+  .btn:active{transform:translateY(1px)}
+  .btn-line{background:transparent;color:inherit;border-color:currentColor;opacity:.85}
+  .btn-line:hover{background:rgba(240,237,228,.08);opacity:1}
+  .arrow{width:14px;height:14px;flex:none}
 
-  section{padding:120px 0;position:relative;z-index:1}
-  @media(max-width:760px){section{padding:76px 0}}
-  .sec-head{max-width:640px;margin-bottom:64px}
-  .sec-head .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--muted);margin-bottom:20px}
-  .sec-head h2{font-size:clamp(30px,4.2vw,46px)}
-  .sec-head p{color:var(--muted);font-size:17px;margin-top:18px;max-width:52ch}
+  /* ── NAV ── */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:60;padding:12px var(--pad);
+    transition:padding .3s cubic-bezier(.16,1,.3,1)}
+  .nav-in{max-width:1400px;margin:0 auto;background:var(--deep);color:var(--bone);
+    border-radius:6px;display:flex;align-items:center;justify-content:space-between;
+    gap:20px;padding:10px 10px 10px 20px;
+    box-shadow:0 1px 0 rgba(240,237,228,.08) inset}
+  .logo{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;white-space:nowrap}
+  .logo span{color:var(--mark)}
+  .nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;color:rgba(240,237,228,.55)}
+  .nav-links a:hover{color:var(--bone)}
+  @media(max-width:900px){.nav-links{display:none}}
 
-  /* HERO */
-  .hero{padding:110px 0 120px}
-  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center}
-  @media(max-width:940px){.hero-grid{grid-template-columns:1fr;gap:48px}}
-  .hero h1{font-size:clamp(44px,6.4vw,78px);margin:26px 0 0;max-width:12ch}
-  .hero h1 em{font-style:italic;color:var(--muted)}
-  .hero .lead{color:var(--muted);font-size:19px;margin-top:26px;max-width:40ch;line-height:1.65}
-  .hero-cta{margin-top:38px;display:flex;gap:12px;flex-wrap:wrap}
-  .hero-meta{margin-top:56px;display:flex;gap:44px;flex-wrap:wrap;
-    padding-top:28px;border-top:1px solid var(--line)}
-  .hero-meta .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--muted)}
-  .hero-meta .v{font-family:var(--serif);font-size:26px;margin-top:6px}
-  .hero-art{background:var(--surface);border:1px solid var(--line);border-radius:12px;
-    padding:40px;aspect-ratio:1/1.06;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-  .hero-art .swatch{position:absolute;width:150px;height:150px;background:var(--accent-bg);
-    border-radius:10px;right:-34px;bottom:-34px}
-  .hero-art svg{position:relative;width:100%;height:auto}
+  /* ── HERO ── */
+  .hero{padding-top:clamp(120px,16vw,190px);padding-bottom:clamp(56px,7vw,90px)}
+  .hero-top{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+    gap:clamp(28px,5vw,72px);align-items:end}
+  @media(max-width:900px){.hero-top{grid-template-columns:1fr;gap:28px;align-items:start}}
+  .hero h1{font-size:clamp(46px,8.6vw,124px);letter-spacing:-.045em;line-height:.92}
+  .hero h1 em{font-style:normal;color:var(--mark)}
+  .hero-note{font-size:clamp(15px,1.15vw,17px);color:rgba(240,237,228,.62);max-width:46ch;
+    padding-bottom:8px}
+  .hero-note b{color:var(--bone);font-weight:500}
 
-  /* BENTO REALIZACE */
-  .bento{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:236px;gap:16px}
-  @media(max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:600px){.bento{grid-template-columns:1fr;grid-auto-rows:210px}}
-  .cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;
-    padding:26px;display:flex;flex-direction:column;justify-content:space-between;
-    overflow:hidden;position:relative;transition:box-shadow .25s,transform .25s}
-  .cell:hover{box-shadow:0 2px 8px rgba(0,0,0,.04);transform:translateY(-2px)}
-  .cell.tall{grid-row:span 2}
-  .cell.wide{grid-column:span 2}
-  @media(max-width:600px){.cell.tall,.cell.wide{grid-row:span 1;grid-column:span 1}}
-  .cell .art{flex:1;display:flex;align-items:center;justify-content:center;padding:8px 0;min-height:0}
-  .cell .art svg{max-width:100%;max-height:100%;height:auto}
-  .cell h3{font-size:20px;letter-spacing:-.015em}
-  .cell .meta{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--muted);margin-top:7px}
-  .cell.bone{background:var(--bone)}
+  .plan{margin-top:clamp(40px,5vw,64px);background:var(--deep);border:1px solid var(--line-d);
+    border-radius:6px;padding:clamp(18px,2.4vw,30px);position:relative;overflow:hidden}
+  .plan-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+  .plan svg{width:100%;height:auto;display:block}
 
-  /* POSTUP */
-  .steps{border-top:1px solid var(--line)}
-  .step{display:grid;grid-template-columns:64px 1fr 1fr;gap:32px;
-    padding:36px 0;border-bottom:1px solid var(--line);align-items:baseline}
-  @media(max-width:760px){.step{grid-template-columns:44px 1fr;gap:20px}
-    .step p{grid-column:2}}
-  .step .n{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em}
-  .step h3{font-size:24px}
-  .step p{color:var(--muted);font-size:16px}
+  .stats{margin-top:clamp(28px,3.4vw,44px);display:grid;grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line-d)}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{padding:22px 22px 22px 0;border-right:1px solid var(--line-d)}
+  .stat:last-child{border-right:none}
+  @media(max-width:760px){
+    .stat{padding:18px 16px 18px 0}
+    .stat:nth-child(2n){border-right:none}
+    .stat:nth-child(-n+2){border-bottom:1px solid var(--line-d)}
+  }
+  .stat .n{font-size:clamp(28px,3.2vw,42px);letter-spacing:-.03em;font-weight:500;line-height:1}
+  .stat .n small{font-family:var(--mono);font-size:13px;color:var(--mark);margin-left:4px;letter-spacing:0}
+  .stat .k{margin-top:9px}
 
-  /* MATERIÁLY */
-  .mats{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-  .mat{border:1px solid var(--line);background:var(--surface);border-radius:9999px;
-    padding:9px 18px;font-size:13px;color:var(--muted)}
-  .mat b{color:var(--ink);font-weight:500}
+  /* ── PÁS MATERIÁLŮ ── */
+  .strip{background:var(--bone);border-bottom:1px solid var(--line);padding:26px 0;overflow:hidden}
+  .marq{display:flex;gap:56px;width:max-content;animation:slide 34s linear infinite}
+  .marq span{font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);white-space:nowrap}
+  @keyframes slide{to{transform:translateX(-50%)}}
+  .strip:hover .marq{animation-play-state:paused}
 
-  /* POPTÁVKA */
-  .contact{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
-  @media(max-width:880px){.contact{grid-template-columns:1fr;gap:44px}}
-  .facts{list-style:none}
-  .facts li{padding:22px 0;border-bottom:1px solid var(--line)}
-  .facts li:first-child{padding-top:0}
-  .facts .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--muted)}
-  .facts .v{font-size:19px;margin-top:6px}
-  form{background:var(--surface);border:1px solid var(--line);border-radius:12px;
-    padding:36px;display:flex;flex-direction:column;gap:20px}
-  .field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;
-    text-transform:uppercase;color:var(--muted);margin-bottom:9px}
-  .field input,.field textarea,.field select{width:100%;font:inherit;font-size:15px;
-    padding:13px 15px;border:1px solid var(--line);border-radius:6px;background:var(--canvas);
-    color:var(--ink);transition:border-color .2s}
-  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:#c9c8c3;background:#fff}
-  .field textarea{resize:vertical;min-height:104px}
+  /* ── STATEMENT ── */
+  .stmt{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+    gap:clamp(28px,5vw,80px);align-items:start}
+  @media(max-width:900px){.stmt{grid-template-columns:1fr;gap:26px}}
+  .stmt h2{font-size:clamp(34px,5.4vw,76px);letter-spacing:-.04em;line-height:.98}
+  .stmt h2 em{font-style:normal;color:var(--muted)}
+  .stmt-copy{font-size:17px;color:var(--muted);max-width:58ch}
+  .stmt-copy p+p{margin-top:16px}
 
-  footer{border-top:1px solid var(--line);padding:56px 0;font-size:14px;color:var(--muted);position:relative;z-index:1}
-  footer .row{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:baseline}
-  footer .brand-f{font-family:var(--serif);font-size:17px;color:var(--ink)}
-  footer a{border-bottom:1px solid var(--line)}
-  footer a:hover{border-color:var(--muted)}
+  /* ── PILÍŘE ── */
+  .pillar{border-top:1px solid var(--line);padding:clamp(34px,4.4vw,58px) 0;
+    display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+    gap:clamp(24px,4vw,64px);align-items:center}
+  .dark .pillar{border-color:var(--line-d)}
+  @media(max-width:860px){.pillar{grid-template-columns:1fr;gap:22px}}
+  .pillar h3{font-size:clamp(30px,4.6vw,60px);letter-spacing:-.035em}
+  .pillar .txt{color:var(--muted);font-size:16px;max-width:44ch;margin-top:14px}
+  .dark .pillar .txt{color:rgba(240,237,228,.55)}
+  .pillar .draw{border:1px solid var(--line);border-radius:6px;padding:18px 20px;background:var(--chalk)}
+  .dark .pillar .draw{border-color:var(--line-d);background:var(--deep)}
+  .pillar .draw svg{width:100%;height:auto;display:block}
+  .dim{font-family:var(--mono);font-size:10px;letter-spacing:.06em}
 
-  .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(140px);
-    background:var(--ink);color:#fff;padding:15px 24px;border-radius:8px;font-size:14px;
-    transition:transform .5s cubic-bezier(.16,1,.3,1);z-index:90}
+  /* ── POSTUP (schodovitě, ne tři stejné karty) ── */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:clamp(34px,4vw,56px)}
+  @media(max-width:860px){.steps{grid-template-columns:1fr}}
+  .step{background:var(--chalk);border:1px solid var(--line);border-radius:6px;
+    padding:clamp(22px,2.4vw,30px);display:flex;flex-direction:column;gap:14px}
+  .step:nth-child(1){margin-top:0}
+  .step:nth-child(2){margin-top:38px}
+  .step:nth-child(3){margin-top:76px}
+  @media(max-width:860px){.step{margin-top:0!important}}
+  .step .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+  .step h4{font-size:21px;font-weight:500;letter-spacing:-.02em}
+  .step p{font-size:15px;color:var(--muted)}
+  .step .when{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink)}
+
+  /* ── CITÁT ── */
+  .quote{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.72fr);
+    gap:clamp(24px,4vw,64px);align-items:end}
+  @media(max-width:860px){.quote{grid-template-columns:1fr;gap:24px}}
+  .quote p{font-size:clamp(22px,2.8vw,38px);letter-spacing:-.03em;line-height:1.16;font-weight:400}
+  .quote .by{margin-top:22px}
+
+  /* ── CASE (žlutý pás) ── */
+  .case{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(26px,4vw,64px);align-items:center;margin-top:clamp(32px,4vw,52px)}
+  @media(max-width:860px){.case{grid-template-columns:1fr}}
+  .case-card{background:var(--black);color:var(--bone);border-radius:6px;padding:clamp(20px,2.4vw,30px)}
+  .case-card svg{width:100%;height:auto;display:block}
+  .case dl{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(20,20,20,.16);
+    border:1px solid rgba(20,20,20,.16);border-radius:6px;overflow:hidden;margin-top:26px}
+  .case dl>div{background:var(--mark);padding:16px 18px}
+  .case dt{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+    text-transform:uppercase;color:rgba(20,20,20,.6)}
+  .case dd{font-size:18px;margin-top:6px;font-weight:500;letter-spacing:-.02em}
+
+  /* ── FAQ ── */
+  .faq{margin-top:clamp(30px,3.6vw,50px);border-top:1px solid var(--line)}
+  .dark .faq{border-color:var(--line-d)}
+  .q{border-bottom:1px solid var(--line)}
+  .dark .q{border-bottom-color:var(--line-d)}
+  .q button{width:100%;background:none;border:none;text-align:left;cursor:pointer;
+    padding:24px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;
+    font-size:clamp(17px,1.8vw,23px);letter-spacing:-.02em;color:inherit;min-height:44px}
+  .q .sign{font-family:var(--mono);font-size:20px;flex:none;color:var(--mark);
+    transition:transform .3s cubic-bezier(.16,1,.3,1)}
+  .q[open] .sign{transform:rotate(45deg)}
+  .q .a{overflow:hidden;max-height:0;transition:max-height .45s cubic-bezier(.16,1,.3,1)}
+  .q .a p{padding-bottom:24px;color:var(--muted);font-size:16px;max-width:62ch}
+  .dark .q .a p{color:rgba(240,237,228,.55)}
+
+  /* ── POPTÁVKA ── */
+  .form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(26px,4vw,72px);align-items:start}
+  @media(max-width:900px){.form-grid{grid-template-columns:1fr;gap:32px}}
+  form{display:flex;flex-direction:column;gap:18px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.frow{grid-template-columns:1fr}}
+  .f label{display:block;margin-bottom:8px}
+  .f input,.f select,.f textarea{width:100%;font:inherit;font-size:15px;padding:13px 14px;
+    background:var(--deep);color:var(--bone);border:1px solid var(--line-d);border-radius:4px;
+    min-height:44px;transition:border-color .2s}
+  .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--mark)}
+  .f textarea{resize:vertical;min-height:100px}
+  .contact{list-style:none}
+  .contact li{padding:20px 0;border-bottom:1px solid var(--line-d)}
+  .contact li:first-child{border-top:1px solid var(--line-d)}
+  .contact .v{font-size:19px;margin-top:6px;letter-spacing:-.02em}
+
+  /* ── PATIKA ── */
+  footer{background:var(--deep);color:var(--bone);padding:clamp(56px,7vw,96px) 0 40px}
+  .fnav{display:flex;flex-wrap:wrap;gap:0 clamp(16px,2.4vw,32px);
+    font-size:clamp(30px,6.4vw,78px);letter-spacing:-.04em;font-weight:500;line-height:1.06}
+  .fnav a{color:rgba(240,237,228,.42);transition:color .2s}
+  .fnav a:hover{color:var(--mark)}
+  .fbot{margin-top:clamp(40px,5vw,72px);padding-top:26px;border-top:1px solid var(--line-d);
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    font-size:13px;color:rgba(240,237,228,.45)}
+  .fbot a{color:var(--mark)}
+
+  .demo-bar{background:var(--mark);color:var(--black);font-family:var(--mono);font-size:11px;
+    letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:8px 16px;
+    position:relative;z-index:70}
+  .demo-bar a{border-bottom:1px solid rgba(20,20,20,.4);font-weight:600}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(150px);
+    background:var(--mark);color:var(--black);padding:14px 24px;border-radius:5px;
+    font-size:14px;font-weight:500;z-index:95;
+    transition:transform .55s cubic-bezier(.16,1,.3,1)}
   .toast.show{transform:translateX(-50%) translateY(0)}
 
-  .rise{opacity:0;transform:translateY(12px);
-    transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);
-    transition-delay:calc(var(--i,0) * 80ms)}
+  .rise{opacity:0;transform:translateY(14px);
+    transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);
+    transition-delay:calc(var(--i,0)*75ms)}
   .rise.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
+  @media(prefers-reduced-motion:reduce){
+    .rise{opacity:1;transform:none;transition:none}
+    .marq{animation:none}
+  }
 </style>
 </head>
 <body>
+
 <div class="demo-bar">Ukázková stránka · navrhl a postavil <a href="https://pokornymarek.cz" target="_blank" rel="noopener">pokornymarek.cz</a></div>
 
-<header>
-  <div class="wrap nav">
-    <div class="brand">Truhlářství <i>Kovář</i></div>
-    <nav>
-      <a href="#realizace">Realizace</a>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <div class="logo">Kovář<span>.</span></div>
+    <div class="nav-links">
+      <a href="#cim">Čím se lišíme</a>
       <a href="#postup">Postup</a>
-      <a href="#material">Materiál</a>
-      <a href="#poptavka">Kontakt</a>
-    </nav>
-    <a href="#poptavka" class="btn btn-sm">Nezávazná poptávka</a>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="tag rise">Dílna od roku 1998 · Uherské Hradiště</span>
-      <h1 class="rise" style="--i:1">Nábytek, který <em>přežije</em> své majitele.</h1>
-      <p class="lead rise" style="--i:2">Kuchyně, vestavěné skříně a masivní stoly z dubu, jasanu a ořechu. Každý kus kreslím, vyrábím a montuji sám.</p>
-      <div class="hero-cta rise" style="--i:3">
-        <a href="#poptavka" class="btn">Poptat nábytek</a>
-        <a href="#realizace" class="btn btn-ghost">Prohlédnout realizace</a>
-      </div>
-      <div class="hero-meta rise" style="--i:4">
-        <div><div class="k">Realizací</div><div class="v">340+</div></div>
-        <div><div class="k">Záruka</div><div class="v">5 let</div></div>
-        <div><div class="k">Zaměření</div><div class="v">Zdarma</div></div>
-      </div>
+      <a href="#realizace">Realizace</a>
+      <a href="#faq">Otázky</a>
     </div>
-    <div class="hero-art rise" style="--i:2">
-      <div class="swatch"></div>
-      <svg viewBox="0 0 320 300" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <!-- jídelní stůl, jednotažná kresba -->
-        <path d="M28 132h264"/>
-        <path d="M28 132l16-16h232l16 16"/>
-        <path d="M52 132v126M268 132v126"/>
-        <path d="M52 186h216" stroke-dasharray="1 7" opacity=".5"/>
-        <path d="M96 132v22h128v-22"/>
-        <!-- židle -->
-        <path d="M120 258v-58h80v58" opacity=".35"/>
-        <path d="M120 218h80" opacity=".35"/>
-        <!-- letokruhy v desce -->
-        <path d="M44 122c40-9 80 6 118-2s76-11 114 2" opacity=".35"/>
-        <path d="M48 127c46-6 78 5 122-3s72-8 106 4" opacity=".2"/>
-        <!-- hoblina -->
-        <path d="M232 268c14-4 26-14 30-28-16 2-27 12-30 28z" opacity=".5"/>
+    <a href="#poptavka" class="btn">Chci cenovou nabídku
+      <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- ════ HERO ════ -->
+<section class="dark grid-bg hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <h1 class="rise">Na milimetr.<br><em>Napoprvé.</em></h1>
+      <p class="hero-note rise" style="--i:1">
+        Kuchyně a vestavěné skříně kreslím v CAD, řežu na formátovací pile
+        s digitálním odměřováním a montuji sám. <b>Za dvacet sedm let jsem
+        nepřekreslil ani jednu skříň na stavbě.</b>
+      </p>
+    </div>
+
+    <div class="plan rise" style="--i:2">
+      <div class="plan-head">
+        <span class="lbl">Výkres 04 — kuchyňská linka, pohled</span>
+        <span class="lbl">Měřítko 1:20 · tolerance ±0,5 mm</span>
+      </div>
+      <svg viewBox="0 0 1200 300" fill="none" stroke="#F0EDE4" stroke-width="1.2"
+           stroke-linecap="round" stroke-linejoin="round" aria-label="Technický výkres kuchyňské linky">
+        <!-- horní kóta -->
+        <g stroke="#E8DC55" opacity=".85">
+          <path d="M60 34h1080"/>
+          <path d="M60 28v12M1140 28v12"/>
+          <path d="M66 30l-6 4 6 4M1134 30l6 4-6 4"/>
+        </g>
+        <text x="600" y="24" fill="#E8DC55" font-family="Geist Mono,monospace" font-size="13" text-anchor="middle" letter-spacing="1">4 200 mm</text>
+
+        <!-- horní skříňky -->
+        <g opacity=".9">
+          <rect x="60" y="60" width="200" height="86" rx="1"/>
+          <rect x="260" y="60" width="200" height="86" rx="1"/>
+          <rect x="460" y="60" width="150" height="86" rx="1"/>
+          <path d="M150 96v14M350 96v14M525 96v14" opacity=".6"/>
+        </g>
+        <!-- digestoř -->
+        <path d="M610 60h150l-24 44h-102z" opacity=".9"/>
+        <path d="M640 104h90v14h-90z" opacity=".7"/>
+        <!-- horní vpravo -->
+        <rect x="760" y="60" width="180" height="86" rx="1" opacity=".9"/>
+        <rect x="940" y="60" width="200" height="86" rx="1" opacity=".9"/>
+        <path d="M850 96v14M1040 96v14" opacity=".6"/>
+
+        <!-- pracovní deska -->
+        <path d="M60 196h1080" stroke="#E8DC55" stroke-width="3"/>
+        <path d="M60 202h1080" opacity=".35"/>
+
+        <!-- spodní skříňky -->
+        <g opacity=".9">
+          <rect x="60" y="206" width="170" height="82" rx="1"/>
+          <rect x="230" y="206" width="170" height="82" rx="1"/>
+          <path d="M400 206h180v82H400z"/>
+          <path d="M400 234h180M400 262h180" opacity=".5"/>
+          <rect x="580" y="206" width="200" height="82" rx="1"/>
+          <rect x="780" y="206" width="180" height="82" rx="1"/>
+          <rect x="960" y="206" width="180" height="82" rx="1"/>
+        </g>
+        <!-- úchyty -->
+        <g opacity=".55">
+          <path d="M120 220h50M290 220h50M640 220h50M840 220h50M1020 220h50"/>
+        </g>
+        <!-- dřez -->
+        <path d="M620 168h120v24H620z" opacity=".6"/>
+        <!-- varná deska -->
+        <circle cx="300" cy="180" r="9" opacity=".5"/><circle cx="330" cy="180" r="9" opacity=".5"/>
+        <circle cx="300" cy="180" r="9" opacity=".5"/><circle cx="360" cy="180" r="9" opacity=".5"/>
+
+        <!-- boční kóta -->
+        <g stroke="#E8DC55" opacity=".85">
+          <path d="M1168 60v228"/>
+          <path d="M1162 60h12M1162 288h12"/>
+        </g>
+        <text x="1180" y="180" fill="#E8DC55" font-family="Geist Mono,monospace" font-size="13"
+              text-anchor="middle" letter-spacing="1" transform="rotate(90 1180 180)">2 280 mm</text>
+
+        <!-- podlaha, šrafování -->
+        <path d="M40 292h1120" opacity=".5"/>
+        <g opacity=".22">
+          <path d="M40 300l10-8M70 300l10-8M100 300l10-8M130 300l10-8M160 300l10-8M190 300l10-8M220 300l10-8M250 300l10-8M280 300l10-8M310 300l10-8M340 300l10-8M370 300l10-8M400 300l10-8M430 300l10-8M460 300l10-8M490 300l10-8M520 300l10-8M550 300l10-8M580 300l10-8M610 300l10-8M640 300l10-8M670 300l10-8M700 300l10-8M730 300l10-8M760 300l10-8M790 300l10-8M820 300l10-8M850 300l10-8M880 300l10-8M910 300l10-8M940 300l10-8M970 300l10-8M1000 300l10-8M1030 300l10-8M1060 300l10-8M1090 300l10-8M1120 300l10-8"/>
+        </g>
       </svg>
     </div>
-  </div>
-</section>
 
-<section id="realizace">
-  <div class="wrap">
-    <div class="sec-head rise">
-      <div class="lbl">01 — Realizace</div>
-      <h2>Vybrané kusy z posledních sezón.</h2>
-      <p>Fotografie posílám na vyžádání i s rozpočtem, ať víte, do čeho jdete. Tady je průřez tím, co dělám nejčastěji.</p>
-    </div>
-    <div class="bento">
-      <div class="cell tall rise" style="--i:0">
-        <div>
-          <h3>Kuchyně v dubovém masivu</h3>
-          <div class="meta">Ostrov 3,2 m · fréz. úchyt · Kunovice</div>
-        </div>
-        <div class="art">
-          <svg viewBox="0 0 240 200" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round">
-            <rect x="18" y="40" width="86" height="120" rx="2"/>
-            <rect x="118" y="40" width="104" height="52" rx="2"/>
-            <path d="M18 96h86M61 40v120M61 96h43"/>
-            <path d="M40 68v10M82 68v10M40 124v10M82 124v10" opacity=".55"/>
-            <rect x="118" y="112" width="104" height="48" rx="2" fill="#FBF3DB" stroke="none"/>
-            <rect x="118" y="112" width="104" height="48" rx="2"/>
-            <path d="M150 136h40" opacity=".55"/>
-            <path d="M12 168h216" opacity=".3"/>
-          </svg>
-        </div>
-      </div>
-      <div class="cell wide bone rise" style="--i:1">
-        <div>
-          <h3>Vestavěná skříň pod schody</h3>
-          <div class="meta">Atyp 4,1 m · dýha jasan · Staré Město</div>
-        </div>
-        <div class="art">
-          <svg viewBox="0 0 400 120" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round">
-            <path d="M20 104V64l60-40h300v80z"/>
-            <path d="M80 24v80M150 46v58M220 46v58M290 46v58"/>
-            <path d="M150 46h230" opacity=".45"/>
-            <path d="M115 70v10M185 74v10M255 74v10M325 74v10" opacity=".6"/>
-            <path d="M8 104h384" opacity=".3"/>
-          </svg>
-        </div>
-      </div>
-      <div class="cell rise" style="--i:2">
-        <div>
-          <h3>Jídelní stůl — jasan</h3>
-          <div class="meta">220 × 95 cm · olejovaný</div>
-        </div>
-        <div class="art">
-          <svg viewBox="0 0 200 100" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round">
-            <path d="M16 40h168l-10-12H26z"/>
-            <path d="M34 40v44M166 40v44M34 62h132" opacity=".9"/>
-            <path d="M30 34c34-6 62 4 92-1s40-4 52 1" opacity=".35"/>
-            <path d="M8 84h184" opacity=".3"/>
-          </svg>
-        </div>
-      </div>
-      <div class="cell rise" style="--i:3">
-        <div>
-          <h3>Schodiště s ocelí</h3>
-          <div class="meta">Dub · černý rám · Hluk</div>
-        </div>
-        <div class="art">
-          <svg viewBox="0 0 200 110" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round">
-            <path d="M24 96V72h32V54h32V36h32V18h34"/>
-            <path d="M24 96h150" opacity=".3"/>
-            <path d="M56 72v24M88 54v42M120 36v60M152 18v78" opacity=".4"/>
-            <path d="M40 62l128-44" opacity=".6"/>
-          </svg>
-        </div>
-      </div>
-      <div class="cell rise" style="--i:4">
-        <div>
-          <h3>Knihovna do pracovny</h3>
-          <div class="meta">Ořech · skryté LED · Uh. Hradiště</div>
-        </div>
-        <div class="art">
-          <svg viewBox="0 0 200 110" fill="none" stroke="#111" stroke-width="1.5" stroke-linecap="round">
-            <rect x="22" y="14" width="156" height="82" rx="2"/>
-            <path d="M22 42h156M22 70h156M100 14v82"/>
-            <path d="M34 24v14M42 26v12M50 24v14" opacity=".6"/>
-            <rect x="112" y="76" width="54" height="14" fill="#FBF3DB" stroke="none"/>
-            <path d="M112 52h40" opacity=".55"/>
-          </svg>
-        </div>
-      </div>
+    <div class="stats">
+      <div class="stat rise"><div class="n">341</div><div class="k lbl">Hotových realizací</div></div>
+      <div class="stat rise" style="--i:1"><div class="n">27<small>let</small></div><div class="k lbl">V jedné dílně</div></div>
+      <div class="stat rise" style="--i:2"><div class="n">±0,5<small>mm</small></div><div class="k lbl">Tolerance na dílu</div></div>
+      <div class="stat rise" style="--i:3"><div class="n">5<small>let</small></div><div class="k lbl">Záruka na kování</div></div>
     </div>
   </div>
 </section>
 
-<section id="postup" style="background:var(--bone);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+<!-- ════ MATERIÁLY ════ -->
+<div class="strip">
+  <div class="marq" aria-hidden="true">
+    <span>Blum kování</span><span>Egger LTD</span><span>Osmo tvrdý vosk</span><span>Dub z Buchlovic</span>
+    <span>Hranipex ABS</span><span>Festool</span><span>Rehau hrany</span><span>Jasan · ořech · buk</span>
+    <span>Blum kování</span><span>Egger LTD</span><span>Osmo tvrdý vosk</span><span>Dub z Buchlovic</span>
+    <span>Hranipex ABS</span><span>Festool</span><span>Rehau hrany</span><span>Jasan · ořech · buk</span>
+  </div>
+</div>
+
+<!-- ════ STATEMENT ════ -->
+<section class="band" id="cim">
+  <div class="wrap stmt">
+    <h2 class="rise">Přesnost je jen<br>začátek. <em>Zbytek je&nbsp;termín.</em></h2>
+    <div class="stmt-copy rise" style="--i:1">
+      <p>Většina stížností na truhláře nezní „je to ošklivé". Zní „měl přijít v úterý
+        a je pátek" a „dvířka drhnou o sebe".</p>
+      <p>Proto dělám jen tolik zakázek, kolik stihnu. Dostanete jedno datum montáže
+        a jedno číslo v nabídce — obojí platí i po podpisu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ PILÍŘE ════ -->
+<section class="dark grid-bg band">
   <div class="wrap">
-    <div class="sec-head rise">
-      <div class="lbl">02 — Postup</div>
-      <h2>Od zaměření po montáž trvá šest až deset týdnů.</h2>
+    <span class="lbl rise">Čím se to liší</span>
+
+    <div class="pillar rise" style="margin-top:34px">
+      <div>
+        <h3>Zaměření</h3>
+        <p class="txt">Laser, ne svinovací metr. Zdi nejsou nikdy rovné — zaměřuju
+          v pěti výškách a díly kreslím podle skutečnosti, ne podle projektu.</p>
+      </div>
+      <div class="draw">
+        <svg viewBox="0 0 640 190" fill="none" stroke="#F0EDE4" stroke-width="1.3" stroke-linecap="round">
+          <path d="M40 30v130M600 30v130" opacity=".8"/>
+          <path d="M40 30c14 22 -8 44 4 66s-6 44 2 64" stroke="#E8DC55" stroke-dasharray="4 5"/>
+          <g stroke="#E8DC55" opacity=".9">
+            <path d="M60 44h520M60 96h520M60 148h520" stroke-dasharray="3 6"/>
+          </g>
+          <g fill="#E8DC55" stroke="none" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1">
+            <text x="596" y="40" text-anchor="end">2 984 mm</text>
+            <text x="596" y="92" text-anchor="end">2 991 mm</text>
+            <text x="596" y="144" text-anchor="end">2 979 mm</text>
+          </g>
+          <circle cx="70" cy="44" r="3.5" fill="#E8DC55" stroke="none"/>
+          <circle cx="70" cy="96" r="3.5" fill="#E8DC55" stroke="none"/>
+          <circle cx="70" cy="148" r="3.5" fill="#E8DC55" stroke="none"/>
+          <path d="M20 160h600" opacity=".5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="pillar rise">
+      <div>
+        <h3>Spoje</h3>
+        <p class="txt">Kolíky a lamely, u pohledových kusů rybina. Nic, co drží
+          jen na vrutu do dřevotřísky.</p>
+      </div>
+      <div class="draw">
+        <svg viewBox="0 0 640 190" fill="none" stroke="#F0EDE4" stroke-width="1.3" stroke-linejoin="round">
+          <path d="M120 40h180v110H120z" opacity=".85"/>
+          <path d="M300 40l90-24v110l-90 24" opacity=".6"/>
+          <g stroke="#E8DC55">
+            <path d="M120 66h44l10-10h26l10 10h44M120 106h44l10-10h26l10 10h44"/>
+          </g>
+          <path d="M420 58h120v74H420z" opacity=".55"/>
+          <path d="M440 58v74M470 58v74M500 58v74" opacity=".35"/>
+          <g stroke="#E8DC55" opacity=".9">
+            <path d="M120 168h180"/><path d="M120 162v12M300 162v12"/>
+          </g>
+          <text x="210" y="186" fill="#E8DC55" font-family="Geist Mono,monospace" font-size="11" text-anchor="middle" letter-spacing="1">rybinový spoj</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="pillar rise">
+      <div>
+        <h3>Montáž</h3>
+        <p class="txt">Přijedu s hotovými díly a jedním autem. Kuchyň stavím
+          jeden až dva dny, po sobě uklidím a odvezu obaly.</p>
+      </div>
+      <div class="draw">
+        <svg viewBox="0 0 640 190" fill="none" stroke="#F0EDE4" stroke-width="1.3" stroke-linecap="round">
+          <g opacity=".85">
+            <rect x="40" y="96" width="90" height="60" rx="1"/>
+            <rect x="140" y="76" width="90" height="80" rx="1"/>
+            <rect x="240" y="56" width="90" height="100" rx="1"/>
+            <rect x="340" y="76" width="90" height="80" rx="1"/>
+            <rect x="440" y="96" width="90" height="60" rx="1"/>
+          </g>
+          <path d="M20 156h580" stroke="#E8DC55" stroke-width="2.4"/>
+          <g stroke="#E8DC55" opacity=".8" stroke-dasharray="4 5">
+            <path d="M85 96V44M185 76V44M285 56V30M385 76V44M485 96V44"/>
+          </g>
+          <g fill="#E8DC55" stroke="none">
+            <circle cx="85" cy="40" r="3"/><circle cx="185" cy="40" r="3"/>
+            <circle cx="285" cy="26" r="3"/><circle cx="385" cy="40" r="3"/><circle cx="485" cy="40" r="3"/>
+          </g>
+          <text x="560" y="130" fill="#E8DC55" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1">1—2 dny</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ POSTUP ════ -->
+<section class="band" id="postup">
+  <div class="wrap">
+    <div class="stmt">
+      <h2 class="rise">Tři kroky, žádné<br>překvapení v ceně.</h2>
+      <div class="stmt-copy rise" style="--i:1">
+        <p>Cenu dostanete po zaměření písemně a rozepsanou na položky —
+          korpusy, dvířka, kování, montáž. Co v ní není, to nedoúčtuju.</p>
+      </div>
     </div>
     <div class="steps">
-      <div class="step rise" style="--i:0">
-        <div class="n">01</div>
-        <h3>Zaměření a návrh</h3>
-        <p>Přijedu k vám, zaměřím prostor a do týdne pošlu vizualizaci s rozpočtem. Zdarma a nezávazně.</p>
+      <div class="step rise">
+        <span class="no">Krok 01</span>
+        <h4>Zaměření a návrh</h4>
+        <p>Přijedu, zaměřím laserem a do týdne pošlu vizualizaci s rozpočtem
+          po položkách. Nezávazně a zdarma.</p>
+        <div class="when">Do 7 dnů od ozvání</div>
       </div>
       <div class="step rise" style="--i:1">
-        <div class="n">02</div>
-        <h3>Výroba v dílně</h3>
-        <p>Řežu, hobluji a spojuji v Kunovicích. Fotky rozpracovaného kusu posílám průběžně.</p>
+        <span class="no">Krok 02</span>
+        <h4>Výroba v dílně</h4>
+        <p>Řežu, olepuju hrany a montuju kování v Kunovicích. Průběžně
+          posílám fotky, ať víte, kde to je.</p>
+        <div class="when">4 až 7 týdnů</div>
       </div>
       <div class="step rise" style="--i:2">
-        <div class="n">03</div>
-        <h3>Montáž a doladění</h3>
-        <p>Dovezu, sestavím, seřídím panty a po sobě uklidím. Obvykle jeden až dva dny.</p>
+        <span class="no">Krok 03</span>
+        <h4>Montáž u vás</h4>
+        <p>Dovezu, sestavím, seřídím panty a spáruju k desce.
+          Předávám uklizené a funkční.</p>
+        <div class="when">1 až 2 dny</div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="material">
-  <div class="wrap">
-    <div class="sec-head rise">
-      <div class="lbl">03 — Materiál</div>
-      <h2>Dřevo kupuji od pily v Buchlovicích.</h2>
-      <p>Vím, ze kterého lesa každá deska je. Nic z toho není dýhovaná dřevotříska vydávaná za masiv.</p>
-    </div>
-    <div class="mats rise">
-      <span class="mat"><b>Dub</b> — nejtvrdší, do kuchyní</span>
-      <span class="mat"><b>Jasan</b> — světlý, výrazná kresba</span>
-      <span class="mat"><b>Ořech</b> — tmavý, na reprezentativní kusy</span>
-      <span class="mat"><b>Buk</b> — nejdostupnější</span>
-      <span class="mat"><b>Olej Osmo</b> — přírodní povrch</span>
-      <span class="mat"><b>Kování Blum</b> — doživotní záruka</span>
-    </div>
-  </div>
-</section>
-
-<section id="poptavka" style="border-top:1px solid var(--line)">
-  <div class="wrap contact">
+<!-- ════ CITÁT ════ -->
+<section class="dark band">
+  <div class="wrap quote">
     <div class="rise">
-      <div class="sec-head" style="margin-bottom:36px">
-        <div class="lbl">04 — Poptávka</div>
-        <h2>Napište mi, co potřebujete.</h2>
-        <p>Ozvu se do dvou pracovních dnů s termínem zaměření a orientační cenou.</p>
-      </div>
-      <ul class="facts">
-        <li><div class="k">Telefon</div><div class="v">+420 572 100 100</div></li>
-        <li><div class="k">E-mail</div><div class="v">kovar@truhlarstvi-kovar.cz</div></li>
-        <li><div class="k">Dílna</div><div class="v">Na Zápovědi 412, Kunovice</div></li>
-        <li><div class="k">Návštěva dílny</div><div class="v">Po domluvě, i o víkendu</div></li>
-      </ul>
+      <span class="lbl">Proč to dělám sám</span>
+      <p style="margin-top:22px">„Když si zakázku předá pět lidí, chyba se ztratí mezi nimi.
+        U mě se ztratit nemá kde — kreslím, řežu i montuju stejný člověk."</p>
+      <div class="by lbl">Petr Kovář · truhlář, Kunovice</div>
     </div>
-    <form onsubmit="demoSubmit(event)" class="rise" style="--i:1">
-      <div class="field">
-        <label for="f1">Jméno</label>
-        <input id="f1" type="text" placeholder="Petra Zemanová" required>
+    <div class="rise" style="--i:1">
+      <div class="draw" style="border:1px solid var(--line-d);border-radius:6px;padding:20px;background:var(--deep)">
+        <svg viewBox="0 0 420 200" fill="none" stroke="#F0EDE4" stroke-width="1.3" stroke-linecap="round">
+          <path d="M30 168h360" opacity=".5"/>
+          <path d="M60 168V72l60-34 60 34v96" opacity=".85"/>
+          <path d="M90 168v-58h60v58" stroke="#E8DC55"/>
+          <path d="M210 168V96h140v72" opacity=".6"/>
+          <path d="M210 120h140M280 96v72" opacity=".4"/>
+          <text x="120" y="196" fill="#E8DC55" font-family="Geist Mono,monospace" font-size="10" text-anchor="middle" letter-spacing="1">dílna Kunovice</text>
+        </svg>
       </div>
-      <div class="field">
-        <label for="f2">Telefon nebo e-mail</label>
-        <input id="f2" type="text" placeholder="abych se vám ozval" required>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CASE STUDY (žlutý pás) ════ -->
+<section class="mark-bg band" id="realizace">
+  <div class="wrap">
+    <span class="lbl rise">Poslední hotová zakázka</span>
+    <h2 class="rise" style="--i:1;font-size:clamp(32px,5.2vw,68px);letter-spacing:-.04em;margin-top:18px;max-width:18ch">
+      Nejdůležitější kuchyň je vždycky ta vaše.
+    </h2>
+    <div class="case">
+      <div class="rise">
+        <p style="font-size:17px;max-width:52ch;color:rgba(20,20,20,.72)">
+          Novostavba v Kunovicích, linka do písmene L s ostrovem. Zákazník chtěl
+          dubovou dýhu bez viditelných úchytů a spotřebiče zabudované do vysoké skříně.
+          Zaměřeno v březnu, namontováno první týden v květnu.
+        </p>
+        <dl>
+          <div><dt>Délka linky</dt><dd>4,2 m + ostrov 2,4 m</dd></div>
+          <div><dt>Materiál</dt><dd>Dubová dýha, olej</dd></div>
+          <div><dt>Kování</dt><dd>Blum, tip-on</dd></div>
+          <div><dt>Od zaměření</dt><dd>9 týdnů</dd></div>
+        </dl>
       </div>
-      <div class="field">
-        <label for="f3">O co jde</label>
-        <select id="f3">
-          <option>Kuchyň na míru</option>
-          <option>Vestavěná skříň</option>
-          <option>Stůl nebo lavice</option>
-          <option>Schodiště</option>
-          <option>Něco jiného</option>
-        </select>
+      <div class="case-card rise" style="--i:1">
+        <div class="plan-head"><span class="lbl">Půdorys — dispozice L + ostrov</span></div>
+        <svg viewBox="0 0 520 300" fill="none" stroke="#F0EDE4" stroke-width="1.3" stroke-linejoin="round">
+          <path d="M40 40h440v220H40z" opacity=".35"/>
+          <path d="M40 40h300v56H40z" stroke="#E8DC55" stroke-width="1.8"/>
+          <path d="M40 96v120h56V96" stroke="#E8DC55" stroke-width="1.8"/>
+          <path d="M180 150h180v70H180z" stroke="#E8DC55" stroke-width="1.8"/>
+          <path d="M96 68h60M200 68h60M280 68h50" opacity=".5"/>
+          <circle cx="230" cy="185" r="12" opacity=".55"/>
+          <path d="M300 170h44v30h-44z" opacity=".55"/>
+          <g stroke="#E8DC55" opacity=".8">
+            <path d="M40 24h300"/><path d="M40 18v12M340 18v12"/>
+          </g>
+          <text x="190" y="14" fill="#E8DC55" font-family="Geist Mono,monospace" font-size="11" text-anchor="middle" letter-spacing="1">4 200</text>
+          <text x="270" y="240" fill="#E8DC55" font-family="Geist Mono,monospace" font-size="11" text-anchor="middle" letter-spacing="1">ostrov 2 400</text>
+        </svg>
       </div>
-      <div class="field">
-        <label for="f4">Popis</label>
-        <textarea id="f4" placeholder="Rozměry, materiál, termín — klidně jen odhadem."></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FAQ ════ -->
+<section class="band" id="faq">
+  <div class="wrap">
+    <div class="stmt">
+      <h2 class="rise">Na co se ptáte<br>nejčastěji.</h2>
+      <div class="stmt-copy rise" style="--i:1"><p>Když tu odpověď nenajdete, zavolejte.
+        Telefon beru i večer, pokud zrovna nestojím u pily.</p></div>
+    </div>
+    <div class="faq">
+      <div class="q rise">
+        <button type="button" aria-expanded="false">Kolik stojí kuchyň na míru?<span class="sign">+</span></button>
+        <div class="a"><p>Menší linka do 3 metrů vychází od 95 000 Kč, běžná kuchyň s ostrovem
+          mezi 180 000 a 320 000 Kč podle materiálu a spotřebičů. Přesné číslo dostanete
+          po zaměření, rozepsané na položky.</p></div>
       </div>
-      <button type="submit" class="btn" style="justify-content:center">Odeslat poptávku</button>
-    </form>
+      <div class="q rise" style="--i:1">
+        <button type="button" aria-expanded="false">Jak dlouho čekám od objednávky?<span class="sign">+</span></button>
+        <div class="a"><p>Od podpisu 4 až 7 týdnů podle toho, jestli je dýha skladem.
+          Termín montáže dostanete napsaný do smlouvy, ne odhadem po telefonu.</p></div>
+      </div>
+      <div class="q rise" style="--i:2">
+        <button type="button" aria-expanded="false">Dodáváte i spotřebiče?<span class="sign">+</span></button>
+        <div class="a"><p>Můžu je pořídit se svou slevou, nebo si je koupíte sami a já je jen
+          zabuduju. Druhá varianta vyjde většinou o pár tisíc levněji.</p></div>
+      </div>
+      <div class="q rise" style="--i:3">
+        <button type="button" aria-expanded="false">Co když se něco po roce pokazí?<span class="sign">+</span></button>
+        <div class="a"><p>Na kování mám pětiletou záruku, na truhlářskou práci dva roky.
+          Seřízení pantů a doladění dvířek dělám první rok zdarma, stačí zavolat.</p></div>
+      </div>
+      <div class="q rise" style="--i:4">
+        <button type="button" aria-expanded="false">Jezdíte i mimo Uherské Hradiště?<span class="sign">+</span></button>
+        <div class="a"><p>Běžně do padesáti kilometrů — Zlín, Hodonín, Kyjov, Otrokovice.
+          Dál po domluvě, ale připočítávám dopravu.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ POPTÁVKA ════ -->
+<section class="dark grid-bg band" id="poptavka">
+  <div class="wrap">
+    <div class="stmt" style="margin-bottom:clamp(30px,4vw,52px)">
+      <h2 class="rise">Napište, co potřebujete.</h2>
+      <div class="stmt-copy rise" style="--i:1;color:rgba(240,237,228,.55)">
+        <p>Ozvu se do dvou pracovních dnů a domluvíme termín zaměření.
+          Nabídka je zdarma a k ničemu vás nezavazuje.</p>
+      </div>
+    </div>
+    <div class="form-grid">
+      <form onsubmit="send(event)" class="rise">
+        <div class="frow">
+          <div class="f"><label class="lbl" for="a1">Jméno</label><input id="a1" type="text" placeholder="Petra Zemanová" required></div>
+          <div class="f"><label class="lbl" for="a2">Telefon</label><input id="a2" type="tel" placeholder="+420" required></div>
+        </div>
+        <div class="frow">
+          <div class="f"><label class="lbl" for="a3">O co jde</label>
+            <select id="a3">
+              <option>Kuchyňská linka</option><option>Vestavěná skříň</option>
+              <option>Stůl nebo lavice</option><option>Schodiště</option>
+              <option>Kompletní vybavení bytu</option>
+            </select>
+          </div>
+          <div class="f"><label class="lbl" for="a4">Kdy to potřebujete</label>
+            <select id="a4">
+              <option>Co nejdřív</option><option>Do tří měsíců</option>
+              <option>Do půl roku</option><option>Zatím jen zjišťuju cenu</option>
+            </select>
+          </div>
+        </div>
+        <div class="f"><label class="lbl" for="a5">Popis</label>
+          <textarea id="a5" placeholder="Rozměry, materiál, představa. Klidně jen odhadem."></textarea>
+        </div>
+        <button type="submit" class="btn" style="align-self:flex-start">Odeslat poptávku
+          <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </button>
+      </form>
+      <div class="rise" style="--i:1">
+        <ul class="contact">
+          <li><span class="lbl">Telefon</span><div class="v">+420 572 100 100</div></li>
+          <li><span class="lbl">E-mail</span><div class="v">kovar@truhlarstvi-kovar.cz</div></li>
+          <li><span class="lbl">Dílna</span><div class="v">Na Zápovědi 412, Kunovice</div></li>
+          <li><span class="lbl">Návštěva dílny</span><div class="v">Po domluvě, i v sobotu</div></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap row">
-    <div>
-      <div class="brand-f">Truhlářství Kovář</div>
-      <div style="margin-top:6px">Na Zápovědi 412, Kunovice · IČO 00000000</div>
+  <div class="wrap">
+    <nav class="fnav rise">
+      <a href="#cim">Čím se lišíme</a><span style="color:rgba(240,237,228,.16)">/</span>
+      <a href="#postup">Postup</a><span style="color:rgba(240,237,228,.16)">/</span>
+      <a href="#realizace">Realizace</a><span style="color:rgba(240,237,228,.16)">/</span>
+      <a href="#faq">Otázky</a><span style="color:rgba(240,237,228,.16)">/</span>
+      <a href="#poptavka">Poptávka</a>
+    </nav>
+    <div class="fbot">
+      <div>Truhlářství Kovář · Na Zápovědi 412, Kunovice · Po—Pá 7:00—16:00</div>
+      <div>Ukázková stránka — návrh a realizace <a href="https://pokornymarek.cz" target="_blank" rel="noopener">pokornymarek.cz</a></div>
     </div>
-    <div>Ukázková stránka — návrh a realizace <a href="https://pokornymarek.cz" target="_blank" rel="noopener">pokornymarek.cz</a></div>
   </div>
 </footer>
 
 <div class="toast" id="toast">Poptávka odeslána — ukázka, nic se ve skutečnosti neposílá.</div>
+
 <script>
+  // ── FAQ akordeon ──
+  document.querySelectorAll('.q').forEach(function(q){
+    var btn=q.querySelector('button'), a=q.querySelector('.a');
+    btn.addEventListener('click',function(){
+      var open=q.hasAttribute('open');
+      document.querySelectorAll('.q[open]').forEach(function(o){
+        o.removeAttribute('open');
+        o.querySelector('.a').style.maxHeight='0px';
+        o.querySelector('button').setAttribute('aria-expanded','false');
+      });
+      if(!open){
+        q.setAttribute('open','');
+        a.style.maxHeight=a.scrollHeight+'px';
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+  });
+
+  // ── nav se po odscrollování stáhne ──
+  var nav=document.getElementById('nav');
+  addEventListener('scroll',function(){
+    nav.style.padding=(scrollY>40?'6px':'12px')+' var(--pad)';
+  },{passive:true});
+
+  // ── odkrývání ──
   var risers=document.querySelectorAll('.rise');
   function revealAll(){risers.forEach(function(el){el.classList.add('in')})}
-
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){
       es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
@@ -407,12 +709,12 @@
     revealAll();
   }
 
-  var tTimer;
-  function demoSubmit(e){
+  var tT;
+  function send(e){
     e.preventDefault();
     var t=document.getElementById('toast');
-    t.classList.add('show');clearTimeout(tTimer);
-    tTimer=setTimeout(function(){t.classList.remove('show')},3600);
+    t.classList.add('show');clearTimeout(tT);
+    tT=setTimeout(function(){t.classList.remove('show')},3600);
     e.target.reset();
   }
 </script>
