@@ -41,6 +41,24 @@ Výsledek: `npx eslint src` hlásí **0 chyb a 0 varování**, `next build` proc
 - IDE: `.vs/`, `.idea/`, `*.suo`, `*.user`
 - Lokální spouštěče: `run.cmd`, `vystup.log` (obsahují absolutní cesty ke konkrétnímu počítači)
 
+### Větve
+
+Výchozí větev na GitHubu přepnuta z `main` na **`osobni`** — na `main` ležela
+stará verze webu, takže návštěvník repozitáře viděl něco jiného, než co běží.
+
+Smazány tři experimentální větve `test/*`. Protože obsahovaly commity, které
+nikde jinde nejsou, jsou nejdřív zachyceny archivními tagy:
+
+| Tag | Commit | Původní větev |
+|---|---|---|
+| `archive/test-design-taste-frontend` | `ad22918` | Editorial Split × Terracotta+Slate |
+| `archive/test-industrial-brutalist-ui` | `bf9f707` | Swiss Industrial Print |
+| `archive/test-minimalist-ui` | `2fd5343` | Minimalist UI |
+
+Návrat k experimentu: `git checkout archive/test-minimalist-ui`.
+
+Větve `feature/*` a `main` ponechány beze změny.
+
 ---
 
 ## Známé věci, které zůstaly
