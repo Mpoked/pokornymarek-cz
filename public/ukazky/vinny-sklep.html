@@ -79,10 +79,12 @@
      --cq ladí každý nadpis podle počtu znaků. */
   .huge h1,.huge h2{white-space:nowrap;font-size:max(42px,var(--cq,15cqw));
     line-height:.82;letter-spacing:-.022em;font-weight:800;
-    /* Při line-height .82 sahá diakritika (Š Ú Ů Ý Á) 0,165 em nad řádkový box
-       a overflow:hidden na .huge ji ustřihne. Nahoře přidáme místo, dole ho
-       zase ubereme — verzálky spodní dotažnice nemají, takže se nic neořízne. */
-    padding-top:.26em;margin-bottom:-.14em}
+    /* Řádkový box při line-height .82 nabízí nad účařím 0,75 em a pod ním 0,07 em,
+       jenže Playfair potřebuje víc a overflow:hidden na .huge přebytek ustřihne:
+         · kroužek a háček (Ů Š) sahají 0,99 em nad účaří  → chybí 0,24 em
+         · verzálky J a Q klesají 0,19 em pod účaří        → chybí 0,12 em
+       Proto padding na obou stranách, s malou rezervou navíc. */
+    padding-top:.28em;padding-bottom:.24em}
   /* Na úzkém displeji by spodní hranice 42px slovo useknula — radši ho zalomíme,
      ať zůstane celé čitelné. */
   @media(max-width:760px){
