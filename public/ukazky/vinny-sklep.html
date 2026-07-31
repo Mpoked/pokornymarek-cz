@@ -79,6 +79,11 @@
      --cq ladí každý nadpis podle počtu znaků. */
   .huge h1,.huge h2{white-space:nowrap;font-size:max(42px,var(--cq,15cqw));
     line-height:.82;letter-spacing:-.022em;font-weight:800}
+  /* Na úzkém displeji by spodní hranice 42px slovo useknula — radši ho zalomíme,
+     ať zůstane celé čitelné. */
+  @media(max-width:760px){
+    .huge h1,.huge h2{white-space:normal;font-size:max(32px,var(--cq,15cqw));line-height:.9}
+  }
   .red{color:var(--red)}
   .pinky{color:var(--pink)}
   .hero-line{padding-top:6px}
@@ -303,7 +308,7 @@
 
   <!-- ═══ HERO ═══ -->
   <div class="huge hero-line rise">
-    <h1 class="red" style="--cq:15cqw">ŠARDICKÝCH&nbsp;·&nbsp;U</h1>
+    <h1 class="red" style="--cq:13cqw">U&nbsp;ŠARDICKÝCH</h1>
   </div>
   <div class="hero-meta rise" style="--i:1">
     <span class="cap">Rodinné vinařství · čtvrtá generace</span>
@@ -315,14 +320,14 @@
       <g transform="translate(0,-6)"><use href="#e-table"/></g>
     </svg>
     <div class="note">
-      Sto let stará chodba pod Šardicemi, dvanáct stupňů celý rok a vína z vinic,
-      které vidíte ze dveří. Sedněte si, nalejeme.
+      Skoro sto let stará chodba pod Šardicemi, dvanáct stupňů po celý rok
+      a vína z vinic, které vidíte ze dveří. Sedněte si, nalejeme.
     </div>
   </div>
 
   <!-- ═══ VÍNA ═══ -->
   <section>
-    <div class="huge rise"><h2 class="pinky" style="--cq:18cqw">VÍNA A DEGU</h2></div>
+    <div class="huge rise"><h2 class="red" style="--cq:13.4cqw">VINNÝ LÍSTEK</h2></div>
     <div class="split" style="margin-top:8px">
       <div>
         <div class="two" style="align-items:start">
@@ -332,11 +337,11 @@
           <div class="rise" style="--i:1">
             <div class="drop">
               <span class="letter">O</span>
-              <p>sm vzorků, jeden ročník, jedna trať. Co je na lístku, to jsme
+              <p>sm vzorků z jednoho ročníku a z jedné stráně. Co je na lístku, to jsme
                 vypěstovali a vylisovali sami — od řezu révy po zátku. Při degustaci
                 ochutnáte všechno, lahve si můžete odvézt domů.</p>
             </div>
-            <div style="margin-top:20px"><a href="#lístek" class="btn">Vinný lístek</a></div>
+            <div style="margin-top:20px"><a href="#rezervace" class="btn">Rezervovat degustaci</a></div>
           </div>
         </div>
 
@@ -389,15 +394,15 @@
     <div class="two">
       <div>
         <span class="cap cap-red rise">01 —</span>
-        <div class="huge rise" style="--i:1"><h2 class="pinky" style="--cq:25cqw">KDO NALÉ</h2></div>
+        <div class="huge rise" style="--i:1"><h2 class="red" style="--cq:19cqw">KDO JSME</h2></div>
         <div class="redblock rise" style="--i:2;margin-top:10px;height:clamp(70px,9vw,124px)"></div>
         <div class="drop rise" style="--i:3;margin-top:22px">
           <span class="letter">J</span>
-          <p>sme čtvrtá generace, která tuhle chodbu otevírá. Dědek Josef ji vykopal
-            v jedenatřicátém, otec k ní přikoupil vinici nad Šardicemi a my dva
-            se staráme o to, aby se tu pořád dalo sednout a povídat.</p>
+          <p>sme čtvrtá generace, která tuhle chodbu otevírá. Děda Josef ji vykopal
+            v jedenatřicátém, otec k ní přikoupil vinici nad Šardicemi. Dneska
+            ji vedeme my dva — Petr dělá víno, Klára se stará o hosty.</p>
         </div>
-        <div style="margin-top:20px" class="rise" style="--i:4"><a href="#rezervace" class="btn">O nás</a></div>
+        <div class="rise" style="margin-top:20px"><a href="#rezervace" class="btn">Přijeďte na degustaci</a></div>
       </div>
       <div class="plate rise" style="--i:1">
         <svg viewBox="0 0 208 168" aria-label="Klenutá sklepní chodba se svící">
@@ -409,7 +414,7 @@
 
   <!-- ═══ SKLEP ═══ -->
   <section>
-    <div class="huge rise"><h2 class="pinky" style="--cq:20cqw">SKLEP A CI</h2></div>
+    <div class="huge rise"><h2 class="red" style="--cq:18cqw">NÁŠ SKLEP</h2></div>
     <div class="split" style="margin-top:14px">
       <div class="two" style="align-items:stretch">
         <div class="plate rise" style="display:grid;place-items:center;padding:18px">
@@ -450,7 +455,7 @@
   <section>
     <div class="split">
       <div>
-        <div class="huge rise"><h2 class="pinky" style="--cq:21cqw">ODVEZTE SI</h2></div>
+        <div class="huge rise"><h2 class="red" style="--cq:10.5cqw">ODVEZTE SI DOMŮ</h2></div>
         <div class="drop rise" style="--i:1;margin-top:16px;max-width:520px">
           <span class="letter">L</span>
           <p>ahve posíláme po celé republice, nebo si je vyzvednete rovnou
@@ -477,12 +482,12 @@
       </div>
 
       <aside class="rise" style="--i:1">
-        <div class="huge" style="margin-bottom:10px"><h2 class="pinky" style="--cq:31cqw">NA ZDR</h2></div>
+        <div class="huge" style="margin-bottom:10px"><h2 class="red" style="--cq:18.5cqw">NA ZDRAVÍ</h2></div>
         <div class="ciao">
           <h3>Na zdraví!</h3>
           <p>Ve sklepě se nespěchá. Když si sednete k nám, počítejte s tím,
             že poslední vlak vám nejspíš ujede — a že vám to nebude líto.</p>
-          <div class="sig">Josef</div>
+          <div class="sig">Petr a Klára</div>
         </div>
         <div class="plate" style="margin-top:12px">
           <svg viewBox="0 0 104 116" style="max-width:150px;margin:14px auto;display:block"><use href="#e-glass"/></svg>
@@ -494,7 +499,7 @@
   <!-- ═══ REZERVACE ═══ -->
   <section id="rezervace">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px">
-      <div class="huge rise" style="flex:1"><h2 class="red" style="--cq:18cqw">REZERVACE</h2></div>
+      <div class="huge rise" style="flex:1"><h2 class="red" style="--cq:16cqw">REZERVACE</h2></div>
       <div class="stamp rise" style="--i:1">
         <svg viewBox="0 0 104 104">
           <use href="#e-stamp"/>
@@ -509,7 +514,7 @@
       <div class="drop rise">
         <span class="letter">R</span>
         <p>ezervujeme na celý večer — sklep je vždycky jen pro jednu partu,
-          nemícháme společnosti. Od šesti osob výš, kapacita dvacet osm.
+          nikdy nesedíte s cizími lidmi. Od šesti osob, kapacita dvacet osm.
           Napište termín a my do druhého dne potvrdíme, že je volno.</p>
       </div>
 
