@@ -14,7 +14,6 @@ type Bucket = { count: number; resetAt: number };
 
 // Globální cache přežije HMR přebalení modulů v dev režimu (viz db.ts).
 declare global {
-  // eslint-disable-next-line no-var
   var __rateLimitStore: Map<string, Bucket> | undefined;
 }
 

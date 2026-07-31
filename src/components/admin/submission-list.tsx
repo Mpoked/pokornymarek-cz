@@ -43,7 +43,7 @@ export function SubmissionList({ submissions }: { submissions: Submission[] }) {
   }
 
   async function remove(s: Submission) {
-    if (!window.confirm(`Opravdu smazat poptávku od „${s.jmeno}"? Toto nejde vrátit.`)) return
+    if (!window.confirm(`Opravdu smazat poptávku od „${s.jmeno}“? Toto nejde vrátit.`)) return
     setBusy(s.id)
     try {
       await fetch(`/api/admin/submissions/${s.id}`, { method: "DELETE" })

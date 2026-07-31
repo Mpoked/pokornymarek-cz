@@ -24,7 +24,6 @@ const dbPath = process.env.DB_PATH ?? path.join(process.cwd(), "data", "studio.d
 // V dev režimu Next.js přebaluje moduly při každé změně (HMR) — globální
 // cache brání otevírání dalších a dalších spojení na tentýž soubor.
 declare global {
-  // eslint-disable-next-line no-var
   var __studioDb: Database.Database | undefined
 }
 

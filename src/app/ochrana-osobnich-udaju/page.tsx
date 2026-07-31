@@ -133,7 +133,7 @@ export default function OchranaOsobnichUdaju() {
             <ul className="list-inside list-disc space-y-1">
               <li>na přístup ke svým osobním údajům,</li>
               <li>na opravu nepřesných údajů,</li>
-              <li>na výmaz („právo být zapomenut"),</li>
+              <li>na výmaz („právo být zapomenut“),</li>
               <li>na omezení zpracování,</li>
               <li>na přenositelnost údajů,</li>
               <li>vznést námitku proti zpracování,</li>
