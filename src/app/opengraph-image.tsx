@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og"
-import { FIRMA } from "@/lib/firma"
+import { BALICKY, FIRMA, PRVNI_KLIENTI } from "@/lib/firma"
 
 /**
  * Náhledový obrázek pro sdílení odkazu (Facebook, Messenger, WhatsApp) —
@@ -10,7 +10,7 @@ import { FIRMA } from "@/lib/firma"
  * jsou jen woff2, které satori neumí. Výchozí font diakritiku zvládá.
  */
 
-export const alt = `${FIRMA.jmeno} — tvorba webů ${FIRMA.mesto}, od 9 900 Kč`
+export const alt = `${FIRMA.jmeno}, tvorba webů ${FIRMA.mesto}, od ${BALICKY[0].cenaText}`
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -57,7 +57,7 @@ export default function Image() {
               letterSpacing: -2,
             }}
           >
-            Web pro vaši firmu od 9 900 Kč.
+            Web pro vaši firmu od {BALICKY[0].cenaText}.
           </div>
           <div
             style={{
@@ -66,7 +66,9 @@ export default function Image() {
               color: "rgba(255,255,255,0.55)",
             }}
           >
-            Bez agentury, bez obchodníka mezi námi.
+            {PRVNI_KLIENTI.aktivni
+              ? `Hledám první ${PRVNI_KLIENTI.pocet} klienty.`
+              : "Bez agentury, bez obchodníka mezi námi."}
           </div>
         </div>
 

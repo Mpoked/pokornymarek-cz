@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { FIRMA, ODEZVA } from "@/lib/firma";
+import { BALICKY, FIRMA, PRVNI_KLIENTI } from "@/lib/firma";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,10 +20,11 @@ const geistMono = Geist_Mono({
  */
 export const metadata: Metadata = {
   metadataBase: new URL(FIRMA.url),
-  title: `Tvorba webů ${FIRMA.mesto} — od 9 900 Kč | ${FIRMA.jmeno}`,
+  title: `Tvorba webů ${FIRMA.mesto}, od ${BALICKY[0].cenaText} | ${FIRMA.jmeno}`,
   description:
-    `Weby pro živnostníky a malé firmy ze Slovácka. Ceny od 9 900 Kč, ` +
-    `jednáte přímo se mnou. Cenu i termín pošlu ${ODEZVA.dlouhy}.`,
+    `Weby pro živnostníky a malé firmy ze Slovácka. Od ${BALICKY[0].cenaText}, ` +
+    `jednáte přímo se mnou. Hledám první ${PRVNI_KLIENTI.pocet} klienty, ` +
+    `teď se slevou ${PRVNI_KLIENTI.slevaProcent} %.`,
   alternates: {
     canonical: "/",
   },
@@ -32,10 +33,10 @@ export const metadata: Metadata = {
     locale: "cs_CZ",
     url: "/",
     siteName: FIRMA.jmeno,
-    title: `Tvorba webů ${FIRMA.mesto} — od 9 900 Kč`,
+    title: `Tvorba webů ${FIRMA.mesto}, od ${BALICKY[0].cenaText}`,
     description:
-      `Weby pro živnostníky, řemeslníky a restaurace ze Slovácka. ` +
-      `Bez agentury a bez obchodníka mezi námi.`,
+      `Weby pro živnostníky, řemeslníky a restaurace ze Slovácka, na dálku ` +
+      `po celé ČR. Bez agentury a bez obchodníka mezi námi.`,
   },
   twitter: {
     card: "summary_large_image",

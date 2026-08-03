@@ -53,11 +53,13 @@ export default function OchranaOsobnichUdaju() {
         </p>
 
         <div className="flex flex-col gap-10">
-          <Section num="01 — Správce údajů" title="Kdo jsme">
+          <Section num="01 Správce údajů" title="Kdo jsem">
             <p>
-              Správcem vašich osobních údajů je <strong className="text-white">{FIRMA.jmeno}</strong>,
-              fyzická osoba podnikající, IČO {FIRMA.ico}, se sídlem {FIRMA.ulice},{" "}
-              {FIRMA.psc} {FIRMA.mesto}.
+              Správcem vašich osobních údajů je{" "}
+              <strong className="text-white">{FIRMA.jmeno}</strong>, fyzická osoba
+              z {FIRMA.mestoGen}
+              {FIRMA.ico && `, IČO ${FIRMA.ico}`}. Kontaktní adresu sdělím
+              na vyžádání.
             </p>
             <p>
               Kontakt pro záležitosti ochrany osobních údajů:{" "}
@@ -70,7 +72,7 @@ export default function OchranaOsobnichUdaju() {
             </p>
           </Section>
 
-          <Section num="02 — Rozsah" title="Jaké údaje zpracováváme">
+          <Section num="02 Rozsah" title="Jaké údaje zpracovávám">
             <p>
               Zpracovávám pouze údaje, které mi sami poskytnete odesláním kontaktního
               formuláře na tomto webu:
@@ -87,7 +89,7 @@ export default function OchranaOsobnichUdaju() {
             </p>
           </Section>
 
-          <Section num="03 — Účel a právní základ" title="Proč údaje zpracováváme">
+          <Section num="03 Účel a právní základ" title="Proč údaje zpracovávám">
             <p>
               Údaje z formuláře používám výhradně k <strong className="text-white">
               vyřízení vaší poptávky</strong> — tedy abych vám mohl odpovědět,
@@ -104,7 +106,7 @@ export default function OchranaOsobnichUdaju() {
             </p>
           </Section>
 
-          <Section num="04 — Doba uchování" title="Jak dlouho údaje uchováváme">
+          <Section num="04 Doba uchování" title="Jak dlouho údaje uchovávám">
             <p>
               Údaje uchovávám po dobu nezbytnou k vyřízení poptávky a navazující
               komunikace, nejdéle však <strong className="text-white">2 roky</strong> od
@@ -117,7 +119,7 @@ export default function OchranaOsobnichUdaju() {
             </p>
           </Section>
 
-          <Section num="05 — Zpracovatelé" title="Komu údaje předáváme">
+          <Section num="05 Zpracovatelé" title="Komu údaje předávám">
             <p>
               Zprávy z formuláře se ukládají <strong className="text-white">přímo na
               můj vlastní server</strong> provozovaný v České republice — do zpracování
@@ -131,7 +133,7 @@ export default function OchranaOsobnichUdaju() {
             </p>
           </Section>
 
-          <Section num="06 — Vaše práva" title="Jaká máte práva">
+          <Section num="06 Vaše práva" title="Jaká máte práva">
             <p>Podle GDPR máte právo:</p>
             <ul className="list-inside list-disc space-y-1">
               <li>na přístup ke svým osobním údajům,</li>
@@ -167,7 +169,7 @@ export default function OchranaOsobnichUdaju() {
             </p>
           </Section>
 
-          <Section num="07 — Cookies" title="Cookies a sledování">
+          <Section num="07 Cookies" title="Cookies a sledování">
             <p>
               Tento web neukládá žádné sledovací ani analytické cookies. Nepoužíváme
               Google Analytics, reklamní systémy ani sociální pluginy, které by vás

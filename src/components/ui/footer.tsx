@@ -96,10 +96,11 @@ export function Footer() {
 				delay={0.3}
 				className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between"
 			>
-				{/* IČO a sídlo nejsou jen formalita — u lokální služby je to
-				    důkaz, že za webem stojí dohledatelný člověk. */}
+				{/* IČO se zobrazí, až bude živnost ohlášená. Do té doby ho
+				    tady mít nesmíme, protože žádné není. */}
 				<p>
-					{`© ${new Date().getFullYear()} ${FIRMA.jmeno} · IČO ${FIRMA.ico} · ${FIRMA.mesto}`}
+					{`© ${new Date().getFullYear()} ${FIRMA.jmeno} · ${FIRMA.mesto}`}
+					{FIRMA.ico && ` · IČO ${FIRMA.ico}`}
 				</p>
 				<a
 					href="/ochrana-osobnich-udaju"

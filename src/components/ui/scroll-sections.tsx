@@ -3,7 +3,16 @@
 import { useEffect, useRef, useState } from "react"
 import { useToast } from "@/components/ui/toast"
 import { scrollToSection } from "@/lib/scroll"
-import { BALICKY as CENIK, FIRMA, ODEZVA, dphPoznamka } from "@/lib/firma"
+import {
+  BALICKY as CENIK,
+  FIRMA,
+  HODINOVKA,
+  ODEZVA,
+  PRVNI_KLIENTI,
+  SPRAVA,
+  cenaProPrvni,
+  dphPoznamka,
+} from "@/lib/firma"
 
 /* ── Card wrapper — sticky stacked cards ── */
 function Card({
@@ -33,10 +42,12 @@ function Card({
   )
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+/** Číslo a název sekce. Bez pomlčky mezi nimi, ta vypadá strojově. */
+function SectionLabel({ num, children }: { num: string; children: React.ReactNode }) {
   return (
     <p className="mb-4 text-xs font-mono uppercase tracking-[0.25em] text-white/30">
-      {children}
+      <span className="text-white/20">{num}</span>{" "}
+      <span className="ml-1">{children}</span>
     </p>
   )
 }
@@ -47,7 +58,7 @@ function SluzbySection({ index }: { index: number }) {
     {
       num: "01",
       title: "Landing pages",
-      desc: "Jedna stránka, jeden cíl. Pro jednu službu nebo jednu kampaň, kde má návštěvník udělat jedinou věc — zavolat, objednat, přijít.",
+      desc: "Jedna stránka, jeden cíl. Pro jednu službu nebo jednu kampaň, kde má návštěvník udělat jedinou věc: zavolat, objednat nebo přijít.",
     },
     {
       num: "02",
@@ -57,7 +68,7 @@ function SluzbySection({ index }: { index: number }) {
     {
       num: "03",
       title: "Redesign starých webů",
-      desc: "Starý web předělám do současné podoby — hlavně na mobilu, kde dnes chodí většina lidí. Adresy stránek zůstanou, takže nepřijdete o pozice ve vyhledávání.",
+      desc: "Starý web předělám do současné podoby. Hlavně na mobilu, kde dnes chodí většina lidí. Adresy stránek zůstanou, takže nepřijdete o pozice ve vyhledávání.",
     },
     {
       num: "04",
@@ -67,14 +78,15 @@ function SluzbySection({ index }: { index: number }) {
   ]
   return (
     <Card id="sluzby" index={index}>
-      <SectionLabel>01 — Služby</SectionLabel>
+      <SectionLabel num="01">Služby</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Čtyři typy webů od 9 900 Kč. Vyberte podle toho, co potřebujete.
+        Čtyři typy webů od {CENIK[0].cenaText}. Vyberte podle toho, co potřebujete.
       </h2>
       <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
         Dělám weby pro malé firmy, živnostníky, restaurace a řemeslníky
-        z {FIRMA.mestoGen} a okolí. Ne pro korporace — na ty jsou agentury
-        s obchodním oddělením.
+        z {FIRMA.mestoGen} a okolí. Ne pro korporace, na ty jsou agentury
+        s obchodním oddělením. Když jste z druhého konce republiky, nevadí:
+        domluvíme se po telefonu a e-mailem, jen se nepotkáme u kávy.
       </p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {services.map((s) => (
@@ -97,7 +109,7 @@ function CenikSection({ index }: { index: number }) {
       items: [
         "1 stránka (landing page)",
         "Funguje na mobilu i na počítači",
-        "Základní SEO — najdou vás v Googlu",
+        "Základní SEO, aby vás našli v Googlu",
         "Kontaktní formulář",
       ],
       featured: false,
@@ -107,33 +119,54 @@ function CenikSection({ index }: { index: number }) {
       items: [
         "Až 6 podstránek",
         "Vlastní design na míru, ne šablona",
-        "Rozšířené SEO + strukturovaná data",
-        "Doména a hosting v ceně [DOPLNIT: na jak dlouho]",
+        "Rozšířené SEO a strukturovaná data",
+        "Přihlášení do Googlu i Seznamu",
       ],
       featured: true,
     },
     {
       ...CENIK[2],
       items: [
-        "Neomezený rozsah stránek",
+        "Rozsah podle zadání",
         "E-shop nebo rezervační systém",
-        "Pokročilé SEO + měření návštěvnosti",
-        "Přednostní řešení oprav a změn",
+        "Platební brána a doprava",
+        "Zaškolení, jak si to spravovat sami",
       ],
       featured: false,
     },
   ]
+
   return (
     <Card id="cenik" index={index}>
-      <SectionLabel>02 — Ceník</SectionLabel>
+      <SectionLabel num="02">Ceník</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        9 900, 19 900 nebo 34 900 Kč. Cenu se dozvíte tady, ne po telefonu.
+        {CENIK[0].cenaText.replace(" Kč", "")}, {CENIK[1].cenaText.replace(" Kč", "")} nebo{" "}
+        {CENIK[2].cenaText.replace(" Kč", "")} Kč. Cenu se dozvíte tady, ne po telefonu.
       </h2>
-      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Většina webařů v okolí má místo ceny formulář „ozveme se vám“. Tady jsou
-        tři balíčky, ze kterých vychází skoro každý projekt. Přesnou cenu si
-        domluvíme napevno předem — po odsouhlasení se už nemění. {dphPoznamka()}
+      <p className="mb-8 max-w-xl text-base text-white/50 leading-relaxed">
+        Většina webařů má místo ceny formulář „ozveme se vám“. Tady jsou tři
+        balíčky, ze kterých vychází skoro každý projekt. Přesnou cenu si
+        domluvíme napevno předem a po odsouhlasení se už nemění. {dphPoznamka()}
       </p>
+
+      {/* Nabídka pro první klienty. Není to umělá sleva, ale skutečný
+          obchod: nižší cena za právo ukázat web jako referenci. */}
+      {PRVNI_KLIENTI.aktivni && (
+        <div className="mb-10 rounded-xl border border-white/25 bg-white/[0.07] p-5">
+          <p className="mb-1 text-xs font-mono uppercase tracking-widest text-white/40">
+            Zavádíme se
+          </p>
+          <p className="text-sm leading-relaxed text-white/70">
+            <strong className="text-white">
+              Prvním {PRVNI_KLIENTI.pocet} klientům dám {PRVNI_KLIENTI.slevaProcent} % dolů
+            </strong>{" "}
+            výměnou za to, že hotový web smím ukázat jako referenci a napíšete mi
+            pár vět, jak se se mnou pracovalo. Potřebuju portfolio, vy potřebujete
+            web. Až budou tři, ceny se vrátí na normál.
+          </p>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {plans.map((p) => (
           <div
@@ -148,10 +181,15 @@ function CenikSection({ index }: { index: number }) {
               {p.note}
             </p>
             <h3 className="font-bold text-lg mb-1">{p.nazev}</h3>
-            <p className={`text-2xl sm:text-3xl font-bold tracking-tight mb-6 ${p.featured ? "text-black" : "text-white"}`}>
+            <p className={`text-2xl sm:text-3xl font-bold tracking-tight ${p.featured ? "text-black" : "text-white"}`}>
               od {p.cenaText}
             </p>
-            <ul className="flex flex-col gap-2 flex-1">
+            {PRVNI_KLIENTI.aktivni && (
+              <p className={`mb-6 mt-1 text-sm ${p.featured ? "text-black/55" : "text-white/45"}`}>
+                Teď {cenaProPrvni(p.cena).toLocaleString("cs-CZ")} Kč
+              </p>
+            )}
+            <ul className={`flex flex-col gap-2 flex-1 ${PRVNI_KLIENTI.aktivni ? "" : "mt-6"}`}>
               {p.items.map((item) => (
                 <li key={item} className={`flex items-start gap-2 text-sm ${p.featured ? "text-black/70" : "text-white/60"}`}>
                   <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${p.featured ? "bg-black/40" : "bg-white/30"}`} />
@@ -174,14 +212,61 @@ function CenikSection({ index }: { index: number }) {
         ))}
       </div>
 
-      <p className="mt-8 max-w-xl text-sm text-white/35 leading-relaxed">
-        Co v ceníku ještě chybí a lidé se na to ptají nejčastěji: jak dlouho web
-        trvá, co potřebuju od vás, a co se děje po předání.{" "}
-        <span className="text-white/50">
-          [DOPLNIT: termín dodání u každého balíčku, co dodává klient (texty,
-          fotky, logo), a jak to funguje po spuštění — kdo web upravuje a za kolik]
-        </span>
+      <p className="mt-6 max-w-2xl text-sm text-white/35 leading-relaxed">
+        V ceně je návrh, stavba a spuštění webu. Od vás potřebuju texty, fotky
+        a logo, pokud ho máte. Doména a hosting patří do správy níž.{" "}
+        <span className="text-white/50">[DOPLNIT: za jak dlouho web dodám]</span>
       </p>
+
+      {/* ── Správa ── */}
+      <div className="mt-14 border-t border-white/10 pt-12">
+        <h3 className="mb-4 text-2xl font-bold tracking-tight md:text-3xl">
+          A pak? Web sám od sebe neběží.
+        </h3>
+        <p className="mb-8 max-w-xl text-base text-white/50 leading-relaxed">
+          Doména se musí každý rok prodloužit, certifikát obnovit, systém
+          aktualizovat. Můžete si to vést sami, nebo mi to hodit na krk
+          a nestarat se. Obojí je v pořádku, tady je cena za obojí.
+        </p>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {SPRAVA.map((s) => (
+            <div
+              key={s.id}
+              className={`rounded-xl border p-6 flex flex-col ${
+                s.featured
+                  ? "border-white/30 bg-white/10"
+                  : "border-white/8 bg-white/5"
+              }`}
+            >
+              <p className="mb-1 text-xs font-mono uppercase tracking-widest text-white/30">
+                {s.note}
+              </p>
+              <h4 className="font-bold text-white mb-1">{s.nazev}</h4>
+              <p className="mb-6 text-2xl font-bold tracking-tight text-white">
+                {s.cena}
+                {s.perioda && (
+                  <span className="ml-1 text-sm font-normal text-white/40">{s.perioda}</span>
+                )}
+              </p>
+              <ul className="flex flex-col gap-2">
+                {s.items.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm text-white/60">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white/30" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 max-w-2xl text-sm text-white/35 leading-relaxed">
+          Správu můžete kdykoli zrušit nebo přejít na jinou úroveň, nic
+          nepodepisujete na rok dopředu. Větší zásahy nad rámec balíčku
+          dělám za {HODINOVKA} na hodinu a cenu vám řeknu předem.
+        </p>
+      </div>
     </Card>
   )
 }
@@ -199,15 +284,15 @@ function UkazkySection({ index }: { index: number }) {
   ]
   return (
     <Card id="ukazky" index={index}>
-      <SectionLabel>03 — Ukázky</SectionLabel>
+      <SectionLabel num="03">Ukázky</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
         Čtyři weby, které jsem navrhl a postavil od nuly.
       </h2>
       <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Nejsou to zakázky pro klienty — jsou to moje vlastní návrhy a firmy
-        v nich jsou vymyšlené. Nechci vydávat cizí práci za svou. Každý z nich
-        jsem postavil celý sám, aby bylo vidět, jak pracuju v různých oborech.
-        Klikněte a proklikejte si je.
+        Nejsou to zakázky pro klienty. Zatím žádnou nemám a nebudu si vymýšlet
+        loga firem, pro které jsem nic neudělal. Firmy v ukázkách jsem si
+        vymyslel, ale weby jsou skutečné: můžete si je proklikat, vyzkoušet
+        na mobilu a podívat se, jak jsou rychlé.
       </p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {projects.map((p) => (
@@ -216,10 +301,10 @@ function UkazkySection({ index }: { index: number }) {
             href={p.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center justify-between rounded-xl border border-white/8 bg-white/5 px-5 py-4 transition-all hover:border-white/25 hover:bg-white/10"
+            className="group flex flex-col gap-4 rounded-xl border border-white/15 bg-white/5 p-5 transition-all hover:border-white/40 hover:bg-white/10"
           >
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-mono text-white/30">{p.num}</span>
+            <div className="flex items-start gap-4">
+              <span className="mt-0.5 text-xs font-mono text-white/30">{p.num}</span>
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="font-semibold text-white text-sm">{p.title}</p>
@@ -230,9 +315,18 @@ function UkazkySection({ index }: { index: number }) {
                 <p className="text-xs text-white/40 mt-0.5">{p.tag}</p>
               </div>
             </div>
-            <svg className="h-4 w-4 shrink-0 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-white/60" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 16 16" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 11L11 5M11 5H6M11 5V10" />
-            </svg>
+
+            {/* Že je karta odkaz, musí být vidět na první pohled. Samotná
+                šipka v rohu se přehlédne. */}
+            <span className="flex items-center gap-2 border-t border-white/10 pt-3 text-sm font-medium text-white/60 transition-colors group-hover:text-white">
+              <span className="underline decoration-white/25 underline-offset-4 group-hover:decoration-white">
+                Otevřít živou ukázku
+              </span>
+              <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 16 16" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 11L11 5M11 5H6M11 5V10" />
+              </svg>
+              <span className="ml-auto text-xs font-normal text-white/25">nové okno</span>
+            </span>
           </a>
         ))}
       </div>
@@ -447,26 +541,27 @@ function KontaktSection({ index }: { index: number }) {
 
   return (
     <Card id="kontakt" index={index}>
-      <SectionLabel>04 — Kontakt</SectionLabel>
+      <SectionLabel num="04">Kontakt</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
         Napište mi. Cenu i termín pošlu {ODEZVA.dlouhy}.
       </h2>
       <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Stačí pár vět o tom, co potřebujete. Odpovím konkrétní cenou a termínem —
-        ne pozvánkou na schůzku. Když se nedomluvíme, nic se neděje a nic neplatíte.
+        Stačí pár vět o tom, co potřebujete. Odpovím konkrétní cenou a termínem,
+        ne pozvánkou na schůzku. Když se nedomluvíme, nic se neděje a nic
+        neplatíte.
       </p>
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {/* Kontaktní info */}
         <div className="flex flex-col gap-6">
-          {/* Slib „osobně, bez prostředníků" potřebuje obličej — bez fotky
+          {/* Slib „jednáte přímo se mnou" potřebuje obličej. Bez fotky
               je to jen tvrzení. Nahradit za <Image> hned, jak bude. */}
           <div className="flex items-center gap-4 rounded-xl border border-dashed border-white/20 p-4">
             <div className="flex size-16 shrink-0 items-center justify-center rounded-full border border-dashed border-white/20 text-[10px] font-mono uppercase tracking-widest text-white/30">
               Foto
             </div>
             <p className="text-xs leading-relaxed text-white/40">
-              [DOPLNIT: fotka] Prodáváte osobní přístup — návštěvník by měl vidět,
+              [DOPLNIT: fotka] Prodáváte osobní přístup, návštěvník by měl vidět,
               s kým bude jednat.
             </p>
           </div>
@@ -581,7 +676,7 @@ function KontaktSection({ index }: { index: number }) {
             disabled={sending}
             className="rounded-lg bg-white py-3 text-sm font-semibold text-black transition-all hover:bg-white/85 disabled:opacity-50"
           >
-            {sending ? "Odesílám…" : `Odeslat — cenu pošlu ${ODEZVA.kratky}`}
+            {sending ? "Odesílám…" : `Odeslat, cenu pošlu ${ODEZVA.kratky}`}
           </button>
         </form>
       </div>
