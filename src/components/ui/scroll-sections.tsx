@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useToast } from "@/components/ui/toast"
-import { scrollToSection } from "@/lib/scroll"
+import { STICKY_TOP, scrollToSection } from "@/lib/scroll"
 import {
   BALICKY as CENIK,
   FIRMA,
@@ -24,13 +24,48 @@ function Card({
   children: React.ReactNode
   index: number
 }) {
+  const ref = useRef<HTMLDivElement>(null)
+  // Start bez lepení, ať se serverové a první klientské vykreslení shodují.
+  const [lepit, setLepit] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    // Sticky karta vyšší než výřez se přilepí horním okrajem a její
+    // spodek už nikdy nedorolujete — obsah pod okrajem je nedostupný.
+    // Takové kartě lepení vypneme a nechá se normálně projet.
+    // Pod md se nelepí nic, aby se karty na mobilu nepřekrývaly.
+    const md = window.matchMedia("(min-width: 768px)")
+    const prepocitat = () => {
+      const misto = window.innerHeight - STICKY_TOP(index) - 24
+      setLepit(md.matches && el.offsetHeight <= misto)
+    }
+
+    prepocitat()
+    const ro = new ResizeObserver(prepocitat)
+    ro.observe(el)
+    window.addEventListener("resize", prepocitat)
+    md.addEventListener("change", prepocitat)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener("resize", prepocitat)
+      md.removeEventListener("change", prepocitat)
+    }
+  }, [index])
+
   return (
     <div
       id={id}
-      /* Na mobilu karty plynou normálně pod sebou (relative), aby se
-         nezakrývaly — sticky vrstvení se zapne až od md výš. */
-      className="relative md:sticky w-full"
-      style={{ top: `${80 + index * 20}px`, zIndex: 10 + index }}
+      ref={ref}
+      className="w-full"
+      style={{
+        position: lepit ? "sticky" : "relative",
+        // `top` jen když se opravdu lepí. U relative by kartu jen
+        // posunulo dolů a rozhodilo mezery mezi kartami.
+        ...(lepit && { top: STICKY_TOP(index) }),
+        zIndex: 10 + index,
+      }}
     >
       <div
         className="rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl p-6 sm:p-8 md:p-14 transition-transform duration-300"
@@ -154,15 +189,15 @@ function CenikSection({ index }: { index: number }) {
       {PRVNI_KLIENTI.aktivni && (
         <div className="mb-10 rounded-xl border border-white/25 bg-white/[0.07] p-5">
           <p className="mb-1 text-xs font-mono uppercase tracking-widest text-white/40">
-            Zavádíme se
+            První {PRVNI_KLIENTI.pocet} klienti
           </p>
           <p className="text-sm leading-relaxed text-white/70">
             <strong className="text-white">
-              Prvním {PRVNI_KLIENTI.pocet} klientům dám {PRVNI_KLIENTI.slevaProcent} % dolů
+              Prvním {PRVNI_KLIENTI.pocet} klientům dám {PRVNI_KLIENTI.slevaProcent} % dolů.
             </strong>{" "}
-            výměnou za to, že hotový web smím ukázat jako referenci a napíšete mi
-            pár vět, jak se se mnou pracovalo. Potřebuju portfolio, vy potřebujete
-            web. Až budou tři, ceny se vrátí na normál.
+            Na oplátku bych rád hotový web ukázal ostatním jako svou práci
+            a poprosil vás o pár vět, jak se vám se mnou pracovalo. Až budu
+            mít tři hotové, sleva skončí.
           </p>
         </div>
       )}
@@ -214,64 +249,70 @@ function CenikSection({ index }: { index: number }) {
 
       <p className="mt-6 max-w-2xl text-sm text-white/35 leading-relaxed">
         V ceně je návrh, stavba a spuštění webu. Od vás potřebuju texty, fotky
-        a logo, pokud ho máte. Doména a hosting patří do správy níž.{" "}
+        a logo, pokud ho máte. Doména a hosting patří do správy, ta je hned
+        v další sekci.{" "}
         <span className="text-white/50">[DOPLNIT: za jak dlouho web dodám]</span>
       </p>
-
-      {/* ── Správa ── */}
-      <div className="mt-14 border-t border-white/10 pt-12">
-        <h3 className="mb-4 text-2xl font-bold tracking-tight md:text-3xl">
-          A pak? Web sám od sebe neběží.
-        </h3>
-        <p className="mb-8 max-w-xl text-base text-white/50 leading-relaxed">
-          Doména se musí každý rok prodloužit, certifikát obnovit, systém
-          aktualizovat. Můžete si to vést sami, nebo mi to hodit na krk
-          a nestarat se. Obojí je v pořádku, tady je cena za obojí.
-        </p>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {SPRAVA.map((s) => (
-            <div
-              key={s.id}
-              className={`rounded-xl border p-6 flex flex-col ${
-                s.featured
-                  ? "border-white/30 bg-white/10"
-                  : "border-white/8 bg-white/5"
-              }`}
-            >
-              <p className="mb-1 text-xs font-mono uppercase tracking-widest text-white/30">
-                {s.note}
-              </p>
-              <h4 className="font-bold text-white mb-1">{s.nazev}</h4>
-              <p className="mb-6 text-2xl font-bold tracking-tight text-white">
-                {s.cena}
-                {s.perioda && (
-                  <span className="ml-1 text-sm font-normal text-white/40">{s.perioda}</span>
-                )}
-              </p>
-              <ul className="flex flex-col gap-2">
-                {s.items.map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-white/60">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white/30" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <p className="mt-6 max-w-2xl text-sm text-white/35 leading-relaxed">
-          Správu můžete kdykoli zrušit nebo přejít na jinou úroveň, nic
-          nepodepisujete na rok dopředu. Větší zásahy nad rámec balíčku
-          dělám za {HODINOVKA} na hodinu a cenu vám řeknu předem.
-        </p>
-      </div>
     </Card>
   )
 }
 
-/* ── Sekce 3: Ukázky ── */
+/* ── Sekce 3: Správa ── */
+function SpravaSection({ index }: { index: number }) {
+  return (
+    <Card id="sprava" index={index}>
+      <SectionLabel num="03">Správa</SectionLabel>
+      <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
+        A pak? Web sám od sebe neběží.
+      </h2>
+      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
+        Doména se musí každý rok prodloužit, certifikát obnovit, systém
+        aktualizovat. Můžete si to vést sami, nebo mi to hodit na krk
+        a nestarat se. Obojí je v pořádku, tady je cena za obojí.
+      </p>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {SPRAVA.map((s) => (
+          <div
+            key={s.id}
+            className={`rounded-xl border p-6 flex flex-col ${
+              s.featured
+                ? "border-white/30 bg-white/10"
+                : "border-white/8 bg-white/5"
+            }`}
+          >
+            <p className="mb-1 text-xs font-mono uppercase tracking-widest text-white/30">
+              {s.note}
+            </p>
+            <h3 className="font-bold text-white mb-1">{s.nazev}</h3>
+            <p className="mb-6 text-2xl font-bold tracking-tight text-white">
+              {s.cena}
+              {s.perioda && (
+                <span className="ml-1 text-sm font-normal text-white/40">{s.perioda}</span>
+              )}
+            </p>
+            <ul className="flex flex-col gap-2">
+              {s.items.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-white/60">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white/30" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p className="mt-6 max-w-2xl text-sm text-white/35 leading-relaxed">
+        Správu můžete kdykoli zrušit nebo přejít na jinou úroveň, nic
+        nepodepisujete na rok dopředu. Větší zásahy nad rámec balíčku
+        dělám za {HODINOVKA} na hodinu a cenu vám řeknu předem.
+      </p>
+    </Card>
+  )
+}
+
+/* ── Sekce 4: Ukázky ── */
 function UkazkySection({ index }: { index: number }) {
   // Vlastní návrhy, ne cizí zakázky. Označené jako koncept přímo na
   // kartě — kdyby to bylo jen v úvodním odstavci, čte se to později
@@ -284,7 +325,7 @@ function UkazkySection({ index }: { index: number }) {
   ]
   return (
     <Card id="ukazky" index={index}>
-      <SectionLabel num="03">Ukázky</SectionLabel>
+      <SectionLabel num="04">Ukázky</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
         Čtyři weby, které jsem navrhl a postavil od nuly.
       </h2>
@@ -489,7 +530,7 @@ function FieldError({ msg, id }: { msg?: string; id?: string }) {
   )
 }
 
-/* ── Sekce 4: Kontakt ── */
+/* ── Sekce 5: Kontakt ── */
 function KontaktSection({ index }: { index: number }) {
   const [sending, setSending] = useState(false)
   const [errors, setErrors] = useState<FieldErrors>({})
@@ -541,7 +582,7 @@ function KontaktSection({ index }: { index: number }) {
 
   return (
     <Card id="kontakt" index={index}>
-      <SectionLabel num="04">Kontakt</SectionLabel>
+      <SectionLabel num="05">Kontakt</SectionLabel>
       <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
         Napište mi. Cenu i termín pošlu {ODEZVA.dlouhy}.
       </h2>
@@ -692,8 +733,9 @@ export default function ScrollSections() {
       <div className="flex flex-col gap-6">
         <SluzbySection index={0} />
         <CenikSection index={1} />
-        <UkazkySection index={2} />
-        <KontaktSection index={3} />
+        <SpravaSection index={2} />
+        <UkazkySection index={3} />
+        <KontaktSection index={4} />
       </div>
     </div>
   )

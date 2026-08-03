@@ -1,7 +1,7 @@
 // „ukazky" místo „reference" schválně — nejsou to cizí zakázky, ale
 // vlastní návrhy. Sekce, která se jmenuje Reference a obsahuje vymyšlené
 // firmy, si sama podkopává důvěryhodnost.
-export const SECTION_IDS = ["sluzby", "cenik", "ukazky", "kontakt"] as const
+export const SECTION_IDS = ["sluzby", "cenik", "sprava", "ukazky", "kontakt"] as const
 export type SectionId = (typeof SECTION_IDS)[number]
 
 export const STICKY_TOP = (index: number) => 80 + index * 20

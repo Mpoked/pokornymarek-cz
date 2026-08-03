@@ -24,6 +24,7 @@ const footerLinks: FooterSection[] = [
 		links: [
 			{ title: 'Služby', href: '#sluzby' },
 			{ title: 'Ceník', href: '#cenik' },
+			{ title: 'Správa', href: '#sprava' },
 			{ title: 'Ukázky', href: '#ukazky' },
 			{ title: 'Kontakt', href: '#kontakt' },
 		],

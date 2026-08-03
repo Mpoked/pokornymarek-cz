@@ -8,6 +8,7 @@ import { FIRMA } from "@/lib/firma"
 const LABELS: Record<string, string> = {
   sluzby: "Služby",
   cenik: "Ceník",
+  sprava: "Správa",
   ukazky: "Ukázky",
   kontakt: "Kontakt",
 }
