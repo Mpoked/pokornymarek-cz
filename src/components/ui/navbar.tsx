@@ -1,12 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { scrollToSection, SECTION_IDS } from "@/lib/scroll"
+import { FIRMA } from "@/lib/firma"
 
 const LABELS: Record<string, string> = {
   sluzby: "Služby",
   cenik: "Ceník",
-  reference: "Reference",
+  ukazky: "Ukázky",
   kontakt: "Kontakt",
 }
 
@@ -58,7 +60,7 @@ export default function Navbar() {
             onClick={(e) => { e.preventDefault(); goTo("kontakt") }}
             className="mt-4 max-w-[80vw] border border-white/30 px-8 py-3 text-center text-sm font-mono uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black"
           >
-            Poptávka
+            Nezávazná cena
           </a>
         </nav>
       </div>
@@ -71,13 +73,15 @@ export default function Navbar() {
         }`}
       >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a
-          href="#"
+        {/* Skutečný odkaz na "/" — funguje Ctrl+klik i prostřední tlačítko. */}
+        <Link
+          href="/"
+          aria-label={`${FIRMA.jmeno} — na začátek stránky`}
           onClick={(e) => { e.preventDefault(); setOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }) }}
           className="text-sm font-bold tracking-widest uppercase text-white"
         >
           MP
-        </a>
+        </Link>
 
         {/* Desktop navigace */}
         <nav className="hidden gap-8 text-xs font-mono uppercase tracking-widest text-white/50 md:flex">
@@ -99,7 +103,7 @@ export default function Navbar() {
           onClick={(e) => { e.preventDefault(); goTo("kontakt") }}
           className="hidden border border-white/30 px-4 py-2 text-xs font-mono uppercase tracking-widest text-white/70 transition-all duration-200 hover:bg-white hover:text-black md:inline-block"
         >
-          Poptávka
+          Nezávazná cena
         </a>
 
         {/* Mobilní hamburger */}

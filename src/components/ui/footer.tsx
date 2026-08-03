@@ -4,6 +4,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { MailIcon } from 'lucide-react';
 import { scrollToSection } from '@/lib/scroll';
+import { FIRMA } from '@/lib/firma';
 
 interface FooterLink {
 	title: string;
@@ -19,19 +20,19 @@ interface FooterSection {
 
 const footerLinks: FooterSection[] = [
 	{
-		label: 'Studio',
+		label: 'Web',
 		links: [
 			{ title: 'Služby', href: '#sluzby' },
 			{ title: 'Ceník', href: '#cenik' },
-			{ title: 'Reference', href: '#reference' },
+			{ title: 'Ukázky', href: '#ukazky' },
 			{ title: 'Kontakt', href: '#kontakt' },
 		],
 	},
 	{
 		label: 'Kontakt',
 		links: [
-			{ title: 'info@pokornymarek.cz', href: 'mailto:info@pokornymarek.cz', icon: MailIcon, external: true },
-			{ title: '+420 774 664 403', href: 'tel:+420774664403', external: true },
+			{ title: FIRMA.email, href: `mailto:${FIRMA.email}`, icon: MailIcon, external: true },
+			{ title: FIRMA.telefon, href: `tel:${FIRMA.telefonHref}`, external: true },
 		],
 	},
 ];
@@ -45,10 +46,11 @@ export function Footer() {
 				{/* Značka */}
 				<AnimatedContainer className="max-w-xs space-y-4">
 					<span className="block text-sm font-bold tracking-widest uppercase text-white">
-						Marek Pokorný
+						{FIRMA.jmeno}
 					</span>
 					<p className="text-sm leading-relaxed text-white/50">
-						Weby na míru. Osobně, bez prostředníků.
+						Weby pro živnostníky a malé firmy z {FIRMA.mestoGen} a okolí.
+						Od 9 900 Kč, bez agentury mezi námi.
 					</p>
 				</AnimatedContainer>
 
@@ -94,7 +96,11 @@ export function Footer() {
 				delay={0.3}
 				className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between"
 			>
-				<p>{`© ${new Date().getFullYear()} Marek Pokorný.`}</p>
+				{/* IČO a sídlo nejsou jen formalita — u lokální služby je to
+				    důkaz, že za webem stojí dohledatelný člověk. */}
+				<p>
+					{`© ${new Date().getFullYear()} ${FIRMA.jmeno} · IČO ${FIRMA.ico} · ${FIRMA.mesto}`}
+				</p>
 				<a
 					href="/ochrana-osobnich-udaju"
 					className="hover:text-white transition-colors duration-300"

@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { FIRMA } from "@/lib/firma"
 
 export const metadata: Metadata = {
-  title: "Ochrana osobních údajů · Marek Pokorný",
+  title: `Ochrana osobních údajů · ${FIRMA.jmeno}`,
   description:
-    "Zásady zpracování osobních údajů — jaké údaje zpracováváme, proč, jak dlouho a jaká máte práva.",
+    "Zásady zpracování osobních údajů — jaké údaje zpracovávám, proč, jak dlouho a jaká máte práva.",
+  alternates: { canonical: "/ochrana-osobnich-udaju" },
 }
 
 function Section({
@@ -39,7 +41,7 @@ export default function OchranaOsobnichUdaju() {
         </Link>
 
         <p className="mb-4 text-xs font-mono uppercase tracking-[0.3em] text-white/40">
-          Marek Pokorný · Uherské Hradiště
+          {FIRMA.jmeno} · {FIRMA.mesto}
         </p>
         <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
           Ochrana osobních údajů
@@ -53,8 +55,9 @@ export default function OchranaOsobnichUdaju() {
         <div className="flex flex-col gap-10">
           <Section num="01 — Správce údajů" title="Kdo jsme">
             <p>
-              Správcem vašich osobních údajů je <strong className="text-white">Marek
-              Pokorný</strong>, fyzická osoba se sídlem v Uherském Hradišti.
+              Správcem vašich osobních údajů je <strong className="text-white">{FIRMA.jmeno}</strong>,
+              fyzická osoba podnikající, IČO {FIRMA.ico}, se sídlem {FIRMA.ulice},{" "}
+              {FIRMA.psc} {FIRMA.mesto}.
             </p>
             <p>
               Kontakt pro záležitosti ochrany osobních údajů:{" "}
@@ -69,7 +72,7 @@ export default function OchranaOsobnichUdaju() {
 
           <Section num="02 — Rozsah" title="Jaké údaje zpracováváme">
             <p>
-              Zpracováváme pouze údaje, které nám sami poskytnete odesláním kontaktního
+              Zpracovávám pouze údaje, které mi sami poskytnete odesláním kontaktního
               formuláře na tomto webu:
             </p>
             <ul className="list-inside list-disc space-y-1">
@@ -79,15 +82,15 @@ export default function OchranaOsobnichUdaju() {
               <li>vybraný balíček služeb (pokud jej zvolíte).</li>
             </ul>
             <p>
-              Žádné další údaje nesbíráme. Web nepoužívá analytické ani marketingové
+              Žádné další údaje nesbírám. Web nepoužívá analytické ani marketingové
               nástroje a neukládá sledovací cookies.
             </p>
           </Section>
 
           <Section num="03 — Účel a právní základ" title="Proč údaje zpracováváme">
             <p>
-              Údaje z formuláře používáme výhradně k <strong className="text-white">
-              vyřízení vaší poptávky</strong> — tedy abychom vám mohli odpovědět,
+              Údaje z formuláře používám výhradně k <strong className="text-white">
+              vyřízení vaší poptávky</strong> — tedy abych vám mohl odpovědět,
               připravit nabídku a případně se domluvit na spolupráci.
             </p>
             <p>
@@ -96,16 +99,16 @@ export default function OchranaOsobnichUdaju() {
               zaškrtnutím políčka před odesláním formuláře (čl. 6 odst. 1 písm. a GDPR).
             </p>
             <p>
-              Vaše údaje nepoužíváme k rozesílání nevyžádaných obchodních sdělení ani je
-              neprodáváme třetím stranám.
+              Vaše údaje nepoužívám k rozesílání nevyžádaných obchodních sdělení ani je
+              neprodávám třetím stranám.
             </p>
           </Section>
 
           <Section num="04 — Doba uchování" title="Jak dlouho údaje uchováváme">
             <p>
-              Údaje uchováváme po dobu nezbytnou k vyřízení poptávky a navazující
+              Údaje uchovávám po dobu nezbytnou k vyřízení poptávky a navazující
               komunikace, nejdéle však <strong className="text-white">2 roky</strong> od
-              poslední vzájemné komunikace. Pokud dojde k uzavření spolupráce, uchováváme
+              poslední vzájemné komunikace. Pokud dojde k uzavření spolupráce, uchovávám
               údaje po dobu trvání smluvního vztahu a dále po dobu vyžadovanou právními
               předpisy (např. účetními).
             </p>
@@ -117,14 +120,14 @@ export default function OchranaOsobnichUdaju() {
           <Section num="05 — Zpracovatelé" title="Komu údaje předáváme">
             <p>
               Zprávy z formuláře se ukládají <strong className="text-white">přímo na
-              náš vlastní server</strong> provozovaný v České republice — do zpracování
-              nezapojujeme externí formulářové služby.
+              můj vlastní server</strong> provozovaný v České republice — do zpracování
+              nezapojuji externí formulářové služby.
             </p>
             <p>
               E-mailové upozornění na novou poptávku je doručováno prostřednictvím
-              poskytovatele naší e-mailové schránky (Google Ireland Ltd. / Gmail).
+              poskytovatele mé e-mailové schránky (Google Ireland Ltd. / Gmail).
               Dále může mít k údajům technický přístup poskytovatel síťové
-              infrastruktury (Cloudflare, Inc.). Jiným subjektům údaje nepředáváme.
+              infrastruktury (Cloudflare, Inc.). Jiným subjektům údaje nepředávám.
             </p>
           </Section>
 
@@ -147,7 +150,7 @@ export default function OchranaOsobnichUdaju() {
               >
                 info@pokornymarek.cz
               </a>
-              . Odpovíme nejpozději do 30 dnů.
+              . Odpovím nejpozději do 30 dnů.
             </p>
             <p>
               Máte také právo podat stížnost u dozorového úřadu — Úřadu pro ochranu
@@ -174,7 +177,7 @@ export default function OchranaOsobnichUdaju() {
 
           <section>
             <p className="text-xs text-white/30">
-              Tyto zásady můžeme čas od času aktualizovat — aktuální verze je vždy
+              Tyto zásady mohu čas od času aktualizovat — aktuální verze je vždy
               dostupná na této stránce. Poslední aktualizace: 3. 7. 2026.
             </p>
           </section>
