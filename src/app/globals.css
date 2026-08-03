@@ -139,3 +139,34 @@
     overflow-x: clip;
   }
 }
+
+/* Vrstvení karet sekcí.
+
+   Sticky karta vyšší než okno se přilepí horním okrajem a její spodek už
+   nedorolujete — další karta ji přejede dřív. Proto se vrstvení zapíná až
+   od výšky okna, do které se karty vejdou.
+
+   Podmínka je schválně jedna pro všechny karty. Kdyby se lepila jen část
+   z nich, mezi kartami by prosvítala ta zespodu. Buď se lepí všechny,
+   nebo žádná a pak jen normálně plynou pod sebou.
+
+   Hranice na šířku není kosmetická: pod 1024 px se karty zúží, texty se
+   lámou do víc řádků a ceník povyroste o skoro sto pixelů.
+
+   Když do některé karty přidáváš obsah, hlídej si její výšku: nejvyšší
+   je ceník a ten určuje, kde je hranice. Naměřeno při 1024 px šířky —
+   nejvyšší karta potřebuje okno 857 px, hranice má rezervu. */
+@media (min-width: 1024px) and (min-height: 880px) {
+  .karta-stack {
+    position: sticky;
+    top: var(--sticky-top);
+  }
+
+  /* Všechny karty dorovnat na zbytek obrazovky. Každá se lepí o 14 px
+     níž než ta předchozí, takže při stejné dopočtené výšce končí všechny
+     na stejné spodní hraně a žádná zespodu nevykoukne. Bez toho by pod
+     kratší kartou prosvítal spodek té vyšší pod ní. */
+  .karta-stack > * {
+    min-height: calc(100vh - var(--sticky-top) - 1rem);
+  }
+}

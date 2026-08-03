@@ -159,6 +159,6 @@ export const HODINOVKA = "600 Kč"
 /** Věta o DPH pod ceník. */
 export function dphPoznamka(): string {
   if (FIRMA.platceDph === true) return "Všechny ceny jsou včetně DPH."
-  if (FIRMA.platceDph === false) return "Nejsem plátce DPH, takže cena, kterou vidíte, je konečná."
+  if (FIRMA.platceDph === false) return "Nejsem plátce DPH, cena je konečná."
   return "[DOPLNIT: jsou ceny s DPH, nebo nejsem plátce?]"
 }

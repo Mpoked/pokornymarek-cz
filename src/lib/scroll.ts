@@ -4,7 +4,10 @@
 export const SECTION_IDS = ["sluzby", "cenik", "sprava", "ukazky", "kontakt"] as const
 export type SectionId = (typeof SECTION_IDS)[number]
 
-export const STICKY_TOP = (index: number) => 80 + index * 20
+// Menší odstup i menší přírůstek na kartu: s pěti kartami by původních
+// 80 + index*20 odsunulo poslední až na 160 px a ubralo jí výšku, kterou
+// potřebuje, aby se do obrazovky vešla celá.
+export const STICKY_TOP = (index: number) => 72 + index * 14
 const CARD_GAP = 24 // gap-6 mezi kartami
 
 function naturalTop(el: HTMLElement): number {
