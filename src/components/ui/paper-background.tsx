@@ -18,9 +18,12 @@ export default function PaperBackground() {
 
   return (
     <div className="absolute inset-0 w-full h-full bg-black">
+      {/* Nejsvětlejší odstín býval čistě bílý a světlo dopadalo přesně tam,
+          kde v hero začíná text — bílá na bílé. Šedá drží stejnou kresbu,
+          ale text před ní zůstane čitelný. */}
       <MeshGradient
         className="w-full h-full"
-        colors={["#000000", "#1a1a1a", "#333333", "#ffffff"]}
+        colors={["#000000", "#1a1a1a", "#333333", "#8f8f8f"]}
         speed={omezitPohyb ? 0 : 1.0}
       />
     </div>

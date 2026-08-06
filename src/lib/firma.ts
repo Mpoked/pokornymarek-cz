@@ -59,6 +59,37 @@ export const ODEZVA = {
 } as const
 
 /**
+ * Za jak dlouho web dodám. Počítá se od dodání podkladů, ne od objednávky
+ * — jinak by to byl slib, který drží klient, a stejně bych ho porušil.
+ */
+export const DODANI = {
+  dnu: 14,
+  text: "do 14 dnů",
+} as const
+
+/**
+ * Jistoty místo referencí.
+ *
+ * Bez odvedených zakázek nemám čím riziko zmenšit, tak ho beru na sebe.
+ * Každá věta je závazek, ne fráze — když ji nemůžu dodržet, musí ze
+ * seznamu pryč, ne se změkčit na „snažíme se".
+ */
+export const JISTOTY = [
+  {
+    nadpis: "Fixní cena",
+    text: "Co si plácneme, to zaplatíte. Nic se cestou nedoúčtovává.",
+  },
+  {
+    nadpis: `Hotovo ${DODANI.text}`,
+    text: `Od chvíle, kdy mi dodáte texty, fotky a logo.`,
+  },
+  {
+    nadpis: "Nelíbí se, neplatíte",
+    text: "Když hotový web odmítnete, nepustím ho ven a nic nedlužíte.",
+  },
+] as const
+
+/**
  * Nabídka pro první klienty.
  *
  * Nulové portfolio je fakt, který se nedá schovat, tak ať aspoň pracuje.
@@ -77,27 +108,39 @@ export function cenaProPrvni(cena: number): number {
   return Math.round((cena * (100 - PRVNI_KLIENTI.slevaProcent)) / 100 / 100) * 100
 }
 
+/**
+ * Cena jako text, s pevnými mezerami. Řád i „Kč" musí zůstat na jednom
+ * řádku — v nadpisu se cena jinak zlomí uprostřed čísla („od 7 / 900 Kč")
+ * a hlavní argument webu vypadá jako překlep.
+ */
+export function korun(cena: number): string {
+  // Zapsáno kódem schválně. Nbsp je v editoru k nerozeznání od mezery,
+  // takže tichou záměnu zpátky za obyčejnou by nikdo nezachytil.
+  const NBSP = String.fromCharCode(0xa0)
+  return `${cena.toLocaleString("cs-CZ").replace(/\s/g, NBSP)}${NBSP}Kč`
+}
+
 /** Ceny balíčků. Jedno místo pro ceník, dropdown i JSON-LD Offer. */
 export const BALICKY = [
   {
     id: "jednoduchy",
     nazev: "Jednoduchý web",
     cena: 7900,
-    cenaText: "7 900 Kč",
+    cenaText: korun(7900),
     note: "Pro jednu službu",
   },
   {
     id: "standard",
     nazev: "Standard",
     cena: 14900,
-    cenaText: "14 900 Kč",
+    cenaText: korun(14900),
     note: "Nejčastější volba",
   },
   {
     id: "premium",
     nazev: "E-shop a větší projekty",
     cena: 24900,
-    cenaText: "24 900 Kč",
+    cenaText: korun(24900),
     note: "Rozsah podle zadání",
   },
 ] as const
@@ -113,20 +156,20 @@ export const SPRAVA = [
   {
     id: "zadna",
     nazev: "Bez správy",
-    cena: "0 Kč",
+    cena: korun(0),
     perioda: "",
     note: "Web je váš",
     items: [
       "Předám vám hotový web i přístupy",
       "Doménu a hosting si vedete sami",
-      "Pozdější změny 600 Kč / hodinu",
+      `Pozdější změny ${korun(600)} / hodinu`,
     ],
     featured: false,
   },
   {
     id: "zakladni",
     nazev: "Základní správa",
-    cena: "390 Kč",
+    cena: korun(390),
     perioda: "/ měsíc",
     note: "Doporučuju",
     items: [
@@ -140,7 +183,7 @@ export const SPRAVA = [
   {
     id: "rozsirena",
     nazev: "Rozšířená správa",
-    cena: "890 Kč",
+    cena: korun(890),
     perioda: "/ měsíc",
     note: "Když se web mění často",
     items: [
@@ -154,7 +197,7 @@ export const SPRAVA = [
 ] as const
 
 /** Hodinová sazba na práci nad rámec správy. */
-export const HODINOVKA = "600 Kč"
+export const HODINOVKA = korun(600)
 
 /** Věta o DPH pod ceník. */
 export function dphPoznamka(): string {

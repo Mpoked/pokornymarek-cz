@@ -7,10 +7,12 @@ type ToastType = "success" | "error"
 interface ToastProps {
   message: string
   type: ToastType
+  /** Titulek nad hláškou. Bez něj se doplní ten pro odeslání formuláře. */
+  title?: string
   onClose: () => void
 }
 
-export function Toast({ message, type, onClose }: ToastProps) {
+export function Toast({ message, type, title, onClose }: ToastProps) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export function Toast({ message, type, onClose }: ToastProps) {
         {/* Text */}
         <div className="flex flex-col">
           <span className="text-sm font-semibold">
-            {type === "success" ? "Zpráva odeslána!" : "Nepodařilo se odeslat"}
+            {title ?? (type === "success" ? "Zpráva odeslána!" : "Nepodařilo se odeslat")}
           </span>
           <span className="text-xs text-white/50 mt-0.5">{message}</span>
         </div>
@@ -88,13 +90,14 @@ export function Toast({ message, type, onClose }: ToastProps) {
 
 /* ── Hook pro snadné použití ── */
 export function useToast() {
-  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null)
+  const [toast, setToast] = useState<{ message: string; type: ToastType; title?: string } | null>(null)
 
-  const show = (message: string, type: ToastType) => setToast({ message, type })
+  const show = (message: string, type: ToastType, title?: string) =>
+    setToast({ message, type, title })
   const hide = () => setToast(null)
 
   const ToastPortal = toast ? (
-    <Toast message={toast.message} type={toast.type} onClose={hide} />
+    <Toast message={toast.message} type={toast.type} title={toast.title} onClose={hide} />
   ) : null
 
   return { show, ToastPortal }

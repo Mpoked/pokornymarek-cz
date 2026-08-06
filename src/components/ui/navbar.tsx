@@ -73,7 +73,10 @@ export default function Navbar() {
             : "bg-transparent"
         }`}
       >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      {/* Stejná šířka jako karty sekcí (max-w-5xl v scroll-sections.tsx).
+          Při 6xl přesahovala navigace hranu karet o 64 px na každou stranu
+          a nevypadalo to jako záměr, ale jako nedotažené zarovnání. */}
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         {/* Skutečný odkaz na "/" — funguje Ctrl+klik i prostřední tlačítko. */}
         <Link
           href="/"

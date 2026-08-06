@@ -29,7 +29,9 @@ export function HeroCta() {
           e.preventDefault()
           scrollToSection("cenik")
         }}
-        className="w-full rounded-lg border border-white/20 px-6 py-3.5 text-sm font-semibold text-white/80 transition-all hover:border-white/40 hover:text-white sm:w-auto"
+        /* Okraj musí být vidět bez hledání. Při /20 to na fotce splynulo
+           s pozadím a druhá možnost vypadala jako odstavec, ne jako volba. */
+        className="w-full rounded-lg border border-white/45 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:border-white hover:bg-white/10 sm:w-auto"
       >
         Ceník a co je v ceně
       </a>

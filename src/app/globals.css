@@ -7,9 +7,19 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  /* Pozor: pravá strana musí ukazovat na proměnnou, kterou next/font
+     opravdu vyrábí (viz layout.tsx). Když tu byl `var(--font-sans)`,
+     nerozsvítilo se nic a celý web jel ve výchozím patkovém písmu
+     prohlížeče — tedy v Times. */
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  /* Nadpisy mají patky schválně, ale skutečným písmem, ne náhodou. */
+  --font-heading: var(--font-newsreader);
+  /* Jediná barva na webu. Používat střídmě: sleva, čísla sekcí,
+     doporučený balíček. Když bude všude, přestane fungovat. */
+  --color-akcent: oklch(0.82 0.12 74);
+  /* Tmavší varianta pro světlé plochy — světlá okrová by na nich zmizela. */
+  --color-akcent-tmavy: oklch(0.52 0.11 62);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -82,8 +92,9 @@
   --sidebar-accent-foreground: oklch(1 0 0);
   --sidebar-border: oklch(1 0 0 / 0.2);
   --sidebar-ring: oklch(1 0 0 / 0.3);
-  --font-geist-sans: "Geist Sans", sans-serif;
-  --font-geist-mono: "Geist Mono", monospace;
+  /* Písma sem nepatří. Vyrábí je next/font v layout.tsx a vkládá je jako
+     třídu na <html> — kdyby se stejné proměnné definovaly i tady, přebily
+     by se podle pořadí v souboru a nikdo by nevěděl, co vlastně platí. */
 }
 
 .dark {
@@ -154,8 +165,14 @@
    lámou do víc řádků a ceník povyroste o skoro sto pixelů.
 
    Když do některé karty přidáváš obsah, hlídej si její výšku: nejvyšší
-   je ceník a ten určuje, kde je hranice. Naměřeno při 1024 px šířky —
-   nejvyšší karta potřebuje okno 857 px, hranice má rezervu. */
+   je ceník a ten určuje, kde je hranice. Naměřeno při 1024 px šířky:
+   ceník je vysoký 753 px a lepí se 86 px pod horní hranou, takže
+   potřebuje okno 855 px. Hranice 880 px na to má rezervu 25 px.
+
+   Pozor, výškou karet hýbe i písmo. Když se web přepnul z náhradního
+   patkového písma na Geist a Newsreader, ceník povyrostl o skoro 60 px
+   a hranici na chvíli přerostl. Srovnala to až přestavba hlavičky ceníku
+   do dvou sloupců. Po každé takové změně tady čísla přeměř. */
 @media (min-width: 1024px) and (min-height: 880px) {
   .karta-stack {
     position: sticky;

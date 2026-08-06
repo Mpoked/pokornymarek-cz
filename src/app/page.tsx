@@ -3,7 +3,7 @@ import Navbar from "@/components/ui/navbar"
 import ScrollSections from "@/components/ui/scroll-sections"
 import { Footer } from "@/components/ui/footer"
 import { HeroCta } from "@/components/ui/hero-cta"
-import { BALICKY, FIRMA, ODEZVA, PRVNI_KLIENTI } from "@/lib/firma"
+import { BALICKY, FIRMA, JISTOTY, ODEZVA, PRVNI_KLIENTI } from "@/lib/firma"
 
 /**
  * Strukturovaná data pro lokální vyhledávání. Popisují jen to, co je
@@ -75,7 +75,7 @@ export default function Home() {
             Tvorba webů · {FIRMA.mesto}
           </p>
 
-          <h1 className="text-4xl sm:text-5xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
+          <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
             Web pro vaši firmu od {BALICKY[0].cenaText}.
             {PRVNI_KLIENTI.aktivni && (
               <span className="mt-2 block text-white/70">
@@ -84,20 +84,39 @@ export default function Home() {
             )}
           </h1>
 
-          <p className="mx-auto mt-8 max-w-xl text-base sm:text-lg text-white/60 leading-relaxed">
-            Jsem {FIRMA.jmeno}. Weby dělám od roku {FIRMA.odRoku}, zatím
-            při škole. Zakázku pro klienta jsem ještě nedělal a nebudu
-            předstírat, že ano. Místo referencí vám ukážu čtyři weby,
-            které jsem postavil od nuly, a dám cenu, za kterou to nikdo
-            se stovkou zakázek za sebou neudělá.
+          {/* Dřív tu stálo „zakázku jsem ještě nedělal a nebudu předstírat,
+              že ano". Pravda to je, ale zákazník si z toho odnesl hlavně
+              riziko. Stejná pravda otočená dopředu: první portfolio je
+              důvod, proč dostane cenu i pozornost, kterou jinde nedostane. */}
+          <p className="mx-auto mt-8 max-w-xl text-base sm:text-lg text-white/70 leading-relaxed">
+            Jsem {FIRMA.jmeno} a stavím si první portfolio. Proto je cena
+            nízká a proto budete jediná zakázka, kterou zrovna dělám —
+            ne jedna z deseti, co čekají, až doběhnou ty větší. Weby stavím
+            od roku {FIRMA.odRoku}, čtyři si můžete níž proklikat.
           </p>
 
-          <p className="mx-auto mt-4 max-w-xl text-sm text-white/35">
+          {/* Reference nemám, tak riziko nesu já. Tři závazky, ne tři
+              přídavná jména — a stojí těsně nad tlačítkem schválně. */}
+          <ul className="mx-auto mt-8 flex max-w-2xl flex-col justify-center gap-x-8 gap-y-3 sm:flex-row">
+            {JISTOTY.map((j) => (
+              <li key={j.nadpis} className="flex items-start justify-center gap-2 text-left sm:flex-1">
+                <svg className="mt-0.5 size-4 shrink-0 text-akcent" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5L6.2 11.5L13 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span>
+                  <span className="block text-sm font-semibold text-white">{j.nadpis}</span>
+                  <span className="block text-xs leading-relaxed text-white/55">{j.text}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <HeroCta />
+
+          <p className="mx-auto mt-8 max-w-xl text-sm text-white/50">
             Sídlím v {FIRMA.mestoLok}, po Slovácku se rád stavím osobně.
             Na dálku pracuju kdekoli v Česku. Cenu i termín pošlu {ODEZVA.dlouhy}.
           </p>
-
-          <HeroCta />
         </div>
       </section>
 
@@ -105,7 +124,9 @@ export default function Home() {
       <ScrollSections />
 
       {/* Footer */}
-      <div className="relative z-10 px-6 pb-8 pt-10 md:pt-0">
+      {/* Stejný obal jako karty sekcí, aby patička začínala a končila
+          přesně na jejich hraně, ne o šířku odsazení vedle. */}
+      <div className="relative z-10 mx-auto max-w-5xl px-6 pb-8 pt-10 md:pt-0">
         <Footer />
       </div>
     </main>
