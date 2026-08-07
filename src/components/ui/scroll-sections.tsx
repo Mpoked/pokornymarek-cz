@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import { useToast } from "@/components/ui/toast"
 import { STICKY_TOP, scrollToSection } from "@/lib/scroll"
 import {
@@ -762,21 +763,31 @@ function KontaktSection({
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {/* Kontaktní info */}
         <div className="flex flex-col gap-6">
-          {/* Slib „jednáte přímo se mnou" potřebuje obličej. Bez fotky
-              je to jen tvrzení. Nahradit za <Image> hned, jak bude. */}
-          <div className="flex items-center gap-3 rounded-xl border border-dashed border-white/20 p-3">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-dashed border-white/20 text-[10px] font-mono uppercase tracking-widest text-white/45">
-              Foto
+          {/* Slib „jednáte přímo se mnou" potřebuje obličej, jinak je to
+              jen tvrzení. Zdroj je čtvercový výřez, takže rámování nezávisí
+              na velikosti prvku. Fotka je pod ohybem, proto bez priority. */}
+          <div className="flex items-center gap-4">
+            <Image
+              src="/marek-pokorny.webp"
+              alt={FIRMA.jmeno}
+              width={800}
+              height={800}
+              sizes="80px"
+              className="size-20 shrink-0 rounded-full object-cover ring-1 ring-white/15"
+            />
+            <div>
+              <p className="font-semibold text-white">{FIRMA.jmeno}</p>
+              <p className="mt-1 text-sm leading-relaxed text-white/65">
+                Web vám udělám já sám. Na e-mail i telefon odpovídám osobně,
+                žádný obchodník mezi námi není.
+              </p>
             </div>
-            <p className="text-xs leading-relaxed text-white/55">
-              [DOPLNIT: fotka] Prodáváte osobní přístup, ať je vidět, s kým
-              bude klient jednat.
-            </p>
           </div>
 
           <ul className="flex flex-col gap-5">
+            {/* Popisek byl dřív jméno, to teď stojí u fotky o kus výš. */}
             <KontaktRadek
-              label={FIRMA.jmeno}
+              label="E-mail"
               typ="E-mail"
               hodnota={FIRMA.email}
               href={`mailto:${FIRMA.email}`}
