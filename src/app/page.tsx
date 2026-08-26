@@ -3,7 +3,7 @@ import Navbar from "@/components/ui/navbar"
 import ScrollSections from "@/components/ui/scroll-sections"
 import { Footer } from "@/components/ui/footer"
 import { HeroCta } from "@/components/ui/hero-cta"
-import { BALICKY, FIRMA, JISTOTY, ODEZVA, PRVNI_KLIENTI } from "@/lib/firma"
+import { BALICKY, FIRMA, JISTOTY, ODEZVA } from "@/lib/firma"
 
 /**
  * Strukturovaná data pro lokální vyhledávání. Popisují jen to, co je
@@ -66,9 +66,9 @@ export default function Home() {
       {/* Navbar */}
       <Navbar />
 
-      {/* Hero. Nulové portfolio se nedá schovat, tak ať aspoň pracuje:
-          „hledám první tři klienty" je novinka, vysvětluje nízkou cenu
-          a dává důvod ozvat se teď a ne někdy. */}
+      {/* Hero. Jedna řádka nadpisu a dvě věty pod ní — druhá řádka
+          „Hledám první tři klienty" dělala z úvodu hradbu textu.
+          Nabídka pro první klienty žije dál v ceníku (PRVNI_KLIENTI). */}
       <section className="relative z-10 flex min-h-[100svh] items-center justify-center px-6 py-24">
         <div className="mx-auto max-w-3xl text-center">
           <p className="mb-6 text-xs font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] text-white/40">
@@ -77,22 +77,15 @@ export default function Home() {
 
           <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-[1.1] tracking-tight md:text-6xl lg:text-7xl">
             Web pro vaši firmu od {BALICKY[0].cenaText}.
-            {PRVNI_KLIENTI.aktivni && (
-              <span className="mt-2 block text-white/70">
-                Hledám {PRVNI_KLIENTI.pocet === 3 ? "první tři" : `prvních ${PRVNI_KLIENTI.pocet}`} klienty.
-              </span>
-            )}
           </h1>
 
-          {/* Dřív tu stálo „zakázku jsem ještě nedělal a nebudu předstírat,
-              že ano". Pravda to je, ale zákazník si z toho odnesl hlavně
-              riziko. Stejná pravda otočená dopředu: první portfolio je
-              důvod, proč dostane cenu i pozornost, kterou jinde nedostane. */}
+          {/* Dvě věty, víc ne. První portfolio pořád vysvětluje nízkou cenu
+              i plnou pozornost — jen bez rozvíjení („ne jedna z deseti…"),
+              které úvod natahovalo. */}
           <p className="mx-auto mt-8 max-w-xl text-base sm:text-lg text-white/70 leading-relaxed">
             Jsem {FIRMA.jmeno} a stavím si první portfolio. Proto je cena
-            nízká a proto budete jediná zakázka, kterou zrovna dělám —
-            ne jedna z deseti, co čekají, až doběhnou ty větší. Weby stavím
-            od roku {FIRMA.odRoku}, čtyři si můžete níž proklikat.
+            nízká a váš web bude jediná zakázka, kterou zrovna dělám.
+            Čtyři ukázky si můžete proklikat níž.
           </p>
 
           {/* Reference nemám, tak riziko nesu já. Tři závazky, ne tři
@@ -114,8 +107,7 @@ export default function Home() {
           <HeroCta />
 
           <p className="mx-auto mt-8 max-w-xl text-sm text-white/50">
-            Sídlím v {FIRMA.mestoLok}, po Slovácku se rád stavím osobně.
-            Na dálku pracuju kdekoli v Česku. Cenu i termín pošlu {ODEZVA.dlouhy}.
+            Sídlím v {FIRMA.mestoLok}, na dálku pracuju kdekoli v Česku. Cenu i termín pošlu {ODEZVA.dlouhy}.
           </p>
         </div>
       </section>
