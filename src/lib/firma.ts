@@ -96,11 +96,16 @@ export const JISTOTY = [
  * Je to skutečný obchod, ne umělá sleva: nižší cena výměnou za právo
  * ukázat web jako referenci a za krátké hodnocení. Až budou tři, blok
  * se z webu vypne přepnutím `aktivni`.
+ *
+ * Sleva je schválně mírná. Kdyby ukrojila čtvrtinu, spadne vstupní cena
+ * zpátky pod deset tisíc a celá cenovka ztratí smysl. Patnáct procent je
+ * dost na to, aby se to vyplatilo, a málo na to, aby to vypadalo, že
+ * skutečná cena je ta nižší.
  */
 export const PRVNI_KLIENTI = {
   aktivni: true,
   pocet: 3,
-  slevaProcent: 25,
+  slevaProcent: 15,
 } as const
 
 /** Cena po slevě pro první klienty. */
@@ -120,30 +125,41 @@ export function korun(cena: number): string {
   return `${cena.toLocaleString("cs-CZ").replace(/\s/g, NBSP)}${NBSP}Kč`
 }
 
-/** Ceny balíčků. Jedno místo pro ceník, dropdown i JSON-LD Offer. */
+/**
+ * Ceny balíčků. Jedno místo pro ceník, dropdown i JSON-LD Offer.
+ *
+ * Vstupní cena je schválně nad hranicí, kde se rozhoduje podle čísla.
+ * Kdo shání web za pár tisíc, si ho koupí v šabloně a nebude spokojený
+ * ani s ním, ani se mnou. Zbylé dva stupně jdou nahoru zhruba dvojnásobně,
+ * ať je vidět, že mezi nimi je rozdíl v rozsahu, ne v přirážce.
+ */
 export const BALICKY = [
   {
     id: "jednoduchy",
     nazev: "Jednoduchý web",
-    cena: 7900,
-    cenaText: korun(7900),
+    cena: 12900,
+    cenaText: korun(12900),
     note: "Pro jednu službu",
   },
   {
     id: "standard",
     nazev: "Standard",
-    cena: 14900,
-    cenaText: korun(14900),
+    cena: 24900,
+    cenaText: korun(24900),
     note: "Nejčastější volba",
   },
   {
     id: "premium",
     nazev: "E-shop a větší projekty",
-    cena: 24900,
-    cenaText: korun(24900),
+    cena: 44900,
+    cenaText: korun(44900),
     note: "Rozsah podle zadání",
   },
 ] as const
+
+/** Hodinová sazba na práci nad rámec balíčku i správy. */
+export const HODINOVKA_CISLO = 900
+export const HODINOVKA = korun(HODINOVKA_CISLO)
 
 /**
  * Správa webu po předání.
@@ -162,14 +178,14 @@ export const SPRAVA = [
     items: [
       "Předám vám hotový web i přístupy",
       "Doménu a hosting si vedete sami",
-      `Pozdější změny ${korun(600)} / hodinu`,
+      `Pozdější změny ${HODINOVKA} / hodinu`,
     ],
     featured: false,
   },
   {
     id: "zakladni",
     nazev: "Základní správa",
-    cena: korun(390),
+    cena: korun(590),
     perioda: "/ měsíc",
     note: "Doporučuju",
     items: [
@@ -183,7 +199,7 @@ export const SPRAVA = [
   {
     id: "rozsirena",
     nazev: "Rozšířená správa",
-    cena: korun(890),
+    cena: korun(1290),
     perioda: "/ měsíc",
     note: "Když se web mění často",
     items: [
@@ -195,9 +211,6 @@ export const SPRAVA = [
     featured: false,
   },
 ] as const
-
-/** Hodinová sazba na práci nad rámec správy. */
-export const HODINOVKA = korun(600)
 
 /** Věta o DPH pod ceník. */
 export function dphPoznamka(): string {
