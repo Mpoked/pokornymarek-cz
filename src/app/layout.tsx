@@ -34,9 +34,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(FIRMA.url),
   title: `Tvorba webů ${FIRMA.mesto}, od ${BALICKY[0].cenaText} | ${FIRMA.jmeno}`,
   description:
-    `Weby pro živnostníky a malé firmy ze Slovácka. Od ${BALICKY[0].cenaText}, ` +
-    `jednáte přímo se mnou. Hledám první ${PRVNI_KLIENTI.pocet} klienty, ` +
-    `teď se slevou ${PRVNI_KLIENTI.slevaProcent} %.`,
+    `Weby na míru pro firmy ze Slovácka. Od ${BALICKY[0].cenaText}, cena ` +
+    `předem a jednáte přímo se mnou. Hledám první ${PRVNI_KLIENTI.pocet} ` +
+    `klienty, teď se slevou ${PRVNI_KLIENTI.slevaProcent} %.`,
   alternates: {
     canonical: "/",
   },
@@ -47,8 +47,8 @@ export const metadata: Metadata = {
     siteName: FIRMA.jmeno,
     title: `Tvorba webů ${FIRMA.mesto}, od ${BALICKY[0].cenaText}`,
     description:
-      `Weby pro živnostníky, řemeslníky a restaurace ze Slovácka, na dálku ` +
-      `po celé ČR. Bez agentury a bez obchodníka mezi námi.`,
+      `Weby na míru pro firmy ze Slovácka, na dálku po celé ČR. ` +
+      `Bez agentury a bez obchodníka mezi námi.`,
   },
   twitter: {
     card: "summary_large_image",

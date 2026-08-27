@@ -18,7 +18,7 @@ function jsonLd() {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     name: FIRMA.jmeno,
-    description: `Tvorba webových stránek pro živnostníky, malé firmy, restaurace a řemeslníky z ${FIRMA.mestoGen} a okolí. Na dálku po celé ČR.`,
+    description: `Tvorba webových stránek na míru pro firmy, restaurace a řemeslníky z ${FIRMA.mestoGen} a okolí. Na dálku po celé ČR.`,
     url: FIRMA.url,
     email: FIRMA.email,
     telephone: FIRMA.telefonHref,
@@ -79,13 +79,13 @@ export default function Home() {
             Web pro vaši firmu od {BALICKY[0].cenaText}.
           </h1>
 
-          {/* Dvě věty, víc ne. První portfolio pořád vysvětluje nízkou cenu
-              i plnou pozornost — jen bez rozvíjení („ne jedna z deseti…"),
-              které úvod natahovalo. */}
+          {/* Dvě věty, víc ne. Dřív tu stálo „proto je cena nízká" — to už
+              u dvanácti tisíc neplatí a znělo by to jako výmluva. Argument
+              teď nese plná pozornost: jedna zakázka místo desíti. */}
           <p className="mx-auto mt-8 max-w-xl text-base sm:text-lg text-white/70 leading-relaxed">
-            Jsem {FIRMA.jmeno} a stavím si první portfolio. Proto je cena
-            nízká a váš web bude jediná zakázka, kterou zrovna dělám.
-            Čtyři ukázky si můžete proklikat níž.
+            Jsem {FIRMA.jmeno} a dělám jeden web v jednu chvíli. Ten váš tedy
+            nebude čekat ve frontě za devíti dalšími. Čtyři ukázky si můžete
+            proklikat níž.
           </p>
 
           {/* Reference nemám, tak riziko nesu já. Tři závazky, ne tři

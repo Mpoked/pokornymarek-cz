@@ -100,10 +100,12 @@ function SluzbySection({ index }: { index: number }) {
             Čtyři typy webů. Vyberte podle toho, co potřebujete.
           </h2>
           <p className="text-sm text-white/65 leading-relaxed">
-            Dělám weby pro malé firmy, živnostníky, restaurace a řemeslníky
-            z {FIRMA.mestoGen} a okolí. Ne pro korporace, na ty jsou agentury
-            s obchodním oddělením. Když jste z druhého konce republiky, nevadí:
-            domluvíme se po telefonu a e-mailem, jen se nepotkáme u kávy.
+            Dělám weby pro firmy z {FIRMA.mestoGen} a okolí, které už něco
+            vydělávají a chtějí tomu odpovídající web. Ne pro korporace, na ty
+            jsou agentury s obchodním oddělením, a ne za pár tisíc, za ty se dá
+            koupit jen šablona. Když
+            jste z druhého konce republiky, nevadí: domluvíme se po telefonu
+            a e-mailem, jen se nepotkáme u kávy.
           </p>
         </div>
 
@@ -139,7 +141,7 @@ function CenikSection({
     {
       ...CENIK[0],
       items: [
-        "1 stránka (landing page)",
+        "1 stránka, navržená od nuly",
         "Funguje na mobilu i na počítači",
         "Základní SEO, aby vás našli v Googlu",
         "Kontaktní formulář",
@@ -150,9 +152,9 @@ function CenikSection({
       ...CENIK[1],
       items: [
         "Až 6 podstránek",
-        "Vlastní design na míru, ne šablona",
         "Rozšířené SEO a strukturovaná data",
         "Přihlášení do Googlu i Seznamu",
+        "Měření návštěv a odeslaných formulářů",
       ],
       featured: true,
     },
@@ -187,7 +189,8 @@ function CenikSection({
         <div className="flex flex-col justify-end gap-4">
           <p className="text-sm text-white/65 leading-relaxed">
             Většina webařů má místo ceny formulář „ozveme se vám“. Tady jsou tři
-            balíčky, cena se pak nemění. {dphPoznamka()}
+            balíčky, cena se pak nemění. Žádný z nich není šablona, každý web
+            kreslím od prázdné stránky. {dphPoznamka()}
           </p>
 
           {/* Nabídka pro první klienty. Není to umělá sleva, ale skutečný

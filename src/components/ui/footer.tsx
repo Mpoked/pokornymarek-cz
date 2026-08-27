@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { MailIcon } from 'lucide-react';
 import { scrollToSection } from '@/lib/scroll';
-import { FIRMA } from '@/lib/firma';
+import { BALICKY, FIRMA } from '@/lib/firma';
 
 interface FooterLink {
 	title: string;
@@ -50,8 +50,10 @@ export function Footer() {
 						{FIRMA.jmeno}
 					</span>
 					<p className="text-sm leading-relaxed text-white/50">
-						Weby pro živnostníky a malé firmy z {FIRMA.mestoGen} a okolí.
-						Od 9 900 Kč, bez agentury mezi námi.
+						{/* Cena se bere z ceníku schválně. Napsaná ručně tu roky
+						    stála na 9 900 Kč, zatímco ceník ukazoval jinou částku. */}
+						Weby na míru pro firmy z {FIRMA.mestoGen} a okolí.
+						Od {BALICKY[0].cenaText}, bez agentury mezi námi.
 					</p>
 				</AnimatedContainer>
 
