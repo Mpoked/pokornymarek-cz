@@ -16,6 +16,7 @@ import {
   dphPoznamka,
   korun,
 } from "@/lib/firma"
+import { OBORY } from "@/lib/obory"
 
 /* ── Card wrapper — sticky stacked cards ── */
 function Card({
@@ -106,6 +107,20 @@ function SluzbySection({ index }: { index: number }) {
             koupit jen šablona. Když
             jste z druhého konce republiky, nevadí: domluvíme se po telefonu
             a e-mailem, jen se nepotkáme u kávy.
+          </p>
+          {/* Odkazy na oborové stránky. Pro Google je to jediná cesta, jak se
+              k nim dostat jinak než přes sitemapu. */}
+          <p className="mt-4 text-sm text-white/65 leading-relaxed">
+            Weby dělám hlavně pro{" "}
+            {OBORY.map((o, i) => (
+              <span key={o.slug}>
+                {i > 0 && (i === OBORY.length - 1 ? " a " : ", ")}
+                <a href={`/weby-pro/${o.slug}`} className="text-white underline-offset-4 hover:underline">
+                  {o.nazev}
+                </a>
+              </span>
+            ))}
+            .
           </p>
         </div>
 

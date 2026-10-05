@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { MailIcon } from 'lucide-react';
 import { scrollToSection } from '@/lib/scroll';
 import { BALICKY, FIRMA } from '@/lib/firma';
+import { OBORY } from '@/lib/obory';
 
 interface FooterLink {
 	title: string;
@@ -28,6 +29,10 @@ const footerLinks: FooterSection[] = [
 			{ title: 'Ukázky', href: '#ukazky' },
 			{ title: 'Kontakt', href: '#kontakt' },
 		],
+	},
+	{
+		label: 'Obory',
+		links: OBORY.map((o) => ({ title: `Weby pro ${o.nazev}`, href: `/weby-pro/${o.slug}` })),
 	},
 	{
 		label: 'Kontakt',
@@ -58,14 +63,15 @@ export function Footer() {
 				</AnimatedContainer>
 
 				{/* Navigační sloupce */}
-				<div className="grid grid-cols-2 gap-10 sm:gap-16 md:gap-20">
+				<div className="grid grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-12 md:gap-16">
 					{footerLinks.map((section, index) => (
 						<AnimatedContainer key={section.label} delay={0.1 + index * 0.1}>
 							<h3 className="text-xs uppercase tracking-widest text-white/50 font-mono">{section.label}</h3>
 							<ul className="text-white/60 mt-4 space-y-3 text-sm">
 								{section.links.map((link) => (
 									<li key={link.title}>
-										{link.external ? (
+										{/* Kotvy (#sekce) se posouvají kartami, všechno ostatní je obyčejný odkaz. */}
+										{link.external || !link.href.startsWith('#') ? (
 											<a
 												href={link.href}
 												className="hover:text-white inline-flex items-center transition-colors duration-300"

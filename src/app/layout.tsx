@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
-import { BALICKY, FIRMA, PRVNI_KLIENTI } from "@/lib/firma";
+import { BALICKY, DODANI, FIRMA } from "@/lib/firma";
 import "./globals.css";
 
 /* Čeština potřebuje latin-ext. V samotném `latin` chybí ě, š, č, ř, ž, ů
@@ -29,14 +29,15 @@ const newsreader = Newsreader({
  * Title začíná dotazem, ne jménem — „Marek Pokorný" nikdo nehledá,
  * „tvorba webů Uherské Hradiště" ano. Značka je až za oddělovačem.
  * Description je mini-inzerát (slib + cena + důvod kliknout), ne shrnutí.
+ * „Hledám první klienty" tu schválně není: ve výsledcích hledání to cizímu
+ * člověku řekne jen „nemá zkušenosti". Sleva pro první klienty žije v ceníku.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(FIRMA.url),
   title: `Tvorba webů ${FIRMA.mesto}, od ${BALICKY[0].cenaText} | ${FIRMA.jmeno}`,
   description:
-    `Weby na míru pro firmy ze Slovácka. Od ${BALICKY[0].cenaText}, cena ` +
-    `předem a jednáte přímo se mnou. Hledám první ${PRVNI_KLIENTI.pocet} ` +
-    `klienty, teď se slevou ${PRVNI_KLIENTI.slevaProcent} %.`,
+    `Weby na míru pro firmy ze Slovácka. Od ${BALICKY[0].cenaText}, ` +
+    `hotovo ${DODANI.text}, fixní cena. Nelíbí se, neplatíte.`,
   alternates: {
     canonical: "/",
   },
