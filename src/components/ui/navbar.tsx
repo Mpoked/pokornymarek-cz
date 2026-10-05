@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { scrollToSection, SECTION_IDS } from "@/lib/scroll"
 import { FIRMA } from "@/lib/firma"
+import { OBORY } from "@/lib/obory"
 
 const LABELS: Record<string, string> = {
   sluzby: "Služby",
@@ -16,12 +18,25 @@ const LABELS: Record<string, string> = {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  /* Na podstránkách sekce neexistují, takže kotvy vedou na hlavní stránku
+     (/#cenik) obyčejným odkazem a posun tam dorovná efekt níž. */
+  const naHlavni = usePathname() === "/"
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  // Příchod z podstránky na /#sekce: prohlížeč by skočil na pozici karty
+  // před přilepením, takže posun uděláme sami, až je stránka vykreslená.
+  useEffect(() => {
+    if (!naHlavni) return
+    const id = window.location.hash.slice(1)
+    if (!SECTION_IDS.includes(id as (typeof SECTION_IDS)[number])) return
+    const t = setTimeout(() => scrollToSection(id), 300)
+    return () => clearTimeout(t)
+  }, [naHlavni])
 
   // Zamknout scroll pozadí když je otevřené mobilní menu
   useEffect(() => {
@@ -33,6 +48,13 @@ export default function Navbar() {
     setOpen(false)
     // Počkat na zavření overlaye, ať scroll cílí správně
     requestAnimationFrame(() => scrollToSection(id))
+  }
+
+  /** Odkaz na sekci: na hlavní stránce posun kartami, jinde přechod na /#id. */
+  function sekce(id: string) {
+    return naHlavni
+      ? { href: `#${id}`, onClick: (e: React.MouseEvent) => { e.preventDefault(); goTo(id) } }
+      : { href: `/#${id}` }
   }
 
   return (
@@ -49,16 +71,22 @@ export default function Navbar() {
           {SECTION_IDS.map((id) => (
             <a
               key={id}
-              href={`#${id}`}
-              onClick={(e) => { e.preventDefault(); goTo(id) }}
+              {...sekce(id)}
               className="text-2xl font-bold tracking-tight text-white/80 transition-colors hover:text-white"
             >
               {LABELS[id]}
             </a>
           ))}
+          <div className="flex flex-col items-center gap-3">
+            <span className="text-xs font-mono uppercase tracking-widest text-white/40">Obory</span>
+            {OBORY.map((o) => (
+              <a key={o.slug} href={`/weby-pro/${o.slug}`} className="text-lg text-white/70 transition-colors hover:text-white">
+                Weby pro {o.nazev}
+              </a>
+            ))}
+          </div>
           <a
-            href="#kontakt"
-            onClick={(e) => { e.preventDefault(); goTo("kontakt") }}
+            {...sekce("kontakt")}
             className="mt-4 max-w-[80vw] border border-white/30 px-8 py-3 text-center text-sm font-mono uppercase tracking-widest text-white transition-all hover:bg-white hover:text-black"
           >
             Nezávazná cena
@@ -81,7 +109,12 @@ export default function Navbar() {
         <Link
           href="/"
           aria-label={`${FIRMA.jmeno} — na začátek stránky`}
-          onClick={(e) => { e.preventDefault(); setOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }) }}
+          onClick={(e) => {
+            setOpen(false)
+            if (!naHlavni) return
+            e.preventDefault()
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }}
           className="text-sm font-bold tracking-widest uppercase text-white"
         >
           MP
@@ -92,19 +125,38 @@ export default function Navbar() {
           {SECTION_IDS.map((id) => (
             <a
               key={id}
-              href={`#${id}`}
-              onClick={(e) => { e.preventDefault(); goTo(id) }}
+              {...sekce(id)}
               className="transition-colors hover:text-white"
             >
               {LABELS[id]}
             </a>
           ))}
+
+          {/* Rozbalí se najetím i tabulátorem (focus-within), bez JS. */}
+          <div className="group relative">
+            <button type="button" aria-haspopup="true" className="uppercase tracking-widest transition-colors hover:text-white group-focus-within:text-white">
+              Obory ▾
+            </button>
+            <div className="invisible absolute left-1/2 top-full -translate-x-1/2 pt-4 opacity-0 transition-opacity duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+              <ul className="flex min-w-56 flex-col gap-1 rounded-xl border border-white/10 bg-black/90 p-2 backdrop-blur-xl">
+                {OBORY.map((o) => (
+                  <li key={o.slug}>
+                    <a
+                      href={`/weby-pro/${o.slug}`}
+                      className="block rounded-lg px-3 py-2 normal-case tracking-normal text-sm font-sans text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      Weby pro {o.nazev}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </nav>
 
         {/* Desktop CTA */}
         <a
-          href="#kontakt"
-          onClick={(e) => { e.preventDefault(); goTo("kontakt") }}
+          {...sekce("kontakt")}
           className="hidden border border-white/30 px-4 py-2 text-xs font-mono uppercase tracking-widest text-white/70 transition-all duration-200 hover:bg-white hover:text-black md:inline-block"
         >
           Nezávazná cena
