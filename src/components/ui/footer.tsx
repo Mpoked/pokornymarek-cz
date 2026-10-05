@@ -2,6 +2,7 @@
 import React from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+import { usePathname } from 'next/navigation';
 import { MailIcon } from 'lucide-react';
 import { scrollToSection } from '@/lib/scroll';
 import { BALICKY, FIRMA } from '@/lib/firma';
@@ -44,6 +45,8 @@ const footerLinks: FooterSection[] = [
 ];
 
 export function Footer() {
+	// Mimo hlavní stránku vedou kotvy na /#sekce obyčejným odkazem.
+	const naHlavni = usePathname() === '/';
 	return (
 		<footer className="relative mx-auto w-full max-w-5xl rounded-t-4xl border-t border-white/10 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] px-6 py-14 md:rounded-t-6xl lg:px-10 lg:py-16">
 			<div className="absolute top-0 left-1/2 h-px w-1/3 max-w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur" />
@@ -71,9 +74,9 @@ export function Footer() {
 								{section.links.map((link) => (
 									<li key={link.title}>
 										{/* Kotvy (#sekce) se posouvají kartami, všechno ostatní je obyčejný odkaz. */}
-										{link.external || !link.href.startsWith('#') ? (
+										{link.external || !link.href.startsWith('#') || !naHlavni ? (
 											<a
-												href={link.href}
+												href={!naHlavni && link.href.startsWith('#') ? `/${link.href}` : link.href}
 												className="hover:text-white inline-flex items-center transition-colors duration-300"
 											>
 												{link.icon && <link.icon className="me-1.5 size-4 shrink-0" />}
