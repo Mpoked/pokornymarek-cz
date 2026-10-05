@@ -4,6 +4,8 @@ import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { MailIcon } from 'lucide-react';
 import { scrollToSection } from '@/lib/scroll';
+import { BALICKY, FIRMA } from '@/lib/firma';
+import { OBORY } from '@/lib/obory';
 
 interface FooterLink {
 	title: string;
@@ -19,48 +21,57 @@ interface FooterSection {
 
 const footerLinks: FooterSection[] = [
 	{
-		label: 'Studio',
+		label: 'Web',
 		links: [
 			{ title: 'Služby', href: '#sluzby' },
 			{ title: 'Ceník', href: '#cenik' },
-			{ title: 'Reference', href: '#reference' },
+			{ title: 'Správa', href: '#sprava' },
+			{ title: 'Ukázky', href: '#ukazky' },
 			{ title: 'Kontakt', href: '#kontakt' },
 		],
 	},
 	{
+		label: 'Obory',
+		links: OBORY.map((o) => ({ title: `Weby pro ${o.nazev}`, href: `/weby-pro/${o.slug}` })),
+	},
+	{
 		label: 'Kontakt',
 		links: [
-			{ title: 'info@pokornymarek.cz', href: 'mailto:info@pokornymarek.cz', icon: MailIcon, external: true },
-			{ title: '+420 774 664 403', href: 'tel:+420774664403', external: true },
+			{ title: FIRMA.email, href: `mailto:${FIRMA.email}`, icon: MailIcon, external: true },
+			{ title: FIRMA.telefon, href: `tel:${FIRMA.telefonHref}`, external: true },
 		],
 	},
 ];
 
 export function Footer() {
 	return (
-		<footer className="relative mx-auto w-full max-w-6xl rounded-t-4xl border-t border-white/10 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] px-6 py-14 md:rounded-t-6xl lg:px-10 lg:py-16">
+		<footer className="relative mx-auto w-full max-w-5xl rounded-t-4xl border-t border-white/10 bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] px-6 py-14 md:rounded-t-6xl lg:px-10 lg:py-16">
 			<div className="absolute top-0 left-1/2 h-px w-1/3 max-w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur" />
 
 			<div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between md:gap-8">
 				{/* Značka */}
 				<AnimatedContainer className="max-w-xs space-y-4">
 					<span className="block text-sm font-bold tracking-widest uppercase text-white">
-						Marek Pokorný
+						{FIRMA.jmeno}
 					</span>
 					<p className="text-sm leading-relaxed text-white/50">
-						Weby na míru. Osobně, bez prostředníků.
+						{/* Cena se bere z ceníku schválně. Napsaná ručně tu roky
+						    stála na 9 900 Kč, zatímco ceník ukazoval jinou částku. */}
+						Weby na míru pro firmy z {FIRMA.mestoGen} a okolí.
+						Od {BALICKY[0].cenaText}, bez agentury mezi námi.
 					</p>
 				</AnimatedContainer>
 
 				{/* Navigační sloupce */}
-				<div className="grid grid-cols-2 gap-10 sm:gap-16 md:gap-20">
+				<div className="grid grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-12 md:gap-16">
 					{footerLinks.map((section, index) => (
 						<AnimatedContainer key={section.label} delay={0.1 + index * 0.1}>
 							<h3 className="text-xs uppercase tracking-widest text-white/50 font-mono">{section.label}</h3>
 							<ul className="text-white/60 mt-4 space-y-3 text-sm">
 								{section.links.map((link) => (
 									<li key={link.title}>
-										{link.external ? (
+										{/* Kotvy (#sekce) se posouvají kartami, všechno ostatní je obyčejný odkaz. */}
+										{link.external || !link.href.startsWith('#') ? (
 											<a
 												href={link.href}
 												className="hover:text-white inline-flex items-center transition-colors duration-300"
@@ -94,7 +105,12 @@ export function Footer() {
 				delay={0.3}
 				className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-white/40 sm:flex-row sm:items-center sm:justify-between"
 			>
-				<p>{`© ${new Date().getFullYear()} Marek Pokorný.`}</p>
+				{/* IČO se zobrazí, až bude živnost ohlášená. Do té doby ho
+				    tady mít nesmíme, protože žádné není. */}
+				<p>
+					{`© ${new Date().getFullYear()} ${FIRMA.jmeno} · ${FIRMA.mesto}`}
+					{FIRMA.ico && ` · IČO ${FIRMA.ico}`}
+				</p>
 				<a
 					href="/ochrana-osobnich-udaju"
 					className="hover:text-white transition-colors duration-300"

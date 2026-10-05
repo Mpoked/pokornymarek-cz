@@ -1,8 +1,22 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import { useToast } from "@/components/ui/toast"
-import { scrollToSection } from "@/lib/scroll"
+import { STICKY_TOP, scrollToSection } from "@/lib/scroll"
+import {
+  BALICKY as CENIK,
+  DODANI,
+  FIRMA,
+  HODINOVKA,
+  ODEZVA,
+  PRVNI_KLIENTI,
+  SPRAVA,
+  cenaProPrvni,
+  dphPoznamka,
+  korun,
+} from "@/lib/firma"
+import { OBORY } from "@/lib/obory"
 
 /* ── Card wrapper — sticky stacked cards ── */
 function Card({
@@ -17,13 +31,22 @@ function Card({
   return (
     <div
       id={id}
-      /* Na mobilu karty plynou normálně pod sebou (relative), aby se
-         nezakrývaly — sticky vrstvení se zapne až od md výš. */
-      className="relative md:sticky w-full"
-      style={{ top: `${80 + index * 20}px`, zIndex: 10 + index }}
+      /* Lepí se všechny karty, aby se vrstvily bez děr. Podmínkou je,
+         že se každá vejde do obrazovky — sticky karta vyšší než výřez
+         se přilepí horním okrajem a spodek už nedorolujete. Proto jsou
+         texty v kartách krátké; když do některé něco přidáváš, hlídej
+         si výšku. Na mobilu karty plynou pod sebou (relative), tam se
+         `top` neuplatní. */
+      className="karta-stack relative w-full"
+      style={
+        {
+          "--sticky-top": `${STICKY_TOP(index)}px`,
+          zIndex: 10 + index,
+        } as React.CSSProperties
+      }
     >
       <div
-        className="rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl p-6 sm:p-8 md:p-14 transition-transform duration-300"
+        className="rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl p-6 sm:p-8 md:p-10 transition-transform duration-300"
         style={{ transformOrigin: "top center" }}
       >
         {children}
@@ -32,10 +55,12 @@ function Card({
   )
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+/** Číslo a název sekce. Bez pomlčky mezi nimi, ta vypadá strojově. */
+function SectionLabel({ num, children }: { num: string; children: React.ReactNode }) {
   return (
-    <p className="mb-4 text-xs font-mono uppercase tracking-[0.25em] text-white/30">
-      {children}
+    <p className="mb-4 text-xs font-mono uppercase tracking-[0.25em] text-white/45">
+      <span className="text-akcent">{num}</span>{" "}
+      <span className="ml-1">{children}</span>
     </p>
   )
 }
@@ -43,170 +68,386 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 /* ── Sekce 1: Služby ── */
 function SluzbySection({ index }: { index: number }) {
   const services = [
-    { num: "01", title: "Landing pages", desc: "Jednostránkové weby zaměřené na jednu službu nebo kampaň." },
-    { num: "02", title: "Webové prezentace", desc: "Moderní firemní web, který reprezentuje vaši značku a vyhledá se v Googlu." },
-    { num: "03", title: "Redesign starých webů", desc: "Předělám váš web do moderní podoby, zrychlím ho a připravím pro vyhledávače." },
-    { num: "04", title: "Jednoduché e-shopy", desc: "Prodejní stránka rychlá, přehledná a snadno spravovatelná." },
+    {
+      num: "01",
+      title: "Landing pages",
+      desc: "Jedna stránka, jeden cíl. Pro jednu službu nebo jednu kampaň, kde má návštěvník udělat jedinou věc: zavolat, objednat nebo přijít.",
+    },
+    {
+      num: "02",
+      title: "Webové prezentace",
+      desc: "Firemní web na čtyři až šest stránek. Načte se do dvou sekund a najdou vás v Googlu na dotazy typu „truhlář Uherské Hradiště“.",
+    },
+    {
+      num: "03",
+      title: "Redesign starých webů",
+      desc: "Starý web předělám do současné podoby. Hlavně na mobilu, kde dnes chodí většina lidí. Adresy stránek zůstanou, takže nepřijdete o pozice ve vyhledávání.",
+    },
+    {
+      num: "04",
+      title: "Jednoduché e-shopy",
+      desc: "Pár desítek položek, košík a platba kartou. Bez administrace, ve které se po týdnu ztratíte.",
+    },
   ]
+  /* Tvar sekce: nadpis vlevo, seznam vpravo. Karty v mřížce si tuhle
+     sekci pletly s ukázkami a stránka pak byla pětkrát stejná. Cena je
+     schválně pryč z nadpisu — stojí v hero i o sekci níž v ceníku. */
   return (
     <Card id="sluzby" index={index}>
-      <SectionLabel>01 — Služby</SectionLabel>
-      <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Weby, které opravdu fungují.
-      </h2>
-      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Specializujeme se na weby pro malé firmy, živnostníky, restaurace a řemeslníky
-        z Uherského Hradiště a okolí.
-      </p>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {services.map((s) => (
-          <div key={s.num} className="rounded-xl border border-white/8 bg-white/5 p-5">
-            <span className="text-xs font-mono text-white/30 tracking-widest">{s.num}</span>
-            <h3 className="mt-2 mb-1 font-semibold text-white">{s.title}</h3>
-            <p className="text-sm text-white/50 leading-relaxed">{s.desc}</p>
-          </div>
-        ))}
+      <div className="grid gap-8 md:grid-cols-[22rem_1fr] md:gap-12">
+        <div>
+          <SectionLabel num="01">Služby</SectionLabel>
+          <h2 className="mb-4 font-heading text-2xl font-bold tracking-tight leading-snug sm:text-3xl md:text-4xl">
+            Čtyři typy webů. Vyberte podle toho, co potřebujete.
+          </h2>
+          <p className="text-sm text-white/65 leading-relaxed">
+            Dělám weby pro firmy z {FIRMA.mestoGen} a okolí, které už něco
+            vydělávají a chtějí tomu odpovídající web. Ne pro korporace, na ty
+            jsou agentury s obchodním oddělením, a ne za pár tisíc, za ty se dá
+            koupit jen šablona. Když
+            jste z druhého konce republiky, nevadí: domluvíme se po telefonu
+            a e-mailem, jen se nepotkáme u kávy.
+          </p>
+          {/* Odkazy na oborové stránky. Pro Google je to jediná cesta, jak se
+              k nim dostat jinak než přes sitemapu. */}
+          <p className="mt-4 text-sm text-white/65 leading-relaxed">
+            Weby dělám hlavně pro{" "}
+            {OBORY.map((o, i) => (
+              <span key={o.slug}>
+                {i > 0 && (i === OBORY.length - 1 ? " a " : ", ")}
+                <a href={`/weby-pro/${o.slug}`} className="text-white underline-offset-4 hover:underline">
+                  {o.nazev}
+                </a>
+              </span>
+            ))}
+            .
+          </p>
+        </div>
+
+        <ul className="flex flex-col">
+          {services.map((s, i) => (
+            <li
+              key={s.num}
+              className={`flex gap-5 py-5 ${i === 0 ? "border-t border-white/10 md:border-t-0 md:pt-0" : "border-t border-white/10"}`}
+            >
+              <span className="mt-1 shrink-0 font-mono text-xs tracking-widest text-akcent">{s.num}</span>
+              <div>
+                <h3 className="mb-1 font-semibold text-white">{s.title}</h3>
+                <p className="text-sm text-white/65 leading-relaxed">{s.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </Card>
   )
 }
 
 /* ── Sekce 2: Ceník ── */
-function CenikSection({ index }: { index: number }) {
+function CenikSection({
+  index,
+  onVybrat,
+}: {
+  index: number
+  /** Předá vybraný balíček formuláři a odroluje na něj. */
+  onVybrat: (id: string) => void
+}) {
   const plans = [
     {
-      name: "Jednoduchý web",
-      price: "9 900 Kč",
-      note: "Ideální pro živnostníky",
-      items: ["1 stránka (landing page)", "Mobilní responzivita", "Základní SEO", "Kontaktní formulář"],
+      ...CENIK[0],
+      items: [
+        "1 stránka, navržená od nuly",
+        "Funguje na mobilu i na počítači",
+        "Základní SEO, aby vás našli v Googlu",
+        "Kontaktní formulář",
+      ],
       featured: false,
     },
     {
-      name: "Standard",
-      price: "19 900 Kč",
-      note: "Nejčastější volba",
-      items: ["Až 6 podstránek", "Vlastní design na míru", "Rozšířené SEO + schema", "Doména a hosting v ceně"],
+      ...CENIK[1],
+      items: [
+        "Až 6 podstránek",
+        "Rozšířené SEO a strukturovaná data",
+        "Přihlášení do Googlu i Seznamu",
+        "Měření návštěv a odeslaných formulářů",
+      ],
       featured: true,
     },
     {
-      name: "Prémiový",
-      price: "34 900 Kč",
-      note: "E-shopy a větší projekty",
-      items: ["Neomezený rozsah stránek", "E-shop / rezervační systém", "Pokročilé SEO + analytika", "Prioritní podpora"],
+      ...CENIK[2],
+      items: [
+        "Rozsah podle zadání",
+        "E-shop nebo rezervační systém",
+        "Platební brána a doprava",
+        "Zaškolení, jak si to spravovat sami",
+      ],
       featured: false,
     },
   ]
+
   return (
     <Card id="cenik" index={index}>
-      <SectionLabel>02 — Ceník</SectionLabel>
-      <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Transparentní ceny, žádná překvapení.
-      </h2>
-      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Vždy si domluvíme přesnou cenu předem. Tři jasné balíčky, ze kterých vychází
-        většina projektů.
-      </p>
+      {/* Hlavička na dvě části: nadpis vlevo, vysvětlení a sleva vedle něj.
+          Sražené pod sebe zabíraly tři pásy výšky a ceník je nejvyšší karta
+          na webu — o výšku se tu opravdu hraje, viz komentář v globals.css. */}
+      <div className="mb-6 grid gap-6 md:grid-cols-2 md:gap-10">
+        <div>
+          <SectionLabel num="02">Ceník</SectionLabel>
+          <h2 className="font-heading text-2xl font-bold tracking-tight leading-snug sm:text-3xl md:text-4xl">
+            {/* Jen poslední číslo nese „Kč" — a bere si ho z cenaText, kde je
+                před ním pevná mezera, takže se od něj cena neodtrhne. */}
+            {CENIK[0].cena.toLocaleString("cs-CZ")}, {CENIK[1].cena.toLocaleString("cs-CZ")}{" "}
+            nebo {CENIK[2].cenaText}. Cenu se dozvíte tady, ne po telefonu.
+          </h2>
+        </div>
+
+        <div className="flex flex-col justify-end gap-4">
+          <p className="text-sm text-white/65 leading-relaxed">
+            Většina webařů má místo ceny formulář „ozveme se vám“. Tady jsou tři
+            balíčky, cena se pak nemění. Žádný z nich není šablona, každý web
+            kreslím od prázdné stránky. {dphPoznamka()}
+          </p>
+
+          {/* Nabídka pro první klienty. Není to umělá sleva, ale skutečný
+              obchod: nižší cena za právo ukázat web jako referenci. */}
+          {PRVNI_KLIENTI.aktivni && (
+            <div className="flex items-center gap-4 rounded-xl border border-akcent/40 bg-akcent/10 px-4 py-3">
+              <p className="shrink-0 font-heading text-2xl font-bold leading-none tracking-tight text-akcent sm:text-3xl">
+                −{PRVNI_KLIENTI.slevaProcent}&nbsp;%
+              </p>
+              <p className="text-sm leading-snug text-white/70">
+                <strong className="font-semibold text-white">
+                  Pro první {PRVNI_KLIENTI.pocet} klienty.
+                </strong>{" "}
+                Chci za to svolení ukázat web jako svou práci.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {/* Doporučený balíček je světlý, ale ne bílý. Čistě bílá plocha na
+            černém pozadí opticky nabývá a karta pak vypadá, že vyčnívá
+            z řádku, i když má stejnou výšku jako sousedi. */}
         {plans.map((p) => (
           <div
-            key={p.name}
-            className={`rounded-xl border p-6 flex flex-col ${
+            key={p.nazev}
+            className={`rounded-xl border p-5 flex flex-col ${
               p.featured
-                ? "border-white/40 bg-white text-black"
+                ? "border-akcent/50 bg-[#e7e4de] text-black"
                 : "border-white/8 bg-white/5 text-white"
             }`}
           >
-            <p className={`text-xs font-mono uppercase tracking-widest mb-1 ${p.featured ? "text-black/40" : "text-white/30"}`}>
+            <p className={`text-xs font-mono uppercase tracking-widest mb-1 ${p.featured ? "text-akcent-tmavy" : "text-white/45"}`}>
               {p.note}
             </p>
-            <h3 className="font-bold text-lg mb-1">{p.name}</h3>
-            <p className={`text-2xl sm:text-3xl font-bold tracking-tight mb-6 ${p.featured ? "text-black" : "text-white"}`}>
-              od {p.price}
+            <h3 className="font-bold text-lg mb-1">{p.nazev}</h3>
+            <p className={`font-heading text-2xl sm:text-3xl font-bold tracking-tight ${p.featured ? "text-black" : "text-white"}`}>
+              od {p.cenaText}
             </p>
-            <ul className="flex flex-col gap-2 flex-1">
+            {PRVNI_KLIENTI.aktivni && (
+              <p className={`mb-6 mt-1 text-sm font-semibold ${p.featured ? "text-akcent-tmavy" : "text-akcent"}`}>
+                Teď {korun(cenaProPrvni(p.cena))}
+              </p>
+            )}
+            <ul className={`flex flex-col gap-1.5 flex-1 ${PRVNI_KLIENTI.aktivni ? "" : "mt-5"}`}>
               {p.items.map((item) => (
-                <li key={item} className={`flex items-center gap-2 text-sm ${p.featured ? "text-black/70" : "text-white/60"}`}>
-                  <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${p.featured ? "bg-black/40" : "bg-white/30"}`} />
+                <li key={item} className={`flex items-start gap-2 text-sm ${p.featured ? "text-black/75" : "text-white/70"}`}>
+                  <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${p.featured ? "bg-akcent-tmavy/60" : "bg-white/35"}`} />
                   {item}
                 </li>
               ))}
             </ul>
+            {/* Zůstává to odkaz na kotvu, aby fungoval i bez JS a šel
+                otevřít na nové kartě. S JS navíc předvybere balíček
+                ve formuláři, ať ho člověk nevyplňuje podruhé. */}
             <a
               href="#kontakt"
-              onClick={(e) => { e.preventDefault(); scrollToSection("kontakt") }}
-              className={`mt-8 block rounded-lg border py-2.5 text-center text-sm font-semibold transition-all ${
+              onClick={(e) => { e.preventDefault(); onVybrat(p.id) }}
+              className={`mt-6 block rounded-lg border py-2 text-center text-sm font-semibold transition-all ${
                 p.featured
                   ? "border-black bg-black text-white hover:bg-black/80"
                   : "border-white/20 text-white/70 hover:bg-white/10"
               }`}
             >
-              Mám zájem
+              Chci cenu na tenhle balíček
             </a>
           </div>
         ))}
       </div>
+
+      <p className="mt-5 max-w-2xl text-xs text-white/50 leading-relaxed">
+        V ceně je návrh, stavba i spuštění. Od vás texty, fotky a logo, od
+        kterých běží {DODANI.dnu} dnů na dodání. Doména a hosting jsou ve
+        správě níž. Cena platí od domluvy a nic se k ní nedoúčtovává.
+      </p>
     </Card>
   )
 }
 
-/* ── Sekce 3: Reference ── */
-function ReferenceSection({ index }: { index: number }) {
-  // Ukázkové projekty podle oborů — každá karta vede na živé demo v /ukazky.
+/* ── Sekce 3: Správa ── */
+function SpravaSection({ index }: { index: number }) {
+  return (
+    <Card id="sprava" index={index}>
+      <SectionLabel num="03">Správa</SectionLabel>
+      <h2 className="mb-4 font-heading text-2xl font-bold tracking-tight leading-snug sm:text-3xl md:text-4xl">
+        A pak? Web sám od sebe neběží.
+      </h2>
+      <p className="mb-8 max-w-xl text-sm sm:text-base text-white/65 leading-relaxed">
+        Doména se musí každý rok prodloužit, certifikát obnovit, systém
+        aktualizovat. Můžete si to vést sami, nebo mi to hodit na krk
+        a nestarat se. Obojí je v pořádku, tady je cena za obojí.
+      </p>
+
+      {/* Tři řádky, ne tři sloupce. Ceník o sekci výš je mřížka tří karet
+          s cenou a odrážkami — kdyby správa vypadala stejně, čtenář by při
+          scrollu nepoznal, že přišla nová sekce, a jen přečetl jiná čísla. */}
+      <ul className="border-t border-white/10">
+        {SPRAVA.map((s) => (
+          <li
+            key={s.id}
+            className={`grid gap-x-6 gap-y-3 border-b border-white/10 py-5 md:grid-cols-[13rem_1fr_auto] md:items-start ${
+              s.featured ? "-mx-4 border-l-2 border-l-akcent bg-akcent/[0.06] px-4" : ""
+            }`}
+          >
+            <div>
+              <p className={`mb-0.5 text-xs font-mono uppercase tracking-widest ${s.featured ? "text-akcent" : "text-white/45"}`}>
+                {s.note}
+              </p>
+              <h3 className="font-bold text-white">{s.nazev}</h3>
+            </div>
+
+            {/* Na úzké obrazovce se řádek skládá pod sebe a cena by skončila
+                až pod výčtem. Cena patří hned k názvu, jinak si ji čtenář
+                musí najít. Od md je řádek zase trojsloupcový a pořadí
+                se vrací do zdrojového. */}
+            <ul className="order-3 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:gap-x-5 md:order-none">
+              {s.items.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-white/70">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white/35" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p className="order-2 font-heading text-2xl font-bold tracking-tight text-white md:order-none md:text-right">
+              {s.cena}
+              {s.perioda && (
+                <span className="ml-1 text-sm font-normal text-white/55">{s.perioda}</span>
+              )}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mt-5 max-w-2xl text-xs text-white/50 leading-relaxed">
+        Správu můžete kdykoli zrušit nebo změnit, nic nepodepisujete na rok
+        dopředu. Větší zásahy nad rámec balíčku dělám za {HODINOVKA} na hodinu
+        a cenu řeknu předem.
+      </p>
+    </Card>
+  )
+}
+
+/* ── Sekce 4: Ukázky ── */
+function UkazkySection({ index }: { index: number }) {
+  // Vlastní návrhy, ne cizí zakázky. Označené jako koncept přímo na
+  // kartě — kdyby to bylo jen v úvodním odstavci, čte se to později
+  // než název firmy a návštěvník má pocit, že ho někdo obelstil.
   const projects = [
     { num: "01", title: "Truhlářství Kovář", tag: "Řemeslo · web prezentace", href: "/ukazky/truhlarstvi.html" },
     { num: "02", title: "Vinný sklep U Šardických", tag: "Gastro · web + rezervace", href: "/ukazky/vinny-sklep.html" },
     { num: "03", title: "Pekárna Zrníčko", tag: "Lokální e-shop", href: "/ukazky/pekarna.html" },
-    { num: "04", title: "Run Slovácko 2025", tag: "Kampaň · landing page", href: "/ukazky/run-slovacko.html" },
+    { num: "04", title: "Run Slovácko", tag: "Kampaň · landing page", href: "/ukazky/run-slovacko.html" },
   ]
   return (
-    <Card id="reference" index={index}>
-      <SectionLabel>03 — Reference</SectionLabel>
-      <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Co umím postavit.
+    <Card id="ukazky" index={index}>
+      <SectionLabel num="04">Ukázky</SectionLabel>
+      <h2 className="mb-4 font-heading text-2xl font-bold tracking-tight leading-snug sm:text-3xl md:text-4xl">
+        Čtyři weby, které jsem navrhl a postavil od nuly.
       </h2>
-      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Ukázkové weby podle oborů — návrhy, na kterých ukazuju svůj styl a přístup.
-        Klikněte a prohlédněte si živé demo.
+      <p className="mb-8 max-w-xl text-sm sm:text-base text-white/65 leading-relaxed">
+        Nejsou to zakázky pro klienty. Zatím žádnou nemám a nebudu si vymýšlet
+        loga firem, pro které jsem nic neudělal. Firmy v ukázkách jsem si
+        vymyslel, ale weby jsou skutečné: můžete si je proklikat, vyzkoušet
+        na mobilu a podívat se, jak jsou rychlé.
       </p>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {/* Široké řádky místo dlaždic 2×2 — ty vypadaly stejně jako služby.
+          Levý sloupec je zatím jen číslo; až budou náhledy webů, patří
+          přesně sem a řádek se kvůli nim nebude muset přestavovat. */}
+      <ul className="border-t border-white/10">
         {projects.map((p) => (
-          <a
-            key={p.num}
-            href={p.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center justify-between rounded-xl border border-white/8 bg-white/5 px-5 py-4 transition-all hover:border-white/25 hover:bg-white/10"
-          >
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-mono text-white/30">{p.num}</span>
-              <div>
-                <p className="font-semibold text-white text-sm">{p.title}</p>
-                <p className="text-xs text-white/40 mt-0.5">{p.tag}</p>
-              </div>
-            </div>
-            <svg className="h-4 w-4 text-white/30 transition-transform group-hover:translate-x-1 group-hover:text-white/60" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 16 16">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 11L11 5M11 5H6M11 5V10" />
-            </svg>
-          </a>
+          <li key={p.num} className="border-b border-white/10">
+            <a
+              href={p.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group -mx-3 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-lg px-3 py-4 transition-colors hover:bg-white/[0.05] sm:flex-nowrap"
+            >
+              <span className="shrink-0 font-mono text-xs tracking-widest text-akcent">{p.num}</span>
+
+              <span className="min-w-0 flex-1">
+                <span className="flex flex-wrap items-center gap-2">
+                  <span className="font-heading text-lg font-semibold text-white">{p.title}</span>
+                  <span className="rounded border border-white/15 px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-widest text-white/55">
+                    Koncept
+                  </span>
+                </span>
+                <span className="mt-0.5 block text-xs text-white/55">{p.tag}</span>
+              </span>
+
+              {/* Že je řádek odkaz, musí být vidět bez najetí myší. */}
+              <span className="flex shrink-0 items-center gap-2 text-sm font-medium text-white/65 transition-colors group-hover:text-white">
+                <span className="underline decoration-white/25 underline-offset-4 group-hover:decoration-white">
+                  Otevřít živou ukázku
+                </span>
+                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 16 16" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 11L11 5M11 5H6M11 5V10" />
+                </svg>
+              </span>
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
     </Card>
   )
 }
 
 /* ── Custom dropdown ── */
 const BALICKY = [
-  { value: "",          label: "Vyberte balíček…",  sub: "" },
-  { value: "jednoduchy", label: "Jednoduchý web",   sub: "od 9 900 Kč" },
-  { value: "standard",   label: "Standard",          sub: "od 19 900 Kč" },
-  { value: "premium",    label: "Prémiový",          sub: "od 34 900 Kč" },
-  { value: "nevim",      label: "Ještě nevím",       sub: "poradíte mi" },
+  { value: "",           label: "Vyberte balíček…", sub: "" },
+  { value: "jednoduchy", label: CENIK[0].nazev,     sub: `od ${CENIK[0].cenaText}` },
+  { value: "standard",   label: CENIK[1].nazev,     sub: `od ${CENIK[1].cenaText}` },
+  { value: "premium",    label: CENIK[2].nazev,     sub: `od ${CENIK[2].cenaText}` },
+  { value: "nevim",      label: "Ještě nevím",      sub: "poradíte mi" },
 ]
 
-function BalicekDropdown({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+const MOZNOSTI = BALICKY.filter((b) => b.value !== "")
+
+/**
+ * Vlastní dropdown místo nativního <select> kvůli vzhledu. Aby byl
+ * použitelný i z klávesnice a pro čtečky obrazovky, drží se vzoru
+ * listbox: aria-expanded na spouštěči, role="option" na položkách,
+ * šipky pro pohyb, Escape pro zavření.
+ */
+function BalicekDropdown({
+  value,
+  onChange,
+  labelId,
+  zvyrazneno = false,
+}: {
+  value: string
+  onChange: (v: string) => void
+  labelId: string
+  /** Krátce po předvyplnění z ceníku, ať je vidět, že se pole změnilo. */
+  zvyrazneno?: boolean
+}) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const selected = BALICKY.find(b => b.value === value) ?? BALICKY[0]
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const selected = BALICKY.find((b) => b.value === value) ?? BALICKY[0]
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -216,40 +457,98 @@ function BalicekDropdown({ value, onChange }: { value: string; onChange: (v: str
     return () => document.removeEventListener("mousedown", onClickOutside)
   }, [])
 
+  function openAndFocus(idx: number) {
+    setOpen(true)
+    // Položky se renderují až po otevření, proto až v dalším snímku.
+    requestAnimationFrame(() => optionRefs.current[idx]?.focus())
+  }
+
+  function close(vratitFokus = true) {
+    setOpen(false)
+    if (vratitFokus) buttonRef.current?.focus()
+  }
+
+  function onTriggerKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      openAndFocus(0)
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault()
+      openAndFocus(MOZNOSTI.length - 1)
+    } else if (e.key === "Escape") {
+      close(false)
+    }
+  }
+
+  function onOptionKeyDown(e: React.KeyboardEvent, idx: number) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault()
+      optionRefs.current[(idx + 1) % MOZNOSTI.length]?.focus()
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault()
+      optionRefs.current[(idx - 1 + MOZNOSTI.length) % MOZNOSTI.length]?.focus()
+    } else if (e.key === "Escape") {
+      e.preventDefault()
+      close()
+    } else if (e.key === "Tab") {
+      setOpen(false)
+    }
+  }
+
   return (
     <div ref={ref} className="relative">
       <button
+        ref={buttonRef}
         type="button"
-        onClick={() => setOpen(o => !o)}
-        className={`w-full flex items-center justify-between rounded-lg border px-4 py-3 text-sm outline-none transition-all bg-white/5 text-left ${
-          open ? "border-white/30" : "border-white/10 hover:border-white/20"
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls="balicek-listbox"
+        aria-labelledby={labelId}
+        onClick={() => setOpen((o) => !o)}
+        onKeyDown={onTriggerKeyDown}
+        className={`w-full flex items-center justify-between rounded-lg border px-4 py-3 text-sm outline-none transition-all text-left focus-visible:border-white/40 ${
+          zvyrazneno
+            ? "border-akcent bg-akcent/10"
+            : open
+              ? "border-white/30 bg-white/5"
+              : "border-white/10 bg-white/5 hover:border-white/20"
         }`}
       >
-        <span className={selected.value ? "text-white" : "text-white/30"}>
+        <span className={selected.value ? "text-white" : "text-white/45"}>
           {selected.label}
-          {selected.sub && <span className="ml-2 text-white/30 text-xs">{selected.sub}</span>}
+          {selected.sub && <span className="ml-2 text-white/45 text-xs">{selected.sub}</span>}
         </span>
         <svg
-          width="14" height="14" viewBox="0 0 16 16" fill="none"
-          className={`shrink-0 text-white/30 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+          className={`shrink-0 text-white/45 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         >
           <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
       {open && (
-        <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 rounded-xl border border-white/10 bg-black/90 backdrop-blur-xl shadow-2xl overflow-hidden">
-          {BALICKY.filter(b => b.value !== "").map((b, i) => (
+        <div
+          id="balicek-listbox"
+          role="listbox"
+          aria-labelledby={labelId}
+          className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 rounded-xl border border-white/10 bg-black/90 backdrop-blur-xl shadow-2xl overflow-hidden"
+        >
+          {MOZNOSTI.map((b, i) => (
             <button
               key={b.value}
+              ref={(el) => { optionRefs.current[i] = el }}
               type="button"
-              onClick={() => { onChange(b.value); setOpen(false) }}
-              className={`w-full flex items-center justify-between px-4 py-3 text-sm text-left transition-colors hover:bg-white/8 ${
+              role="option"
+              aria-selected={value === b.value}
+              onClick={() => { onChange(b.value); close() }}
+              onKeyDown={(e) => onOptionKeyDown(e, i)}
+              className={`w-full flex items-center justify-between px-4 py-3 text-sm text-left outline-none transition-colors hover:bg-white/8 focus-visible:bg-white/10 ${
                 value === b.value ? "bg-white/10 text-white" : "text-white/70"
               } ${i !== 0 ? "border-t border-white/5" : ""}`}
             >
               <span>{b.label}</span>
-              <span className="text-xs text-white/30">{b.sub}</span>
+              <span className="text-xs text-white/45">{b.sub}</span>
             </button>
           ))}
         </div>
@@ -262,13 +561,132 @@ function BalicekDropdown({ value, onChange }: { value: string; onChange: (v: str
 }
 
 /* ── Inline field error ── */
+/**
+ * Řádek kontaktu s kopírováním.
+ *
+ * Odkaz `mailto:` funguje jen tomu, kdo má v systému nastavený poštovní
+ * klient. Kdo ho nemá — a to je na cizím počítači nebo ve firemním
+ * prohlížeči většina lidí — dostane prázdné okno a odejde s pocitem, že
+ * je web rozbitý. Odkaz zůstává pro ty, komu funguje; vedle něj je
+ * tlačítko, které adresu zkopíruje do schránky.
+ */
+function KontaktRadek({
+  label,
+  typ,
+  hodnota,
+  href,
+  onZprava,
+}: {
+  label: string
+  /** Do hlášky po zkopírování: „E-mail zkopírován". */
+  typ: string
+  hodnota: string
+  href: string
+  onZprava: (zprava: string, druh: "success" | "error", titulek?: string) => void
+}) {
+  const [hotovo, setHotovo] = useState(false)
+
+  useEffect(() => {
+    if (!hotovo) return
+    const t = setTimeout(() => setHotovo(false), 2000)
+    return () => clearTimeout(t)
+  }, [hotovo])
+
+  /**
+   * Starší cesta přes skryté pole. Potřebná dvakrát: v nezabezpečeném
+   * kontextu, kde `navigator.clipboard` vůbec není, a taky když existuje,
+   * ale writeText odmítne (chybí oprávnění, okno není zaostřené).
+   */
+  function kopirovatStareCesty(text: string): boolean {
+    try {
+      const pole = document.createElement("textarea")
+      pole.value = text
+      pole.setAttribute("readonly", "")
+      pole.style.position = "fixed"
+      pole.style.top = "0"
+      pole.style.opacity = "0"
+      document.body.appendChild(pole)
+      pole.select()
+      const ok = document.execCommand("copy")
+      document.body.removeChild(pole)
+      return ok
+    } catch {
+      return false
+    }
+  }
+
+  async function kopirovat() {
+    let ok = false
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(hodnota)
+        ok = true
+      }
+    } catch {
+      // Spadlo to i s dostupným rozhraním, zkusíme ještě zálohu níž.
+      ok = false
+    }
+    if (!ok) ok = kopirovatStareCesty(hodnota)
+
+    if (ok) {
+      setHotovo(true)
+      onZprava(`${typ} máte ve schránce.`, "success", "Zkopírováno")
+    } else {
+      // I neúspěch musí být k něčemu: adresu vypíšeme, ať se dá přepsat.
+      onZprava(`Označte a zkopírujte ručně: ${hodnota}`, "error", "Kopírování nevyšlo")
+    }
+  }
+
+  return (
+    <li className="flex items-end justify-between gap-4 border-b border-white/8 pb-5">
+      <div className="min-w-0">
+        <p className="mb-1 text-xs font-mono uppercase tracking-widest text-white/45">{label}</p>
+        <a
+          href={href}
+          className="break-all font-medium text-white underline decoration-white/25 underline-offset-4 transition-colors hover:decoration-white"
+        >
+          {hodnota}
+        </a>
+      </div>
+
+      <button
+        type="button"
+        onClick={kopirovat}
+        aria-label={`Zkopírovat ${typ.toLowerCase()} do schránky`}
+        className={`flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-all ${
+          hotovo
+            ? "border-akcent/50 bg-akcent/10 text-akcent"
+            : "border-white/15 text-white/65 hover:border-white/35 hover:text-white"
+        }`}
+      >
+        {hotovo ? (
+          <>
+            <svg className="size-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 8.5L6.2 11.5L13 4.5" />
+            </svg>
+            Zkopírováno
+          </>
+        ) : (
+          <>
+            <svg className="size-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+              <path d="M10.5 5.5V4a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5" />
+            </svg>
+            Kopírovat
+          </>
+        )}
+      </button>
+    </li>
+  )
+}
+
 interface FieldErrors { jmeno?: string; email?: string; balicek?: string; zprava?: string; souhlas?: string }
 
-function FieldError({ msg }: { msg?: string }) {
+function FieldError({ msg, id }: { msg?: string; id?: string }) {
   if (!msg) return null
   return (
-    <div className="mt-1.5 flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2">
-      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0">
+    <div id={id} role="alert" className="mt-1.5 flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" className="shrink-0" aria-hidden="true">
         <path d="M8 5v4M8 11v.5" stroke="#f87171" strokeWidth="1.8" strokeLinecap="round" />
         <circle cx="8" cy="8" r="6.5" stroke="#f87171" strokeWidth="1.4" />
       </svg>
@@ -277,12 +695,33 @@ function FieldError({ msg }: { msg?: string }) {
   )
 }
 
-/* ── Sekce 4: Kontakt ── */
-function KontaktSection({ index }: { index: number }) {
+/* ── Sekce 5: Kontakt ── */
+function KontaktSection({
+  index,
+  balicek,
+  setBalicek,
+  vyber,
+}: {
+  index: number
+  balicek: string
+  setBalicek: (v: string) => void
+  /** Roste s každým kliknutím v ceníku. Jen spouštěč zvýraznění. */
+  vyber: number
+}) {
   const [sending, setSending] = useState(false)
   const [errors, setErrors] = useState<FieldErrors>({})
-  const [balicek, setBalicek] = useState("")
+  const [zvyraznit, setZvyraznit] = useState(false)
   const { show, ToastPortal } = useToast()
+
+  /* Pole se vyplní samo někde mimo obrazovku, než k němu člověk dorolí.
+     Bez krátkého zvýraznění by nepoznal, že se něco stalo, a vybíral by
+     balíček znovu. Při prvním vykreslení se nespouští — vyber je 0. */
+  useEffect(() => {
+    if (vyber === 0) return
+    setZvyraznit(true)
+    const t = setTimeout(() => setZvyraznit(false), 1600)
+    return () => clearTimeout(t)
+  }, [vyber])
 
   function validate(data: FormData): FieldErrors {
     const e: FieldErrors = {}
@@ -311,10 +750,10 @@ function KontaktSection({ index }: { index: number }) {
         body: data,
         headers: { Accept: "application/json" },
       })
-      if (res.ok) { show("Ozvu se do 2 pracovních dní.", "success"); form.reset(); setBalicek("") }
-      else show("Napište přímo na info@pokornymarek.cz", "error")
+      if (res.ok) { show(`Mám to. Ozvu se ${ODEZVA.dlouhy}.`, "success"); form.reset(); setBalicek("") }
+      else show(`Napište přímo na ${FIRMA.email}`, "error")
     } catch {
-      show("Napište přímo na info@pokornymarek.cz", "error")
+      show(`Napište přímo na ${FIRMA.email}`, "error")
     } finally {
       setSending(false)
     }
@@ -325,32 +764,62 @@ function KontaktSection({ index }: { index: number }) {
       err ? "border-red-500/40 focus:border-red-400" : "border-white/10 focus:border-white/30"
     }`
 
+  const labelCls = "mb-1.5 block text-xs font-mono uppercase tracking-widest text-white/55"
+
   return (
     <Card id="kontakt" index={index}>
-      <SectionLabel>04 — Kontakt</SectionLabel>
-      <h2 className="mb-5 text-3xl font-bold tracking-tight leading-snug md:text-5xl">
-        Napište — ozvu se obratem.
+      <SectionLabel num="05">Kontakt</SectionLabel>
+      <h2 className="mb-4 font-heading text-2xl font-bold tracking-tight leading-snug sm:text-3xl md:text-4xl">
+        Napište mi. Cenu i termín pošlu {ODEZVA.dlouhy}.
       </h2>
-      <p className="mb-10 max-w-xl text-base text-white/50 leading-relaxed">
-        Pošlete mi krátkou zprávu a ozvu se vám nejpozději do druhého pracovního dne.
+      <p className="mb-8 max-w-xl text-sm sm:text-base text-white/65 leading-relaxed">
+        Stačí pár vět o tom, co potřebujete. Odpovím konkrétní cenou a termínem,
+        ne pozvánkou na schůzku. Když se nedomluvíme, nic se neděje a nic
+        neplatíte.
       </p>
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {/* Kontaktní info */}
-        <ul className="flex flex-col gap-5">
-          {[
-            { label: "Marek Pokorný", value: "info@pokornymarek.cz", href: "mailto:info@pokornymarek.cz" },
-            { label: "Telefon", value: "+420 774 664 403", href: "tel:+420774664403" },
-          ].map((item) => (
-            <li key={item.label} className="border-b border-white/8 pb-5">
-              <p className="text-xs font-mono uppercase tracking-widest text-white/30 mb-1">{item.label}</p>
-              {item.href
-                ? <a href={item.href} className="break-all text-white font-medium hover:text-white/70 transition-colors">{item.value}</a>
-                : <p className="text-white font-medium">{item.value}</p>
-              }
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col gap-6">
+          {/* Slib „jednáte přímo se mnou" potřebuje obličej, jinak je to
+              jen tvrzení. Zdroj je čtvercový výřez, takže rámování nezávisí
+              na velikosti prvku. Fotka je pod ohybem, proto bez priority. */}
+          <div className="flex items-center gap-4">
+            <Image
+              src="/marek-pokorny.webp"
+              alt={FIRMA.jmeno}
+              width={800}
+              height={800}
+              sizes="80px"
+              className="size-20 shrink-0 rounded-full object-cover ring-1 ring-white/15"
+            />
+            <div>
+              <p className="font-semibold text-white">{FIRMA.jmeno}</p>
+              <p className="mt-1 text-sm leading-relaxed text-white/65">
+                Web vám udělám já sám. Na e-mail i telefon odpovídám osobně,
+                žádný obchodník mezi námi není.
+              </p>
+            </div>
+          </div>
+
+          <ul className="flex flex-col gap-5">
+            {/* Popisek byl dřív jméno, to teď stojí u fotky o kus výš. */}
+            <KontaktRadek
+              label="E-mail"
+              typ="E-mail"
+              hodnota={FIRMA.email}
+              href={`mailto:${FIRMA.email}`}
+              onZprava={show}
+            />
+            <KontaktRadek
+              label="Telefon"
+              typ="Telefon"
+              hodnota={FIRMA.telefon}
+              href={`tel:${FIRMA.telefonHref}`}
+              onZprava={show}
+            />
+          </ul>
+        </div>
 
         {/* Formulář */}
         <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
@@ -365,47 +834,63 @@ function KontaktSection({ index }: { index: number }) {
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1.5 block text-xs font-mono uppercase tracking-widest text-white/40">Jméno</label>
+              <label htmlFor="jmeno" className={labelCls}>Jméno</label>
               <input
+                id="jmeno"
                 name="jmeno"
+                autoComplete="name"
+                aria-invalid={!!errors.jmeno}
+                aria-describedby={errors.jmeno ? "jmeno-error" : undefined}
                 className={inputCls(errors.jmeno)}
                 placeholder="Jan Novák"
                 onChange={() => errors.jmeno && setErrors(p => ({ ...p, jmeno: undefined }))}
               />
-              <FieldError msg={errors.jmeno} />
+              <FieldError id="jmeno-error" msg={errors.jmeno} />
             </div>
             <div>
-              <label className="mb-1.5 block text-xs font-mono uppercase tracking-widest text-white/40">E-mail</label>
+              <label htmlFor="email" className={labelCls}>E-mail</label>
               <input
+                id="email"
                 name="email"
                 type="email"
+                autoComplete="email"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
                 className={inputCls(errors.email)}
                 placeholder="jan@firma.cz"
                 onChange={() => errors.email && setErrors(p => ({ ...p, email: undefined }))}
               />
-              <FieldError msg={errors.email} />
+              <FieldError id="email-error" msg={errors.email} />
             </div>
           </div>
 
           {/* Výběr balíčku */}
           <div>
-            <label className="mb-1.5 block text-xs font-mono uppercase tracking-widest text-white/40">
+            <span id="balicek-label" className={labelCls}>
               Jaký web vás zajímá?
-            </label>
-            <BalicekDropdown value={balicek} onChange={setBalicek} />
+            </span>
+            <BalicekDropdown
+              value={balicek}
+              onChange={setBalicek}
+              labelId="balicek-label"
+              zvyrazneno={zvyraznit}
+            />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-xs font-mono uppercase tracking-widest text-white/40">Co potřebujete?</label>
+            <label htmlFor="zprava" className={labelCls}>Co potřebujete?</label>
             <textarea
+              id="zprava"
               name="zprava"
               rows={4}
+              aria-invalid={!!errors.zprava}
+              aria-describedby={errors.zprava ? "zprava-error" : undefined}
               className={inputCls(errors.zprava)}
               placeholder="Krátce popište, jaký web byste rádi…"
               style={{ resize: "none" }}
               onChange={() => errors.zprava && setErrors(p => ({ ...p, zprava: undefined }))}
             />
-            <FieldError msg={errors.zprava} />
+            <FieldError id="zprava-error" msg={errors.zprava} />
           </div>
 
           <div>
@@ -417,7 +902,7 @@ function KontaktSection({ index }: { index: number }) {
                 onChange={() => errors.souhlas && setErrors(p => ({ ...p, souhlas: undefined }))}
                 className="mt-0.5 size-4 shrink-0 cursor-pointer accent-white"
               />
-              <span className="text-xs leading-relaxed text-white/50">
+              <span className="text-xs leading-relaxed text-white/65">
                 Souhlasím se{" "}
                 <a
                   href="/ochrana-osobnich-udaju"
@@ -436,9 +921,9 @@ function KontaktSection({ index }: { index: number }) {
           <button
             type="submit"
             disabled={sending}
-            className="rounded-lg border border-white/20 py-3 text-sm font-semibold text-white transition-all hover:bg-white hover:text-black disabled:opacity-50"
+            className="rounded-lg bg-white py-3 text-sm font-semibold text-black transition-all hover:bg-white/85 disabled:opacity-50"
           >
-            {sending ? "Odesílám…" : "Odeslat poptávku"}
+            {sending ? "Odesílám…" : `Odeslat, cenu pošlu ${ODEZVA.kratky}`}
           </button>
         </form>
       </div>
@@ -449,13 +934,29 @@ function KontaktSection({ index }: { index: number }) {
 
 /* ── Hlavní export ── */
 export default function ScrollSections() {
+  /* Balíček vybraný v ceníku má padnout rovnou do formuláře. Proto stav
+     nesedí v kontaktu, ale tady nad oběma sekcemi.
+
+     `vyber` je počítadlo, ne jen hodnota: kdyby někdo klikl na stejný
+     balíček podruhé, hodnota by se nezměnila a pole by se nerozsvítilo,
+     takže by to vypadalo, že tlačítko nic neudělalo. */
+  const [balicek, setBalicek] = useState("")
+  const [vyber, setVyber] = useState(0)
+
+  function vybratBalicek(id: string) {
+    setBalicek(id)
+    setVyber((n) => n + 1)
+    scrollToSection("kontakt")
+  }
+
   return (
     <div className="relative z-10 mx-auto flex max-w-5xl flex-col gap-0 px-6 pb-24 pt-8">
       <div className="flex flex-col gap-6">
         <SluzbySection index={0} />
-        <CenikSection index={1} />
-        <ReferenceSection index={2} />
-        <KontaktSection index={3} />
+        <CenikSection index={1} onVybrat={vybratBalicek} />
+        <SpravaSection index={2} />
+        <UkazkySection index={3} />
+        <KontaktSection index={4} balicek={balicek} setBalicek={setBalicek} vyber={vyber} />
       </div>
     </div>
   )
